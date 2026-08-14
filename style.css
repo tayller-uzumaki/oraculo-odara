@@ -319,4 +319,40 @@ h1 {
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid #332147;
+} 
+
+/* Animação para a Mesa Chacoalhar */
+@keyframes shakeMesa {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-5px, 5px) rotate(-1deg); }
+  40% { transform: translate(5px, -5px) rotate(1deg); }
+  60% { transform: translate(-5px, -5px) rotate(-1deg); }
+  80% { transform: translate(5px, 5px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Classe aplicada à mesa durante o lançamento */
+.mesa-chacoalhando {
+  animation: shakeMesa 0.15s infinite;
+}
+
+/* Animação individual dos búzios girando e caindo */
+@keyframes lancarBuzio {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg) translateY(-50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(360deg) translateY(0);
+  }
+}
+
+/* Classe aplicada aos búzios */
+.buzio-animando {
+  animation: lancarBuzio 0.8s ease-out forwards;
 }
