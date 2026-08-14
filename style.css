@@ -49,9 +49,11 @@ h1 {
   margin-bottom: 24px;
 }
 
-h2 {
-  font-size: 20px;
-  color: #fff;
+.subtitle-desc {
+  font-size: 14px;
+  color: #d4d4d8;
+  line-height: 1.5;
+  margin: 8px 0 16px 0;
 }
 
 .subtitle {
@@ -106,6 +108,166 @@ h2 {
   box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
 
+/* Transição de Odù */
+.banner-transicao {
+  margin-top: 16px;
+  padding: 14px;
+  background: #28173d;
+  border-left: 4px solid #fbbf24;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #fde68a;
+  line-height: 1.5;
+}
+
+/* Guia de Como Consultar */
+.guide-box {
+  background-color: #0b0612;
+  border: 1px dashed #f59e0b;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.guide-box h4 {
+  color: #fbbf24;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.guide-box ol {
+  padding-left: 18px;
+  color: #a1a1aa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Benefícios Premium */
+.premium-benefits {
+  background: #0b0612;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #332147;
+  margin-bottom: 16px;
+}
+
+.premium-benefits h4 {
+  color: #fbbf24;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.premium-benefits ul {
+  list-style: none;
+  font-size: 12px;
+  color: #d4d4d8;
+  line-height: 1.6;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.package-card {
+  cursor: pointer;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #332147;
+  background-color: #0b0612;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.package-card.active {
+  border: 2px solid #f59e0b;
+  background-color: #28173d;
+}
+
+.badge-pop {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background-color: #10b981;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fbbf24;
+}
+
+/* Indicador de Favorabilidade */
+.favorability-container {
+  margin: 14px 0;
+}
+
+.favorability-bar-bg {
+  width: 100%;
+  height: 12px;
+  background-color: #0b0612;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #332147;
+  margin-top: 4px;
+}
+
+.favorability-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #10b981);
+  transition: width 1s ease-in-out;
+}
+
+/* Mesa Mística e Búzios */
+.mesa-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.peneira {
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2d1645 0%, #0d0417 100%);
+  border: 4px solid #f59e0b;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+}
+
+.buzio {
+  width: 34px;
+  height: 46px;
+  position: absolute;
+  transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.7));
+}
+
+.loading-container {
+  margin-top: 14px;
+}
+
+.status-texto {
+  font-size: 14px;
+  color: #fbbf24;
+  font-style: italic;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
 .result-box {
   margin-top: 20px;
   padding: 20px;
@@ -157,76 +319,4 @@ h2 {
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid #332147;
-}
-
-.packages-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.package-card {
-  cursor: pointer;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #332147;
-  background-color: #0b0612;
-  transition: all 0.3s ease;
-}
-
-.package-card.active {
-  border: 2px solid #f59e0b;
-  background-color: #28173d;
-}
-
-.price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #fbbf24;
-}
-
-/* Mesa Mística dos Búzios */
-.mesa-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.peneira {
-  width: 320px;
-  height: 320px;
-  margin: 0 auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, #2d1645 0%, #120722 100%);
-  border: 4px solid #f59e0b;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-}
-
-.buzio {
-  width: 28px;
-  height: 38px;
-  position: absolute;
-  border-radius: 50%;
-  transition: all 1.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.buzio.aberto {
-  background: radial-gradient(circle, #fffbeb 30%, #fde68a 100%);
-  border: 2px solid #d97706;
-  box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
-}
-
-.buzio.fechado {
-  background: radial-gradient(circle, #78350f 20%, #451a03 100%);
-  border: 1px solid #27272a;
-  opacity: 0.7;
-}
-
-.status-texto {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #fbbf24;
-  font-style: italic;
 }
