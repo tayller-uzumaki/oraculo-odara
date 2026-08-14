@@ -209,7 +209,7 @@ function calcularOduNumerologia(dataStr) {
   return soma === 0 ? 1 : soma;
 }
 
-// Etapa 1: Odù de Nascimento
+// Etapa 1: Odù de Nascimento (Ajustado para resposta expandida e completa)
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
   const dataInput = document.getElementById('dataNasc').value;
@@ -226,12 +226,33 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
     document.getElementById('odu-nome').innerText = oduDiretorAtual.nome;
     document.getElementById('odu-orixa').innerText = oduDiretorAtual.orixa;
     document.getElementById('odu-elemento').innerText = oduDiretorAtual.elemento;
-    document.getElementById('odu-caminho').innerText = oduDiretorAtual.caminho;
-    
-    // PONTO 3: Atualiza o banner de transição
-    document.getElementById('transicao-nome-odu').innerText = `${oduDiretorAtual.nome} (${oduDiretorAtual.orixa})`;
 
-    document.getElementById('resultado-odu').style.display = 'block';
+    // Resposta Completa Expandida (mínimo 5 linhas + Pontos Fortes e Alertas)
+    const textoCaminhoExpandido = `
+      <p style="margin-bottom: 8px;">
+        ${oduDiretorAtual.caminho} Sob a regência máster de <strong>${oduDiretorAtual.orixa}</strong>, este Odù atua através do elemento <strong>${oduDiretorAtual.elemento}</strong>, moldando os ciclos de crescimento, superação e colheita ao longo da sua jornada terrena.
+      </p>
+      <p style="margin-bottom: 8px;">
+        Esta força ancestral exige constante alinhamento espiritual e autoconhecimento para potencializar os caminhos da prosperidade e afastar energias de estagnação.
+      </p>
+      <div style="margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">
+        <p style="color: #34d399; margin-bottom: 4px;"><strong>✨ Pontos Fortes & Potenciais:</strong> ${oduDiretorAtual.fatoresFavoraveis.join(' • ')}.</p>
+        <p style="color: #f87171;"><strong>⚠️ Pontos de Alerta & Cuidados:</strong> ${oduDiretorAtual.pontosAtencao.join(' • ')}.</p>
+      </div>
+    `;
+
+    document.getElementById('odu-caminho').innerHTML = textoCaminhoExpandido;
+    
+    // Atualiza o banner de transição
+    const elemTransicao = document.getElementById('transicao-nome-odu');
+    if (elemTransicao) {
+      elemTransicao.innerText = `${oduDiretorAtual.nome} (${oduDiretorAtual.orixa})`;
+    }
+
+    const resOdu = document.getElementById('resultado-odu');
+    resOdu.style.display = 'block';
+    resOdu.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
     btn.innerText = '🔮 Descobrir Meu Odù';
   }, 800);
 });
@@ -298,7 +319,7 @@ function criarBuzioSVG(eAberto) {
   }
 }
 
-// Etapa 3: Jogada de Búzios
+// Etapa 3: Jogada de Búzios (Com rolagem automática e chacoalho/animação)
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
   if (perguntasRestantes <= 0) {
@@ -319,15 +340,21 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
   peneira.innerHTML = '';
   document.getElementById('resultado-leitura').style.display = 'none';
 
+  // 1. Rolagem Suave Automática para a Mesa
+  mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // 2. Chacoalhar a Mesa de Búzios
+  mesa.classList.add('mesa-chacoalhando');
+
   // Sorteio dos Búzios
   const numAbertos = Math.floor(Math.random() * 16) + 1;
   const oduJogo = ODUS_DATABASE[numAbertos];
 
-  // Renderização na Mesa
+  // Renderização e Animação dos Búzios
   for (let i = 0; i < 16; i++) {
     const eAberto = i < numAbertos;
     const buzioEl = document.createElement('div');
-    buzioEl.className = 'buzio';
+    buzioEl.className = 'buzio buzio-animando';
     buzioEl.innerHTML = criarBuzioSVG(eAberto);
     
     const top = Math.floor(Math.random() * 65 + 15);
@@ -337,13 +364,16 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     buzioEl.style.top = `${top}%`;
     buzioEl.style.left = `${left}%`;
     buzioEl.style.transform = `rotate(${rot}deg)`;
+    buzioEl.style.animationDelay = `${i * 0.08}s`; // Atraso encadeado para ver a queda um a um
+
     peneira.appendChild(buzioEl);
   }
 
-  // PONTO 10: Mensagens durante a consulta
+  // Sequência de Mensagens Místicas
   status.innerText = "🔮 Lançando os búzios na mesa sagrada...";
 
   setTimeout(() => {
+    mesa.classList.remove('mesa-chacoalhando'); // Para de chacoalhar
     status.innerText = "✨ Consultando a sabedoria ancestral dos Orixás...";
   }, 1500);
 
@@ -351,7 +381,7 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     status.innerText = "🕯️ Interpretando os sinais e a queda revelada...";
   }, 3000);
 
-  // Exibição dos Resultados (Estruturas de 1 a 9)
+  // Exibição dos Resultados
   setTimeout(() => {
     perguntasRestantes--;
     document.getElementById('qtd-perguntas').innerText = perguntasRestantes;
