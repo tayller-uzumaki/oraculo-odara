@@ -2,7 +2,7 @@
 const ODUS_DATABASE = {
   1: { numero: 1, nome: "Okaran", orixa: "Exu", elemento: "Fogo", tendenciaPadrao: "NÃO", favorabilidade: 25, tituloTendencia: "❌ Tendência: NÃO — Os búzios indicam turbulência ou bloqueio temporário.", caminho: "Caminho da transformação rápida através do confronto de verdades. Okaran alerta para não forçar portas fechadas sem antes limpar os caminhos.", influenciaEspiritual: "Exu atua trazendo movimento veloz, desmascarando intenções ocultas e cobrando disciplina e clareza absoluta.", fatoresFavoraveis: ["Agilidade para corrigir erros", "Coragem para cortar laços nocivos", "Capacidade de recomeçar"], pontosAtencao: ["Evitar discussões impulsivas", "Cuidado com teimosia", "Não agir movido pela raiva"], orientacoesPraticas: "Mantenha a calma, coloque os pés no chão e evite tomar decisões precipitadas nas próximas 72 horas.", sabedoriaAncestral: "Nem toda porta fechada é uma perda; muitas vezes é o universo impedindo você de entrar onde não há luz.", resumoFinal: "Cenário desfavorável para avançar agora. O momento pede recuo, proteção e paciência." },
   2: { numero: 2, nome: "Ejioko", orixa: "Ibejis e Ogum", elemento: "Ar", tendenciaPadrao: "AINDA NÃO", favorabilidade: 48, tituloTendencia: "⏳ Tendência: AINDA NÃO — A decisão depende de negociações e acordos pendentes.", caminho: "Caminho da dualidade e da busca por alianças justas. Ejioko indica que dois caminhos estão abertos e a pressa pode prejudicar.", influenciaEspiritual: "Os Ibejis trazem a surpresa e a renovação, enquanto Ogum exige postura firme na defesa dos seus direitos legítimos.", fatoresFavoraveis: ["Receptividade para acordos", "Apoio de parcerias estratégicas", "Intuição para perceber intenções"], pontosAtencao: ["Indecisão paralensante", "Dependência da opinião alheia", "Medo de posicionamento"], orientacoesPraticas: "Busque auxílio técnico ou neutro. Analise todas as cláusulas e opções antes de dar o próximo passo.", sabedoriaAncestral: "A dúvida é a pausa necessária para que a sabedoria tome o lugar da impulsividade.", resumoFinal: "Resultado em aberto. Ajuste os termos e aguarde novas informações antes de se comprometer." },
-  3: { numero: 3, nome: "Etaogundá", orixa: "Ogum", elemento: "Terra", tendenciaPadrao: "SIM", favorabilidade: 82, tituloTendencia: "✅ Tendência: SIM — Vitória alcançada através do combate justo e da persistência.", caminho: "Caminho do guerreiro incansável. Etaogundá promete o triunfo para quem não recua diante das batalhas difíceis.", influenciaEspiritual: "Ogum quebra correntes de injustiça, abrindo caminhos à força para quem age com verdade e retidão.", fatoresFavoraveis: ["Provas e argumentos sólidos ao seu favor", "Força de vontade inabalável", "Proteção contra manobras desleais"], pontosAtencao: ["Agressividade nas palavras", "Exhaustão física", "Teimosia em detalhes menores"], orientacoesPraticas: "Mantenha foco absoluto nos fatos concretos. Não gaste energia com provações emocionais.", sabedoriaAncestral: "As espadas da justiça cortam os nós que o medo tentou dar no seu caminho.", resumoFinal: "Cenário altamente positivo. Avance com determinação e sem medo." },
+  3: { numero: 3, nome: "Etaogundá", orixa: "Ogum", elemento: "Terra", tendenciaPadrao: "SIM", favorabilidade: 82, tituloTendencia: "✅ Tendência: SIM — Vitória alcançada através do combate justo e da persistência.", caminho: "Caminho do guerreiro incansável. Etaogundá promete o triunfo para quem não recua diante das batalhas difíceis.", influenciaEspiritual: "Ogum quebra correntes de injustiça, abrindo caminhos à força para quem age com verdade e retidão.", fatoresFavoraveis: ["Provas e argumentos sólidos ao seu favor", "Força de vontade inabalável", "Proteção contra manobras desleais"], pontosAtencao: ["Agressividade nas palavras", "Exhaustão física", "Teimosia em detalhes menores"], orientacoesPraticas: "Mantenha foco absoluto nos fatos concretos. Não gaste energia com provações emocionais.", sabedoriaAncestral: "As espadas da justiça cortam os nós que o medo tentou dar no seu caminho.", resumoFinal: "Cenário highly positivo. Avance com determinação e sem medo." },
   4: { numero: 4, nome: "Irosun", orixa: "Iemanjá e Oxossi", elemento: "Terra", tendenciaPadrao: "AINDA NÃO", favorabilidade: 40, tituloTendencia: "⏳ Tendência: AINDA NÃO — Há verdades ocultas que precisam emergir primeiro.", caminho: "Caminho da prudência e do olhar atento. Irosun pede paciência para que a névoa se desfaça antes do veredito.", influenciaEspiritual: "Iemanjá acalma as águas da ansiedade e Oxóssi mira com precisão no momento exato de agir.", fatoresFavoraveis: ["Intuição apurada para farejar armadilhas", "Proteção ancestral silenciosa", "Descoberta de fatos importantes"], pontosAtencao: ["Ilusões e falsas promessas", "Cegueira emocional diante da realidade", "Confiar em quem fala demais"], orientacoesPraticas: "Silencie seus planos. Não conte vitória antes da hora e guarde os detalhes sob reserva absoluta.", sabedoriaAncestral: "A calma da água esconde a profundidade do oceano; seja calmo por fora e firme por dentro.", resumoFinal: "Aguarde a névoa baixar. O tempo revelará os detalhes que faltam para sua decisão." },
   5: { numero: 5, nome: "Oxê", orixa: "Oxum", elemento: "Água", tendenciaPadrao: "SIM", favorabilidade: 88, tituloTendencia: "✅ Tendência: SIM — Favorável, trazendo renovação, prosperidade e encerramento doce.", caminho: "Caminho do brilho e da fartura reconquistada. Oxê indica que o sofrimento está dando lugar à colheita merecida.", influenciaEspiritual: "Oxum envolve a questão com diplomacia, doçura e atração de abundância material e espiritual.", fatoresFavoraveis: ["Magnetismo elevado", "Flexibilidade para contornar obstáculos", "Ganho ou reparação justa"], pontosAtencao: ["Gasto de energia com intrigas", "Vaidade", "Inconstância nos compromissos"], orientacoesPraticas: "Cuide da sua energia e do seu bem-estar. Mantenha a postura serena para atrair a prosperidade.", sabedoriaAncestral: "A água doce do rio sempre encontra o caminho para o mar, superando qualquer rocha.", resumoFinal: "Cenário muito abençoado e próspero. Confie no fluxo positivo dos acontecimentos." },
   6: { numero: 6, nome: "Obará", orixa: "Xangô e Oxóssi", elemento: "Ar / Terra", tendenciaPadrao: "SIM", favorabilidade: 95, tituloTendencia: "✅ Tendência: SIM — Altamente favorável, com prosperidade e triunfo justo.", caminho: "Obará é o Odù da grande virada de chave. Representa a superação da humilhação e a conquista da honra e da fartura.", influenciaEspiritual: "Xangô aplica a justiça equilibrada e Oxóssi garante que a flecha alcance a fartura e a prosperidade.", fatoresFavoraveis: ["Reconhecimento do seu direito legítimo", "Clareza nos argumentos", "Abertura substancial de caminhos"], pontosAtencao: ["Excesso de ostentação", "Falar sobre a conquista antes da hora", "Orgulho elevado"], orientacoesPraticas: "Mantenha a postura íntegra, mantenha o foco no seu objetivo e preserve o silêncio.", sabedoriaAncestral: "Aquele que já esteve na poeira conhece o valor de caminhar no topo com humildade.", resumoFinal: "Excelente sinalização oracular. Seus caminhos estão abertos para a vitória." },
@@ -22,6 +22,9 @@ let oduDiretorAtual = null;
 let perguntasRestantes = 0;
 let pacoteAtivo = { qtd: 5, valor: 25.99 };
 let ultimaPerguntaFeita = { texto: "", area: "" };
+
+// 📜 VÁRIAVEL GLOBAL PARA ARMAZENAR O HISTÓRICO DAS CONSULTAS DO PACOTE
+let historicoConsultas = [];
 
 // Calculadora de Odù
 function calcularOduNumerologia(dataStr) {
@@ -102,6 +105,7 @@ function gerarPix() {
 
 function confirmarPagamento() {
   perguntasRestantes = pacoteAtivo.qtd;
+  historicoConsultas = []; // Limpa o histórico para o novo pacote
   document.getElementById('qtd-perguntas').innerText = perguntasRestantes;
   document.getElementById('secao-jogada').style.display = 'block';
   document.getElementById('secao-jogada').scrollIntoView({ behavior: 'smooth' });
@@ -142,43 +146,110 @@ function criarBuzioSVG(eAberto) {
   }
 }
 
-// 🎯 Detector Inteligente de Intenção da Pergunta (Orixá de Cabeça / Caminhos)
+// Detector de Intenção para Orixás de Cabeça
 function verificarIntencaoOrixasRegentes(perguntaTexto) {
   const padroes = [
     /quais.*orix[aá]s/i,
-    /quem.*s[ãa]o.*orix[aá]s/i,
-    /meus.*orix[aá]s/i,
+    /quem.*s[ãa]o.*meus.*orix[aá]s/i,
+    /meus.*orix[aá]s.*de.*cabe[çc]a/i,
+    /orix[aá].*de.*frente/i,
     /orix[aá].*cabe[çc]a/i,
-    /orix[aá].*frente/i,
-    /orix[aá].*regent/i,
-    /quem.*me.*rege/i,
-    /pai.*de.*santo/i,
-    /m[ãa]e.*de.*santo/i,
-    /junt[oó]/i,
-    /adjunto/i,
-    /meu.*caminho.*espiritual/i
+    /quais.*s[ãa]o.*meus.*regentes/i,
+    /quem.*é.*meu.*junt[oó]/i,
+    /quem.*é.*meu.*adjunto/i
   ];
   return padroes.some(regex => regex.test(perguntaTexto));
 }
 
-// 📧 Função para Envio do Resumo por E-mail (Usuário + CCO)
-function enviarResumoEmail(emailUsuario, pergunta, respostaResumida) {
-  const emailCCO = "suporte@oraculodosorixas.online";
-  
-  console.log(`[DISPARO E-MAIL] Para: ${emailUsuario} | CCO: ${emailCCO}`);
-  
-  // Exemplo prático de abertura via mailto (pode ser integrado com API Backend / EmailJS)
-  const assunto = encodeURIComponent("✨ Seu Resumo da Leitura Sagrada dos Búzios");
-  const corpo = encodeURIComponent(`Olá!\n\nConfira o resumo da sua consulta oracular:\n\nPergunta: "${pergunta}"\n\nResumo:\n${respostaResumida}\n\nCópia enviada para registro: ${emailCCO}\n\nQue os Orixás abençoem seus caminhos!`);
-  
-  // Exibe notificação visual amigável
-  const statusEmail = document.getElementById('status-email-envio');
-  if (statusEmail) {
-    statusEmail.innerHTML = `✅ Resumo enviado para <strong>${emailUsuario}</strong> (Cópia registrada para suporte@oraculodosorixas.online)`;
+// Motor de Interpretação Contextual Dinâmica
+function gerarInterpretacaoDinamicamente(perguntaText, oduObj, area) {
+  const p = perguntaText.toLowerCase();
+  const tend = oduObj.tendenciaPadrao;
+  let direcionamento = "";
+
+  if (p.includes("mãe de santo") || p.includes("mae de santo") || p.includes("pai de santo") || p.includes("aprovar") || p.includes("página") || p.includes("pagina") || p.includes("criação") || p.includes("criacao")) {
+    if (tend === "SIM") {
+      direcionamento = `Analisando a sua dúvida sobre a aprovação da sua Mãe/Pai de Santo quanto à criação da sua página de búzios: a caída revela que <strong>SIM, haverá acolhimento e bênção</strong>. A energia de <strong>${oduObj.orixa}</strong> abre portas para a sua expressão oracular, desde que você mantenha a postura de respeito e transparência com os seus mais velhos.`;
+    } else {
+      direcionamento = `Diante do seu questionamento sobre o apoio da sua autoridade espiritual para a página de búzios: os búzios indicam <strong>NECESSIDADE DE CAUTELA E DIÁLOGO PRÉVIO</strong>. A regência de <strong>${oduObj.nome}</strong> sugere que buscar a aprovação direta antes de tornar o projeto público evita mal-entendidos.`;
+    }
+  } else if (p.includes("casa") || p.includes("feitura") || p.includes("santo") || p.includes("terreiro") || p.includes("ilê") || p.includes("ile")) {
+    if (tend === "SIM") {
+      direcionamento = `A regência de <strong>${oduObj.nome}</strong> confirma que o local e o momento para o seu desenvolvimento espiritual estão <strong>FAVORÁVEIS</strong>. A força de <strong>${oduObj.orixa}</strong> sustenta o seu axé nessa casa.`;
+    } else {
+      direcionamento = `O oráculo sugere <strong>REAVALIAÇÃO E RESGUARDO</strong>. A vibração de <strong>${oduObj.nome}</strong> sinaliza que pendências de limpeza espiritual ou conversas precisam ser ajustadas antes de firmar compromissos definitivos.`;
+    }
+  } else if (p.includes("amor") || p.includes("relacionamento") || p.includes("voltar") || p.includes("casamento") || p.includes("namoro")) {
+    if (tend === "SIM") {
+      direcionamento = `Sobre o seu caminho afetivo: o resultado é <strong>POSITIVO</strong>. A regência do Odù <strong>${oduObj.nome}</strong> e a doçura de <strong>${oduObj.orixa}</strong> abrem o campo energético para entendimento e reciprocidade.`;
+    } else {
+      direcionamento = `No campo dos afetos, o momento exige <strong>PROTEÇÃO E PACIÊNCIA</strong>. A queda sob <strong>${oduObj.nome}</strong> avisa para não agir sob impulso e proteger seu coração contra ilusões.`;
+    }
+  } else if (p.includes("trabalho") || p.includes("emprego") || p.includes("dinheiro") || p.includes("negócio") || p.includes("negocio") || p.includes("finanças")) {
+    if (tend === "SIM") {
+      direcionamento = `Quanto aos seus caminhos materiais: a resposta é <strong>FAVORÁVEL</strong>. A força de <strong>${oduObj.orixa}</strong> atua diretamente para destravar negociações e atrair prosperidade em <em>${area}</em>.`;
+    } else {
+      direcionamento = `Para a área financeira e profissional: o momento pede <strong>PLANEJAMENTO E PRUDÊNCIA</strong>. O Odù <strong>${oduObj.nome}</strong> alerta para rever cláusulas e evitar gastos imprevistos.`;
+    }
+  } else {
+    if (tend === "SIM") {
+      direcionamento = `Respondendo diretamente à sua indagação: o veredito oracular é <strong>FAVORÁVEL (SIM)</strong>. As energias do Odù <strong>${oduObj.nome}</strong> indicam que as forças de <strong>${oduObj.orixa}</strong> estão atuando em seu benefício.`;
+    } else {
+      direcionamento = `Respondendo diretamente à sua questão: o oráculo pede <strong>ATENÇÃO E REORGANIZAÇÃO</strong>. A energia de <strong>${oduObj.nome}</strong> sugere prudência e fortalecimento espiritual antes de avançar.`;
+    }
   }
+
+  return `
+    <div style="background: #120924; padding: 14px; border-radius: 8px; border: 1px solid #332147; margin-bottom: 16px;">
+      <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">3. Interpretação Aplicada à Sua Pergunta</span>
+      <p style="font-size: 12px; color: #a1a1aa; margin: 4px 0 10px 0; font-style: italic;">"Pergunta feita: ${perguntaText}"</p>
+      
+      <div style="background: rgba(245, 158, 11, 0.05); padding: 12px; border-left: 3px solid #f59e0b; border-radius: 4px; margin-bottom: 10px;">
+        <p style="font-size: 13px; color: #fff; line-height: 1.6; margin: 0;">${direcionamento}</p>
+      </div>
+
+      <p style="font-size: 12px; color: #d4d4d8; line-height: 1.5; margin: 0;">
+        ✨ <strong>Conselho da Caída:</strong> Sob o elemento <strong>${oduObj.elemento}</strong>, sua postura em <em>${area}</em> deve focar em: <em>${oduObj.orientacoesPraticas}</em>
+      </p>
+    </div>
+  `;
 }
 
-// 🔄 Função para Auxiliar o Usuário na Próxima Pergunta (Solução UX)
+// 📧 Envio de Relatório do Histórico Completo de Consultas por E-mail
+function enviarHistoricoCompletoEmail(emailUsuario) {
+  const emailCCO = "suporte@oraculodosorixas.online";
+  
+  if (!emailUsuario) {
+    emailUsuario = prompt("Por favor, informe seu e-mail para receber o relatório completo das suas consultas:");
+    if (!emailUsuario) return;
+  }
+
+  let corpoTexto = `✨ RELATÓRIO COMPLETO DA SUA CONSULTA ORACULAR ✨\n\n`;
+  corpoTexto += `Data da Leitura: ${new Date().toLocaleDateString('pt-BR')}\n`;
+  corpoTexto += `--------------------------------------------------\n\n`;
+
+  historicoConsultas.forEach((item, index) => {
+    corpoTexto += `📌 PERGUNTA ${index + 1}: "${item.pergunta}" (Área: ${item.area})\n`;
+    corpoTexto += `🔮 Odù Revelado: ${item.oduNome} (${item.orixa})\n`;
+    corpoTexto += `📍 Resultado: ${item.tendencia}\n`;
+    corpoTexto += `💡 Conselho: ${item.resumo}\n`;
+    corpoTexto += `--------------------------------------------------\n\n`;
+  });
+
+  corpoTexto += `Que os Orixás iluminem seus caminhos com prosperidade e paz!`;
+
+  const assunto = encodeURIComponent("📜 Seu Relatório Completo do Oráculo dos Orixás");
+  const corpo = encodeURIComponent(corpoTexto);
+
+  const statusEmail = document.getElementById('status-email-envio');
+  if (statusEmail) {
+    statusEmail.innerHTML = `✅ Relatório completo enviado para <strong>${emailUsuario}</strong>! (Cópia para ${emailCCO})`;
+  }
+
+  window.open(`mailto:${emailUsuario}?cc=${emailCCO}&subject=${assunto}&body=${corpo}`);
+}
+
+// 🔄 Função para Auxiliar na Próxima Pergunta
 function prepararProximaPergunta() {
   const inputPergunta = document.getElementById('pergunta');
   if (inputPergunta) {
@@ -188,26 +259,32 @@ function prepararProximaPergunta() {
   document.getElementById('form-consulta')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// Etapa 3: Jogada de Búzios (Com Inteligência de Intenção e Proteção contra Duplicidade)
+// Rolagem Suave até a Escolha de Pacotes
+function irParaPacotes() {
+  document.getElementById('secao-pacotes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Etapa 3: Jogada de Búzios
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
 
   if (perguntasRestantes <= 0) {
     alert("Seu saldo de consultas acabou. Adquira um novo pacote para continuar!");
+    irParaPacotes();
     return;
   }
 
   const perguntaInput = document.getElementById('pergunta');
   const areaInput = document.getElementById('area-foco');
-  const emailInput = document.getElementById('email-usuario'); // Campo de e-mail
+  const emailInput = document.getElementById('email-usuario');
   
   const pergunta = perguntaInput.value.trim();
   const area = areaInput.value;
   const emailUsuario = emailInput ? emailInput.value.trim() : "";
 
-  // 🚫 ITEM 3: Trava contra Pergunta Duplicada
+  // Trava de Pergunta Duplicada
   if (pergunta.toLowerCase() === ultimaPerguntaFeita.texto.toLowerCase() && area === ultimaPerguntaFeita.area) {
-    alert("⚠️ Você já fez essa exata pergunta nesta jogada! Para não consumir seus créditos repetidamente, altere o texto ou o foco da pergunta antes de jogar novamente.");
+    alert("⚠️ Você já fez essa exata pergunta nesta jogada! Para não consumir seus créditos repetidamente, altere o texto ou o foco antes de jogar.");
     perguntaInput.focus();
     return;
   }
@@ -223,16 +300,11 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
   peneira.innerHTML = '';
   document.getElementById('resultado-leitura').style.display = 'none';
 
-  // 1. Rolagem Suave Automática
   mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  // 2. Chacoalhar
   mesa.classList.add('mesa-chacoalhando');
 
-  // Check de Intenção
   const ehPerguntaRegencia = verificarIntencaoOrixasRegentes(pergunta);
 
-  // Sorteios (Se for regência, faz 3 caídas; se normal, faz 1)
   const numAbertos1 = Math.floor(Math.random() * 16) + 1;
   const oduJogo1 = ODUS_DATABASE[numAbertos1];
 
@@ -245,7 +317,6 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     oduAncestral = ODUS_DATABASE[num3];
   }
 
-  // Renderização e Animação dos Búzios na mesa
   for (let i = 0; i < 16; i++) {
     const eAberto = i < numAbertos1;
     const buzioEl = document.createElement('div');
@@ -277,20 +348,27 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     status.innerText = "🕯️ Interpretando os sinais e alinhando as energias...";
   }, 3000);
 
-  // Exibição do Relatório
   setTimeout(() => {
-    // Deduz saldo e salva última pergunta realizada
     perguntasRestantes--;
     document.getElementById('qtd-perguntas').innerText = perguntasRestantes;
     ultimaPerguntaFeita = { texto: pergunta, area: area };
 
+    // 💾 SALVA A CONSULTA ATUAL NO HISTÓRICO GLOBAL
+    historicoConsultas.push({
+      pergunta: pergunta,
+      area: area,
+      oduNome: oduJogo1.nome,
+      orixa: oduJogo1.orixa,
+      tendencia: oduJogo1.tendenciaPadrao,
+      resumo: oduJogo1.resumoFinal
+    });
+
     const resContainer = document.getElementById('resultado-leitura');
     let htmlResultado = '';
 
-    // 🎯 RESPOSTA ESPECIALIZADA: Regência Espiritual / Orixá de Cabeça
     if (ehPerguntaRegencia) {
       htmlResultado = `
-        <div style="display: flex; justify-content: space-between; align-align: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 14px;">
           <span class="tag-gold">👑 Consulta de Regência Espiritual e Filiação</span>
           <span style="font-size: 12px; color: #a1a1aa;">Área: <strong>${area}</strong></span>
         </div>
@@ -300,160 +378,116 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
           <h3 style="color: #fff; font-size: 16px; margin-top: 4px;">✨ As energias regentes ativas no seu momento atual foram mapeadas!</h3>
         </div>
 
-        <!-- Mapeamento dos 3 Orixás -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0;">
           <div style="background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #f59e0b;">
             <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">Orixá de Frente (Cabeça / Eledá)</span>
             <h4 style="color: #fff; font-size: 18px; margin: 4px 0;">🥇 ${oduFrente.orixa}</h4>
-            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduFrente.nome}</strong>. Rege sua personalidade principal, liderança e tomadas de decisão no mundo físico.</p>
+            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduFrente.nome}</strong>. Rege sua personalidade principal e liderança no mundo físico.</p>
           </div>
 
           <div style="background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #3b82f6;">
             <span style="font-size: 11px; color: #60a5fa; font-weight: bold; text-transform: uppercase;">Orixá Adjunto (Juntó / Apoio)</span>
             <h4 style="color: #fff; font-size: 18px; margin: 4px 0;">🥈 ${oduJunto.orixa}</h4>
-            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduJunto.nome}</strong>. Atua como Pai/Mãe de apoio, equilibrando suas emoções e complementando a força da frente.</p>
+            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduJunto.nome}</strong>. Atua como Pai/Mãe de apoio, equilibrando suas emoções.</p>
           </div>
 
           <div style="background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #10b981;">
             <span style="font-size: 11px; color: #34d399; font-weight: bold; text-transform: uppercase;">Orixá Ancestral (Raiz Espiritual)</span>
             <h4 style="color: #fff; font-size: 18px; margin: 4px 0;">🌳 ${oduAncestral.orixa}</h4>
-            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduAncestral.nome}</strong>. Representa sua herança ancestral, sustentação nos momentos difíceis e sabedoria oculta.</p>
+            <p style="font-size: 12px; color: #d4d4d8;">Revelado através do Odù <strong>${oduAncestral.nome}</strong>. Representa sua herança ancestral e sustentação.</p>
           </div>
         </div>
 
-        <!-- Explicação Integrada -->
         <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
           <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 8px;">2. Síntese do Seu Alinhamento Espiritual</h4>
-          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6; margin-bottom: 8px;">
-            A combinação entre <strong>${oduFrente.orixa}</strong> na frente e <strong>${oduJunto.orixa}</strong> no apoio gera um campo vibracional de alta proteção. Enquanto ${oduFrente.orixa} impulsiona sua coragem e propósito de vida, ${oduJunto.orixa} garante a estabilidade necessária para não agir por impulso. A raiz ancestral de ${oduAncestral.orixa} oferece abrigo e intuição profunda.
+          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6;">
+            A combinação entre <strong>${oduFrente.orixa}</strong> na frente e <strong>${oduJunto.orixa}</strong> no apoio gera um campo vibracional de alta proteção. A raiz de <strong>${oduAncestral.orixa}</strong> oferece guarida nas tomadas de decisão.
           </p>
         </div>
 
-        <!-- ⚠️ NOTA DE RESPONSABILIDADE RELIGIOSA (Candomblé / Umbanda) -->
         <div style="margin: 16px 0; background: #1f1203; padding: 14px; border-radius: 8px; border: 1px solid #f59e0b;">
           <h4 style="color: #fbbf24; font-size: 13px; margin-bottom: 6px;">📜 Nota de Respeito e Tradição Ancestral</h4>
           <p style="font-size: 12px; color: #fef3c7; line-height: 1.5;">
-            Esta leitura reflete as <strong>vibrações e energias identificadas no momento presente</strong> através do oráculo digital. 
-            Na tradição sagrada do Candomblé e da Umbanda, a confirmação definitiva da regência espiritual (Ori/Eledá) exige ritos presenciais e a consulta direta no jogo de búzios conduzido por uma <strong>Ialorixá ou Babalorixá</strong> em uma casa de axé.
+            Esta leitura reflete as vibrações identificadas no momento presente pelo oráculo digital. Na tradição do Candomblé e da Umbanda, a confirmação definitiva do Ori/Eledá exige ritos presenciais conduzidos por uma <strong>Ialorixá ou Babalorixá</strong>.
           </p>
-        </div>
-
-        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #332147; text-align: center;">
-          <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">Orientações Finais</span>
-          <p style="font-size: 13.5px; color: #fff; font-weight: bold; margin-top: 4px;">Firme suas orações, honre seus ancestrais e cultive a paz interior.</p>
         </div>
       `;
     } else {
-      // 📊 RESPOSTA PADRÃO DA CONSULTA
+      const htmlInterpretacaoAnalisada = gerarInterpretacaoDinamicamente(pergunta, oduJogo1, area);
+
       htmlResultado = `
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 14px;">
-          <span class="tag-gold">🐚 Caída: ${numAbertos1} Búzios Abertos / ${16 - numAbertos1} Fechados</span>
+          <span class="tag-gold">🔮 Leitura Oracular Direta</span>
           <span style="font-size: 12px; color: #a1a1aa;">Área: <strong>${area}</strong></span>
         </div>
 
         <div style="background: #28173d; padding: 14px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 16px;">
-          <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">1. Tendência da Consulta</span>
-          <h3 style="color: #fff; font-size: 16px; margin-top: 4px;">${oduJogo1.tituloTendencia}</h3>
+          <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">1. Diagnóstico do Lançamento</span>
+          <h3 style="color: #fff; font-size: 18px; margin: 4px 0;">Odù ${oduJogo1.nome} (Nº ${oduJogo1.numero}) — Regência de ${oduJogo1.orixa}</h3>
+          <p style="font-size: 13px; color: #f59e0b; font-weight: bold; margin-top: 4px;">${oduJogo1.tituloTendencia}</p>
         </div>
 
-        <div class="favorability-container">
-          <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #fbbf24;">
-            <span>Favorabilidade da Consulta</span>
-            <span>${oduJogo1.favorabilidade}%</span>
-          </div>
-          <div class="favorability-bar-bg">
-            <div class="favorability-bar-fill" style="width: ${oduJogo1.favorabilidade}%;"></div>
-          </div>
+        <div style="background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147; margin-bottom: 16px;">
+          <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">2. Caminho e Influência Espiritual</h4>
+          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.5; margin-bottom: 8px;">${oduJogo1.caminho}</p>
+          <p style="font-size: 12px; color: #a1a1aa; line-height: 1.4;"><em>" Sabedoria Ancestral: ${oduJogo1.sabedoriaAncestral} "</em></p>
         </div>
 
-        <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
-          <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 8px;">2. O Que os Búzios Revelam (Odù ${oduJogo1.nome})</h4>
-          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6; margin-bottom: 8px;">${oduJogo1.caminho}</p>
-          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6;">
-            A queda traz a regência de <strong>${oduJogo1.orixa}</strong> (Elemento: <strong>${oduJogo1.elemento}</strong>).
-          </p>
-        </div>
+        ${htmlInterpretacaoAnalisada}
 
-        <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #f59e0b;">
-          <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">3. Interpretação Aplicada à Sua Pergunta</h4>
-          <p style="font-size: 12px; color: #a1a1aa; font-style: italic; margin-bottom: 8px;">" Pergunta: ${pergunta} "</p>
-          <p style="font-size: 13.5px; color: #fff; line-height: 1.6;">
-            Sobre <strong>${area.toLowerCase()}</strong>, a energia de ${oduJogo1.nome} indica que ${oduJogo1.favorabilidade > 60 ? 'existem caminhos abertos e suporte favorável para você' : 'há divergências ou bloqueios que necessitam de atenção e paciência'}.
-          </p>
-        </div>
-
-        <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
-          <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">4. Influências Espirituais Associadas</h4>
-          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.5;">${oduJogo1.influenciaEspiritual}</p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0;">
-          <div style="background: #150a24; padding: 12px; border-radius: 8px; border: 1px solid #332147;">
-            <h4 style="color: #34d399; font-size: 13px; margin-bottom: 6px;">5. ✨ Fatores Favoráveis</h4>
-            <ul style="font-size: 12px; color: #a1a1aa; padding-left: 16px;">
-              ${oduJogo1.fatoresFavoraveis.map(f => `<li style="margin-bottom: 4px;">${f}</li>`).join('')}
-            </ul>
-          </div>
-          <div style="background: #150a24; padding: 12px; border-radius: 8px; border: 1px solid #332147;">
-            <h4 style="color: #f87171; font-size: 13px; margin-bottom: 6px;">6. ⚠️ Pontos de Atenção</h4>
-            <ul style="font-size: 12px; color: #a1a1aa; padding-left: 16px;">
-              ${oduJogo1.pontosAtencao.map(p => `<li style="margin-bottom: 4px;">${p}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-
-        <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
-          <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">7. 💡 Orientações Práticas</h4>
-          <p style="font-size: 13px; color: #d4d4d8; line-height: 1.5;">${oduJogo1.orientacoesPraticas}</p>
-        </div>
-
-        <div style="margin: 16px 0; padding: 12px; background: #28173d; border-radius: 8px; font-style: italic; text-align: center; color: #fde68a; font-size: 13px;">
-          "8. ${oduJogo1.sabedoriaAncestral}"
-        </div>
-
-        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #332147; text-align: center;">
-          <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">9. Resumo Final</span>
-          <p style="font-size: 13.5px; color: #fff; font-weight: bold; margin-top: 4px;">${oduJogo1.resumoFinal}</p>
+        <div style="background: #170d24; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #332147; margin-bottom: 16px;">
+          <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">9. RESUMO FINAL</span>
+          <p style="font-size: 14px; color: #fff; font-weight: bold; margin-top: 6px;">${oduJogo1.resumoFinal}</p>
         </div>
       `;
     }
 
-    // 📩 ITEM 1: Bloco de Confirmação de E-mail
-    const resumoEmailTxt = ehPerguntaRegencia 
-      ? `Regência Identificada: Frente (${oduFrente.orixa}), Juntó (${oduJunto.orixa}), Ancestral (${oduAncestral.orixa}).`
-      : `Odù: ${oduJogo1.nome} | Tendência: ${oduJogo1.tituloTendencia}`;
+    // 📩 PAINEL FINAL DE AÇÕES (COM BASE NO SALDO RESTANTE)
+    htmlResultado += `
+      <div style="margin-top: 20px; padding: 16px; background: #0c0617; border-radius: 8px; border: 1px solid #f59e0b; text-align: center;">
+        
+        <div id="status-email-envio" style="margin-bottom: 12px; font-size: 12px; color: #34d399;"></div>
 
-    if (emailUsuario) {
-      enviarResumoEmail(emailUsuario, pergunta, resumoEmailTxt);
-    }
-
-    // 💡 ITEM 2: Card Guiado para a Próxima Pergunta (Para facilitar navegação)
-    const cardProximaPergunta = `
-      <div id="status-email-envio" style="margin-top: 12px; font-size: 12px; color: #34d399; text-align: center;"></div>
-      
-      <div style="margin-top: 24px; padding: 16px; background: linear-gradient(135deg, #28173d, #150a24); border: 2px solid #f59e0b; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-        <p style="color: #fbbf24; font-size: 14px; font-weight: bold; margin-bottom: 4px;">
-          ✨ Você ainda tem <span style="font-size: 18px; color: #fff; font-weight: 900;">${perguntasRestantes}</span> ${perguntasRestantes === 1 ? 'pergunta restante' : 'perguntas restantes'}!
-        </p>
-        <p style="color: #d4d4d8; font-size: 13px; margin-bottom: 12px;">
-          ${perguntasRestantes > 0 ? 'Deseja esclarecer outro assunto ou fazer uma nova pergunta ao oráculo?' : 'Suas perguntas deste pacote se encerraram.'}
-        </p>
         ${perguntasRestantes > 0 ? `
-          <button onclick="prepararProximaPergunta()" class="btn-primary" style="background: #f59e0b; color: #000; font-weight: bold; font-size: 14px; padding: 12px 20px; border-radius: 8px; cursor: pointer;">
-            💬 Clique aqui para fazer sua próxima pergunta
-          </button>
+          <p style="color: #fbbf24; font-size: 14px; font-weight: bold; margin-bottom: 12px;">
+            ✨ Você ainda tem <strong>${perguntasRestantes}</strong> pergunta(s) restante(s)!
+          </p>
+
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="prepararProximaPergunta()" class="btn-primary" style="background: #f59e0b; color: #000; font-weight: bold; padding: 10px 20px;">
+              💬 Fazer Sua Próxima Pergunta
+            </button>
+            <button onclick="enviarHistoricoCompletoEmail('${emailUsuario}')" class="btn-secondary" style="font-size: 12px; padding: 10px 16px; background: #1f1233; color: #e4e4e7; border: 1px solid #332147;">
+              📧 Receber Resumo Atual por E-mail
+            </button>
+          </div>
         ` : `
-          <button onclick="document.getElementById('secao-pacotes').scrollIntoView({behavior: 'smooth'})" class="btn-primary" style="background: #059669; color: #fff; font-size: 14px; padding: 12px 20px; border-radius: 8px; cursor: pointer;">
-            🛒 Adquirir Novo Pacote de Perguntas
-          </button>
+          <p style="color: #fbbf24; font-size: 15px; font-weight: bold; margin-bottom: 6px;">
+            ✨ Você utilizou todas as ${pacoteAtivo.qtd} perguntas do seu pacote!
+          </p>
+          <p style="color: #a1a1aa; font-size: 12px; margin-bottom: 16px;">
+            Suas perguntas deste pacote se encerraram. Guarde suas respostas ou adquira uma nova consulta para tirar mais dúvidas.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <!-- BOTÃO 1: RECEBER COMPLETO POR E-MAIL -->
+            <button onclick="enviarHistoricoCompletoEmail('${emailUsuario}')" class="btn-secondary" style="width: 100%; max-width: 380px; padding: 12px; background: #25143a; color: #fbbf24; border: 1px solid #f59e0b; font-weight: bold; cursor: pointer; border-radius: 6px;">
+              📬 Receber Relatório Completo por E-mail (Todas as ${pacoteAtivo.qtd} Consultas)
+            </button>
+
+            <!-- BOTÃO 2: NOVO PACOTE -->
+            <button onclick="irParaPacotes()" class="btn-primary" style="width: 100%; max-width: 380px; padding: 12px; background: #059669; color: #fff; font-weight: bold; cursor: pointer; border-radius: 6px;">
+              🛒 Adquirir Novo Pacote de Perguntas
+            </button>
+          </div>
         `}
       </div>
     `;
 
-    resContainer.innerHTML = htmlResultado + cardProximaPergunta;
+    resContainer.innerHTML = htmlResultado;
     resContainer.style.display = 'block';
-    resContainer.scrollIntoView({ behavior: 'smooth' });
+    resContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     btn.disabled = false;
-    status.innerText = "Leitura concluída com sucesso!";
   }, 4500);
 });
