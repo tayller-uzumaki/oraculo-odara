@@ -1,23 +1,38 @@
 /* ==========================================
-   ORÁCULO ODARA - DESIGN MÍSTICO & ACOLHEDOR
+   ORÁCULO ODARA - DESIGN PREMIUM & MÍSTICO
    ========================================== */
 
-/* 1. CONFIGURAÇÕES GERAIS E PALETA DE CORES */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
+/* 1. VARIÁVEIS DE CORES & PALETA PURPLE/GOLD */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
 
 :root {
-  --bg-gradient: linear-gradient(135deg, #1f1113 0%, #2a1619 50%, #170d0f 100%);
-  --card-bg: rgba(45, 26, 30, 0.7);
-  --card-border: rgba(212, 175, 55, 0.25);
+  /* Fundo Principal - Roxo Profundo */
+  --bg-gradient: linear-gradient(135deg, #120A1F 0%, #1A1028 50%, #1F1433 100%);
+  
+  /* Cards e Elementos - Roxo Elegante com Transparência */
+  --card-bg: rgba(36, 21, 61, 0.75);
+  --card-bg-inner: rgba(26, 16, 40, 0.6);
+  --card-border: rgba(212, 175, 55, 0.2);
+  --card-border-active: rgba(168, 85, 247, 0.5);
+
+  /* Acentos - Dourado Suave & Lilás Sofisticado */
   --gold-accent: #D4AF37;
   --gold-light: #F3E5AB;
-  --text-main: #F4EBE1;
-  --text-muted: #C5B2A1;
-  --terracota: #8B3524;
-  --terracota-hover: #A6422E;
+  --purple-glow: #8B5CF6;
+  --purple-accent: #A855F7;
+  
+  /* Gradiente dos Botões */
+  --btn-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+  --btn-gradient-hover: linear-gradient(135deg, #6D28D9 0%, #9333EA 100%);
+
+  /* Textos Legíveis */
+  --text-main: #F8F5F0;
+  --text-muted: #C9C4D6;
+
+  /* Geometria e Sombras */
   --radius-lg: 16px;
   --radius-md: 10px;
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-premium: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.08);
 }
 
 * {
@@ -32,73 +47,98 @@ body {
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', sans-serif;
   line-height: 1.6;
-  padding: 20px 15px;
+  padding: 30px 15px;
   min-height: 100vh;
 }
 
-/* Container Principal para centralizar o conteúdo com elegância */
-.main-container, body > div, main {
-  max-width: 800px;
+.main-container {
+  max-width: 820px;
   margin: 0 auto;
 }
 
-/* 2. TIPOGRAFIA & CABEÇALHOS */
+/* 2. CABEÇALHOS E HIERARQUIA TIPOGRÁFICA */
 h1, h2, h3, h4 {
   font-family: 'Cinzel', serif;
-  color: var(--gold-light);
+  color: var(--gold-accent);
   letter-spacing: 0.5px;
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 5px;
-  text-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+  margin-bottom: 6px;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
 }
 
-body > p, .subtitle {
+.header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+
+.subtitle {
   text-align: center;
   color: var(--text-muted);
   font-size: 0.95rem;
-  margin-bottom: 30px;
+  font-weight: 400;
 }
 
 h2 {
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--gold-accent);
 }
 
-/* 3. CARDS E BLOCOS DE CONTEÚDO (Mesa Acolhedora) */
-.card, fieldset, section, form, #resultado-odu, .card-resultado-dark {
+/* 3. CARDS E PAINÉIS PREMIUM */
+.card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-soft);
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-premium);
+  transition: border-color 0.3s ease;
 }
 
-/* 4. FORMULÁRIOS E INPUTS */
+.card:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+/* 4. FORMULÁRIOS E INPUTS REFINADOS */
 label {
   display: block;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   margin-bottom: 6px;
-  margin-top: 12px;
+  font-weight: 500;
 }
 
-input[type="text"], input[type="date"], select, textarea {
+input[type="text"], 
+input[type="date"], 
+input[type="email"], 
+select, 
+textarea {
   width: 100%;
-  padding: 12px 16px;
-  background: rgba(15, 8, 10, 0.6);
+  padding: 13px 16px;
+  background: rgba(18, 10, 31, 0.7);
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: var(--radius-md);
-  color: #FFF;
+  color: var(--text-main);
   font-size: 0.95rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -106,79 +146,111 @@ input[type="text"], input[type="date"], select, textarea {
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: var(--gold-accent);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  border-color: var(--purple-accent);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+  background: rgba(18, 10, 31, 0.9);
 }
 
-/* 5. BOTÕES BEM ACABADOS */
+textarea {
+  resize: vertical;
+}
+
+/* 5. BOTÕES ROXO -> LILÁS COM EFEITO PREMIUM */
 button, .btn-primary {
-  background: linear-gradient(135deg, var(--terracota) 0%, #6e2719 100%);
-  color: #FFF;
-  border: 1px solid var(--gold-accent);
-  padding: 14px 24px;
+  background: var(--btn-gradient);
+  color: #FFFFFF;
+  border: none;
+  padding: 14px 28px;
   border-radius: 30px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
 }
 
 button:hover, .btn-primary:hover {
-  background: linear-gradient(135deg, var(--terracota-hover) 0%, var(--terracota) 100%);
+  background: var(--btn-gradient-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.5);
 }
 
-/* 6. LISTAS E DETALHES */
-ul {
+button:active, .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 6. LISTAS E BENEFÍCIOS */
+.premium-benefits {
+  background: var(--card-bg-inner);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.premium-benefits ul {
   list-style: none;
   padding: 0;
-  margin: 15px 0;
+  margin-top: 10px;
 }
 
-li {
+.premium-benefits li {
   padding: 8px 0;
   color: var(--text-main);
-  font-size: 0.92rem;
-  border-bottom: 1px dashed rgba(212, 175, 55, 0.15);
+  font-size: 0.9rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
 }
 
-li:last-child {
+.premium-benefits li:last-child {
   border-bottom: none;
 }
 
-/* 7. PACOTES E VALORES */
-.pacote-card {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+/* 7. CARDS DE PACOTES DE CONSULTA */
+.pacote-card, .package-card {
+  background: var(--card-bg-inner);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 12px;
+  padding: 20px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
-.pacote-card.active, .pacote-card:hover {
-  border-color: var(--gold-accent);
-  background: rgba(212, 175, 55, 0.08);
+.pacote-card.active, .package-card.active,
+.pacote-card:hover, .package-card:hover {
+  border-color: var(--purple-accent);
+  background: rgba(42, 25, 70, 0.85);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
 }
 
-/* 8. MESA DE BÚZIOS E PENEIRA (TAMANHO CORRIGIDO) */
+.badge-pop {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  background: var(--btn-gradient);
+  color: #FFF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 8. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
 #mesa-buzios {
   position: relative;
   width: 100%;
-  max-width: 420px;
-  height: 320px;
-  margin: 20px auto;
-  background: radial-gradient(circle, #3d2318 0%, #1d0f0b 100%);
-  border: 6px solid #8B5A2B;
+  max-width: 380px;
+  height: 300px;
+  margin: 25px auto;
+  background: radial-gradient(circle, #2A1642 0%, #120A20 100%);
+  border: 2px solid var(--gold-accent);
   border-radius: 50%;
-  box-shadow: inset 0 0 30px #000, 0 10px 25px rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
   overflow: hidden;
 }
 
@@ -198,15 +270,14 @@ li:last-child {
 .buzio-item svg {
   width: 100% !important;
   height: 100% !important;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.6));
+  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.7));
 }
 
-/* 9. ANIMAÇÃO DE CHACOALHAR A MESA */
 @keyframes chacoalhar {
   0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-4px, 4px) rotate(-1deg); }
-  50% { transform: translate(4px, -4px) rotate(1deg); }
-  75% { transform: translate(-3px, -2px) rotate(-0.5deg); }
+  25% { transform: translate(-3px, 3px) rotate(-1deg); }
+  50% { transform: translate(3px, -3px) rotate(1deg); }
+  75% { transform: translate(-2px, -1px) rotate(-0.5deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
@@ -214,18 +285,27 @@ li:last-child {
   animation: chacoalhar 0.15s infinite;
 }
 
-/* 10. BLOCOS INTERNOS E ALERTAS */
+/* 9. CARDS DE RESULTADOS E DESTAQUES */
+.card-resultado-dark {
+  background: rgba(30, 18, 52, 0.95) !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  color: var(--text-main) !important;
+}
+
 .box-destaque-dark {
-  background: rgba(0, 0, 0, 0.3) !important;
+  background: rgba(18, 10, 31, 0.6) !important;
   border-left: 3px solid var(--gold-accent) !important;
-  padding: 14px;
+  padding: 16px;
   border-radius: 6px;
-  margin: 12px 0;
+  margin: 14px 0;
+  color: var(--text-main) !important;
 }
 
 .box-alerta-seguranca {
-  background: rgba(45, 15, 20, 0.9) !important;
-  border: 1px solid #E53E3E !important;
+  background: rgba(45, 15, 25, 0.9) !important;
+  border: 1px solid #EF4444 !important;
   border-radius: var(--radius-lg);
   padding: 24px;
 }
