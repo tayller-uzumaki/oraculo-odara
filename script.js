@@ -1,12 +1,11 @@
 /* ==========================================
-   ORÁCULO ODARA - LÓGICA E RITUAL DOS BÚZIOS
+   ORÁCULO ODARA - LÓGICA, RITUAL & SEGURANÇA
    ========================================== */
 
-// Estado global simples
 let consultasRestantes = 0;
 let pacoteSelecionado = { quantidade: 5, valor: 25.99 };
 
-// 1. MAPEAMENTO DOS ODÙS PELOS BÚZIOS ABERTOS (0 a 16)
+// MAPEAMENTO DOS ODÙS
 const ODUS_MAP = {
   0: { nome: "Opira", orixa: "Obaluaiê / Omolu", elemento: "Terra", caminho: "Momento de recolhimento, cautela e preservação. Evite decisões precipitadas." },
   1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "Caminhos de transformação rápida, dinamismo e necessidade de clareza." },
@@ -24,10 +23,10 @@ const ODUS_MAP = {
   13: { nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra", caminho: "Transformação espiritual e encerramento de ciclos velhos." },
   14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "Renovação contínua, sabedoria estratégica e flexibilidade." },
   15: { nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar", caminho: "Conquistas pela perspicácia, proteção e intuição refinada." },
-  16: { Alafia: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "Luz total, confirmação plena, paz e bênção máxima dos caminhos." }
+  16: { nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "Luz total, confirmação plena, paz e bênção máxima dos caminhos." }
 };
 
-// 2. CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO
+// CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
   const nome = document.getElementById('nome').value;
@@ -35,12 +34,10 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
   if (!data) return;
 
-  // Soma dos dígitos da data de nascimento
   const numeros = data.replace(/-/g, '');
   let soma = 0;
   for (let char of numeros) soma += parseInt(char);
 
-  // Redução oracular para o intervalo 1-16
   let numOdu = soma;
   while (numOdu > 16) {
     let str = numOdu.toString();
@@ -51,7 +48,6 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
   const infoOdu = ODUS_MAP[numOdu] || ODUS_MAP[16];
 
-  // Exibição dos resultados
   document.getElementById('odu-numero').textContent = numOdu;
   document.getElementById('odu-nome').textContent = infoOdu.nome;
   document.getElementById('odu-orixa').textContent = infoOdu.orixa;
@@ -64,11 +60,10 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   painelOdu.scrollIntoView({ behavior: 'smooth' });
 });
 
-// 3. SELEÇÃO DE PACOTES E PAGAMENTO
+// PACOTES E PAGAMENTO
 function selecionarPacote(qtd, valor) {
   pacoteSelecionado = { quantidade: qtd, valor: valor };
   document.querySelectorAll('.pacote-card, .package-card').forEach(card => card.classList.remove('active'));
-  
   const el = document.getElementById(`pacote-${qtd}`);
   if (el) el.classList.add('active');
 }
@@ -76,15 +71,24 @@ function selecionarPacote(qtd, valor) {
 function gerarPix() {
   consultasRestantes += pacoteSelecionado.quantidade;
   document.getElementById('qtd-perguntas').textContent = consultasRestantes;
-  
   alert(`✨ Pagamento simulado com sucesso!\n\nForam adicionadas ${pacoteSelecionado.quantidade} consultas ao seu saldo.`);
-  
   const secaoJogada = document.getElementById('secao-jogada');
   secaoJogada.style.display = 'block';
   secaoJogada.scrollIntoView({ behavior: 'smooth' });
 }
 
-// 4. RITUAL DA JOGADA DOS BÚZIOS (COM CHACOALHO, SUSPENSE E QUEDA)
+// 🛑 TRAVA DE SEGURANÇA E DETECÇÃO DE RISCO
+function verificarGatilhoSeguranca(texto) {
+  const termosRisco = [
+    'morrer', 'suicidio', 'suicídio', 'me matar', 'querer morrer', 
+    'tirar minha vida', 'fim da minha vida', 'nao quero mais viver', 
+    'não quero mais viver', 'acabar com tudo', 'auto exterminio', 'se matar'
+  ];
+  const textoLower = texto.toLowerCase();
+  return termosRisco.some(termo => textoLower.includes(termo));
+}
+
+// RITUAL DA JOGADA DOS BÚZIOS
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -96,22 +100,44 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
 
   const pergunta = document.getElementById('pergunta').value;
   const area = document.getElementById('area-foco').value;
+  const painelResultado = document.getElementById('resultado-leitura');
 
-  // Preparar elementos da mesa
+  // 1. CHECAGEM IMEDIATA DE SEGURANÇA (INTERCEPTA ANTES DE CONSUMIR O JOGO OU EXIBIR O ODÙ)
+  if (verificarGatilhoSeguranca(pergunta)) {
+    painelResultado.className = "card box-alerta-seguranca";
+    painelResultado.innerHTML = `
+      <div style="text-align: center;">
+        <h3 style="color: #F87171; font-size: 1.3rem; margin-bottom: 12px;">💛 Você Não Está Sozinho(a)</h3>
+        <p style="color: #F8F5F0; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.6;">
+          Percebemos que você está passando por um momento de dor ou exaustão profunda. O Oráculo Odara preza antes de tudo pela sua vida e pelo seu bem-estar.
+        </p>
+        <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); margin-bottom: 16px; text-align: left;">
+          <p style="color: #FCA5A5; font-weight: bold; margin-bottom: 6px;">Procure apoio profissional e acolhimento gratuito agora mesmo:</p>
+          <ul style="color: #F8F5F0; font-size: 0.9rem; list-style: none; padding: 0;">
+            <li style="margin-bottom: 6px;">📞 <strong>CVV (Centro de Valorização da Vida):</strong> Ligue <strong>188</strong> (Gratuito, 24 horas per dia, sigiloso).</li>
+            <li>💬 <strong>Chat Online:</strong> Acesse <a href="https://www.cvv.org.br" target="_blank" style="color: #60A5FA; text-decoration: underline;">www.cvv.org.br</a> para conversar com um voluntário.</li>
+          </ul>
+        </div>
+        <p style="color: #C9C4D6; font-size: 0.88rem;">Sua vida tem um valor inestimável para o mundo e para as forças que regem a existência. Por favor, busque ajuda humana e acolhedora neste momento.</p>
+      </div>
+    `;
+    painelResultado.style.display = 'block';
+    painelResultado.scrollIntoView({ behavior: 'smooth' });
+    return; // Interrompe a execução para não rodar a jogada de búzios
+  }
+
+  // 2. CASO SEJA UMA PERGUNTA REGULAR: EXECUTA O RITUAL
   const mesa = document.getElementById('mesa-buzios');
   const peneira = document.getElementById('peneira');
-  const painelResultado = document.getElementById('resultado-leitura');
   const btnJogar = document.getElementById('btn-jogar');
 
   btnJogar.disabled = true;
   painelResultado.style.display = 'none';
   peneira.innerHTML = '';
   mesa.style.display = 'block';
-  
-  // RITUAL - FASE 1: Chacoalhar a mesa com mensagens de suspense
+
   mesa.classList.add('mesa-chacoalhando');
-  
-  // Criar div de status do suspense caso não exista
+
   let statusTexto = document.getElementById('status-jogo');
   if (!statusTexto) {
     statusTexto = document.createElement('p');
@@ -130,24 +156,19 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     statusTexto.textContent = "🍃 Lançando os 16 búzios sagrados sobre a mesa...";
   }, 2400);
 
-  // RITUAL - FASE 2: Parada do chacoalho e sorteio da queda
   setTimeout(() => {
     mesa.classList.remove('mesa-chacoalhando');
     statusTexto.textContent = "";
 
-    // Sorteio oracular: quantidade de búzios abertos (0 a 16)
     const buziosAbertos = Math.floor(Math.random() * 17);
     const buziosFechados = 16 - buziosAbertos;
     const oduSorteado = ODUS_MAP[buziosAbertos] || ODUS_MAP[16];
 
-    // Desenhar os 16 búzios com posições e rotações randômicas
     for (let i = 0; i < 16; i++) {
       const buzio = document.createElement('div');
       buzio.className = 'buzio-item';
-      
       const isOpen = i < buziosAbertos;
-      
-      // SVG estilizado para os Búzios (Aberto x Fechado)
+
       buzio.innerHTML = isOpen ? `
         <svg viewBox="0 0 40 60">
           <ellipse cx="20" cy="30" rx="16" ry="26" fill="#F8F5F0" stroke="#D4AF37" stroke-width="2"/>
@@ -161,7 +182,6 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
         </svg>
       `;
 
-      // Posicionamento harmônico dentro do círculo da mesa
       const angle = Math.random() * Math.PI * 2;
       const radius = Math.random() * 110; 
       const x = 160 + radius * Math.cos(angle);
@@ -175,16 +195,13 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
 
       peneira.appendChild(buzio);
 
-      // Animação de entrada cascata dos búzios
       setTimeout(() => {
         buzio.style.opacity = '1';
         buzio.style.transform = `rotate(${rot}deg) scale(1)`;
       }, i * 40);
     }
 
-    // RITUAL - FASE 3: Revelação do Veredito Completo após a queda
     setTimeout(() => {
-      // Consumir 1 consulta do saldo
       consultasRestantes--;
       document.getElementById('qtd-perguntas').textContent = consultasRestantes;
 
