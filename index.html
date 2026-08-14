@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oráculo Odara — Búzios Digital & IA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="badge">✨ Oráculo Sagrado dos Orixás & Odùs</div>
+      <h1>ORÁCULO ODARA</h1>
+      <p>Conecte-se com a sabedoria ancestral através da leitura dos Odùs e a magia dos búzios.</p>
+    </header>
+
+    <main class="main-content">
+      <!-- ETAPA 1: ODÙ DIRETOR -->
+      <section class="card">
+        <h2>🧭 Etapa 1: Descubra seu Odù Diretor</h2>
+        <p class="subtitle">Insira seus dados para calcular seu regente de vida gratuitamente.</p>
+
+        <form id="form-odu" class="grid-form">
+          <div class="input-group">
+            <label for="nome">Seu Nome Completo</label>
+            <input type="text" id="nome" placeholder="Ex: Bernardo Silva" required>
+          </div>
+          <div class="input-group">
+            <label for="dataNasc">Data de Nascimento</label>
+            <input type="date" id="dataNasc" required>
+          </div>
+          <button type="submit" class="btn-primary" id="btn-calc-odu">Calcular Odù Diretor</button>
+        </form>
+
+        <div id="resultado-odu" class="result-box" style="display: none;">
+          <div class="result-header">
+            <div>
+              <span class="tag-gold">Seu Regente Ancestral</span>
+              <h3>Odù #<span id="odu-numero"></span> — <span id="odu-nome"></span></h3>
+            </div>
+            <span class="badge-success">✓ Odù Mapeado</span>
+          </div>
+
+          <div class="tags-container">
+            <span class="tag-purple">Orixá: <strong id="odu-orixa"></strong></span>
+            <span class="tag-purple">Elemento: <strong id="odu-elemento"></strong></span>
+          </div>
+
+          <div class="path-details">
+            <h4>📜 O Caminho do seu Odù:</h4>
+            <p id="odu-caminho"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ETAPA 2: PACOTES PIX -->
+      <section class="card">
+        <h2>💳 Etapa 2: Escolha seu Pacote de Consulta</h2>
+        <p class="subtitle">Liberado instantaneamente via PIX.</p>
+
+        <div class="packages-grid">
+          <div class="package-card active" id="pacote-5" onclick="selecionarPacote(5, 25.99)">
+            <h3>Pacote Essencial</h3>
+            <p>5 Perguntas ao Oráculo</p>
+            <span class="price">R$ 25,99</span>
+          </div>
+          <div class="package-card" id="pacote-10" onclick="selecionarPacote(10, 39.99)">
+            <h3>Pacote Completo</h3>
+            <p>10 Perguntas ao Oráculo</p>
+            <span class="price">R$ 39,99</span>
+          </div>
+        </div>
+
+        <div id="area-pix">
+          <button class="btn-primary" onclick="gerarPix()">Gerar Pagamento PIX</button>
+        </div>
+      </section>
+
+      <!-- ETAPA 3: MESA SAGRADA DE BÚZIOS -->
+      <section class="card" id="secao-jogada" style="display: none;">
+        <h2>🔮 Consultar a Mesa Sagrada</h2>
+        <p class="subtitle">Perguntas restantes: <strong id="qtd-perguntas" style="color: #fbbf24;">0</strong></p>
+
+        <form id="form-consulta">
+          <div class="input-group">
+            <label for="area-foco">Área de Foco</label>
+            <select id="area-foco">
+              <option>Trabalho & Finanças</option>
+              <option>Amor & Relacionamentos</option>
+              <option>Saúde & Equilíbrio</option>
+              <option>Caminhos Espirituais</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="pergunta">Sua Pergunta Direta ao Oráculo</label>
+            <textarea id="pergunta" rows="3" placeholder="Digite sua dúvida com clareza..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-gold" id="btn-jogar">Lançar Búzios na Mesa</button>
+        </form>
+
+        <!-- Mesa / Peneira Visual dos Búzios -->
+        <div id="mesa-buzios" class="mesa-container" style="display: none;">
+          <div class="peneira" id="peneira">
+            <!-- Búzios serão inseridos dinamicamente aqui -->
+          </div>
+          <p id="status-jogo" class="status-texto"></p>
+        </div>
+
+        <!-- Veredito / Leitura Completa -->
+        <div id="resultado-leitura" class="result-box glow-gold" style="display: none;">
+          <!-- Resultado renderizado via JavaScript -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
