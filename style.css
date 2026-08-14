@@ -1,392 +1,76 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* =========================================
+   NOVA IDENTIDADE VISUAL (Baseada no Site Oficial)
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --bg-principal: #F7F5F0; /* Fundo bege claro do site */
+  --bg-card: #FFFFFF; /* Fundo branco para os quadros/formulários */
+  --cor-texto-principal: #2C2622; /* Texto escuro/marrom bem escuro */
+  --cor-texto-secundario: #5E5853; /* Texto de apoio */
+  
+  --cor-destaque-primaria: #8B3524; /* O Terracota/Vermelho do botão "Saiba Mais" */
+  --cor-destaque-hover: #6D291C;
+  
+  --borda-suave: #E2DBD1; /* Bordas dos quadros */
+  --ouro-suave: #B5935A; /* Para ícones ou pequenos destaques */
 }
 
 body {
-  background-color: #0b0612;
-  color: #f3f4f6;
-  padding: 20px;
-  min-height: 100vh;
+  background-color: var(--bg-principal);
+  color: var(--cor-texto-principal);
+  font-family: 'Inter', sans-serif;
 }
 
-.container {
-  max-width: 850px;
-  margin: 0 auto;
+/* Títulos elegantes como no site oficial */
+h1, h2, h3, h4, .titulo-principal {
+  font-family: 'Playfair Display', serif;
+  color: var(--cor-texto-principal);
+  font-weight: 600;
 }
 
-.header {
-  text-align: center;
-  padding: 24px 10px;
-  border-bottom: 1px solid #332147;
-  margin-bottom: 24px;
+/* Estilo das caixas e formulários (antes roxo/preto, agora brancos) */
+.card, .secao-formulario, .pacote-card, #resultado-leitura {
+  background-color: var(--bg-card);
+  border: 1px solid var(--borda-suave);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  color: var(--cor-texto-principal);
 }
 
-.badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 20px;
-  background-color: #28173d;
-  color: #fbbf24;
-  font-size: 13px;
-  font-weight: bold;
+/* Ajuste dos inputs (campos de digitar) */
+input, select, textarea {
+  background-color: #FDFDFD;
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--borda-suave);
+  border-radius: 6px;
+}
+input:focus, select:focus {
+  border-color: var(--cor-destaque-primaria);
+  outline: none;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #fbbf24;
-  margin: 12px 0 6px 0;
-  letter-spacing: 2px;
-}
-
-.card {
-  background-color: #150a24;
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #332147;
-  margin-bottom: 24px;
-}
-
-.subtitle-desc {
-  font-size: 14px;
-  color: #d4d4d8;
-  line-height: 1.5;
-  margin: 8px 0 16px 0;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: #a1a1aa;
-  margin-top: 4px;
-  margin-bottom: 16px;
-}
-
-.grid-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  color: #d4d4d8;
-  margin-bottom: 6px;
-}
-
-.input-group input, .input-group select, .input-group textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: #0b0612;
-  border: 1px solid #332147;
-  color: #fff;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  border-radius: 8px;
-  background-color: #f59e0b;
-  color: #000;
-  font-weight: bold;
+/* BOTÕES IGUAIS AO DO SITE OFICIAL (Arredondados e Terracota) */
+.btn-primary, button {
+  background-color: var(--cor-destaque-primaria);
+  color: #FFFFFF;
   border: none;
-  cursor: pointer;
-  font-size: 15px;
+  border-radius: 30px; /* Formato de pílula igual ao "Saiba Mais" e "Agendar Consulta" */
+  padding: 12px 24px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #d97706;
-}
-
-.btn-gold {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
-}
-
-/* Transição de Odù */
-.banner-transicao {
-  margin-top: 16px;
-  padding: 14px;
-  background: #28173d;
-  border-left: 4px solid #fbbf24;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #fde68a;
-  line-height: 1.5;
-}
-
-/* Guia de Como Consultar */
-.guide-box {
-  background-color: #0b0612;
-  border: 1px dashed #f59e0b;
-  padding: 14px;
-  border-radius: 8px;
-  margin-bottom: 18px;
-}
-
-.guide-box h4 {
-  color: #fbbf24;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.guide-box ol {
-  padding-left: 18px;
-  color: #a1a1aa;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-/* Benefícios Premium */
-.premium-benefits {
-  background: #0b0612;
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid #332147;
-  margin-bottom: 16px;
-}
-
-.premium-benefits h4 {
-  color: #fbbf24;
-  font-size: 13px;
-  margin-bottom: 6px;
-}
-
-.premium-benefits ul {
-  list-style: none;
-  font-size: 12px;
-  color: #d4d4d8;
-  line-height: 1.6;
-}
-
-.packages-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.package-card {
   cursor: pointer;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #332147;
-  background-color: #0b0612;
-  position: relative;
-  transition: all 0.3s ease;
 }
 
-.package-card.active {
-  border: 2px solid #f59e0b;
-  background-color: #28173d;
+.btn-primary:hover, button:hover {
+  background-color: var(--cor-destaque-hover);
+  transform: translateY(-2px);
 }
 
-.badge-pop {
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  background-color: #10b981;
-  color: #fff;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-.price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #fbbf24;
-}
-
-/* Indicador de Favorabilidade */
-.favorability-container {
-  margin: 14px 0;
-}
-
-.favorability-bar-bg {
-  width: 100%;
-  height: 12px;
-  background-color: #0b0612;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #332147;
-  margin-top: 4px;
-}
-
-.favorability-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #10b981);
-  transition: width 1s ease-in-out;
-}
-
-/* Mesa Mística e Búzios */
-.mesa-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.peneira {
-  width: 320px;
-  height: 320px;
-  margin: 0 auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, #2d1645 0%, #0d0417 100%);
-  border: 4px solid #f59e0b;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
-}
-
-.buzio {
-  width: 34px;
-  height: 46px;
-  position: absolute;
-  transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.7));
-}
-
-.loading-container {
-  margin-top: 14px;
-}
-
-.status-texto {
-  font-size: 14px;
-  color: #fbbf24;
-  font-style: italic;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-.result-box {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #1c0f30;
-  border: 1px solid #f59e0b;
-  border-radius: 12px;
-}
-
-.glow-gold {
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
-}
-
-.result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.tag-gold {
-  font-size: 11px;
-  font-weight: bold;
-  color: #fbbf24;
-  text-transform: uppercase;
-}
-
-.badge-success {
-  color: #34d399;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.tags-container {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.tag-purple {
-  padding: 4px 12px;
-  background-color: #28173d;
-  border-radius: 20px;
-  font-size: 12px;
-  color: #fde68a;
-}
-
-.path-details {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid #332147;
-} 
-
-/* Animação para a Mesa Chacoalhar */
-@keyframes shakeMesa {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  20% { transform: translate(-5px, 5px) rotate(-1deg); }
-  40% { transform: translate(5px, -5px) rotate(1deg); }
-  60% { transform: translate(-5px, -5px) rotate(-1deg); }
-  80% { transform: translate(5px, 5px) rotate(1deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-/* Classe aplicada à mesa durante o lançamento */
-.mesa-chacoalhando {
-  animation: shakeMesa 0.15s infinite;
-}
-
-/* Animação individual dos búzios girando e caindo */
-@keyframes lancarBuzio {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) rotate(0deg) translateY(-50px);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(360deg) translateY(0);
-  }
-}
-
-/* Animação para a Mesa Chacoalhar */
-@keyframes shakeMesa {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  20% { transform: translate(-4px, 4px) rotate(-1deg); }
-  40% { transform: translate(4px, -4px) rotate(1deg); }
-  60% { transform: translate(-4px, -4px) rotate(-1deg); }
-  80% { transform: translate(4px, 4px) rotate(1deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-.mesa-chacoalhando {
-  animation: shakeMesa 0.15s infinite;
-}
-
-/* Animação dos búzios surgindo/girando */
-@keyframes lancarBuzio {
-  0% {
-    opacity: 0;
-    transform: scale(0.2) rotate(0deg) translateY(-40px);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.15) rotate(180deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(360deg) translateY(0);
-  }
-}
-
-.buzio-animando {
-  animation: lancarBuzio 0.6s ease-out forwards;
-}
-
-/* Classe aplicada aos búzios */
-.buzio-animando {
-  animation: lancarBuzio 0.8s ease-out forwards;
+.btn-secondary {
+  background-color: transparent;
+  color: var(--cor-destaque-primaria);
+  border: 2px solid var(--cor-destaque-primaria);
+  border-radius: 30px;
 }
