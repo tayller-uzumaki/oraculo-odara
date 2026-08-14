@@ -118,8 +118,9 @@ export default function Home() {
   const [perguntaText, setPerguntaText] = useState('');
   const [jogandoBuzios, setJogandoBuzios] = useState(false);
   const [resultadoConsulta, setResultadoConsulta] = useState(null);
+  const [listaBuziosMesa, setListaBuziosMesa] = useState([]);
 
-  // Cálculo de numerologia real dos Odùs (1 a 16)
+  // Cálculo de numerologia dos Odùs (1 a 16)
   const calcularOduNumerologia = (dataStr) => {
     if (!dataStr) return 6;
     const numeros = dataStr.replace(/\D/g, '');
@@ -162,6 +163,38 @@ export default function Home() {
     setPagamentoAprovado(true);
   };
 
+  // Gerador de Posições Orgânicas e Caída Mística dos Búzios
+  const gerarCaidaBuzios = (qtdAbertos) => {
+    const buzios = [];
+    const totalBuzios = 16;
+    
+    // Posições pré-definidas espalhadas pela Peneira Sagrada
+    const posicoes = [
+      { top: '25%', left: '30%', rot: '12deg' }, { top: '20%', left: '50%', rot: '-25deg' },
+      { top: '28%', left: '68%', rot: '45deg' }, { top: '40%', left: '22%', rot: '-10deg' },
+      { top: '42%', left: '42%', rot: '85deg' }, { top: '38%', left: '60%', rot: '-60deg' },
+      { top: '45%', left: '78%', rot: '15deg' }, { top: '58%', left: '28%', rot: '-40deg' },
+      { top: '60%', left: '48%', rot: '30deg' }, { top: '55%', left: '68%', rot: '-15deg' },
+      { top: '72%', left: '35%', rot: '70deg' }, { top: '75%', left: '55%', rot: '-80deg' },
+      { top: '32%', left: '38%', rot: '5deg' },  { top: '65%', left: '62%', rot: '50deg' },
+      { top: '50%', left: '35%', rot: '-35deg' }, { top: '48%', left: '52%', rot: '20deg' }
+    ];
+
+    for (let i = 0; i < totalBuzios; i++) {
+      const eAberto = i < qtdAbertos;
+      buzios.push({
+        id: i + 1,
+        aberto: eAberto,
+        top: posicoes[i].top,
+        left: posicoes[i].left,
+        rot: posicoes[i].rot
+      });
+    }
+
+    // Embaralha visualmente a ordem para ficar natural na mesa
+    return buzios.sort(() => Math.random() - 0.5);
+  };
+
   const handleConsultarOraculo = (e) => {
     e.preventDefault();
     if (!perguntaText || perguntasRestantes <= 0) return;
@@ -169,13 +202,18 @@ export default function Home() {
     setJogandoBuzios(true);
     setResultadoConsulta(null);
 
-    setTimeout(() => {
-      const oduAtual = oduDiretor ? oduDiretor : ODUS_DATABASE[6];
+    // Seleciona o Odù da Jogada
+    const oduAtual = oduDiretor ? oduDiretor : ODUS_DATABASE[6];
+    
+    // Gera a Caída Orgânica com base no número do Odù
+    const buziosMesa = gerarCaidaBuzios(oduAtual.numero);
+    setListaBuziosMesa(buziosMesa);
 
-      // Gerador de Resposta Completa e Estruturada por Categoria
+    // Simulação com Animação do Lançamento
+    setTimeout(() => {
       const respostasDetalhadas = {
         "Trabalho & Finanças": {
-          presagio: `Os 16 búzios caíram revelando a energia dominante de ${oduAtual.nome} (regido por ${oduAtual.orixa}). Para a sua pergunta: "${perguntaText}", o oráculo indica um momento de movimento e abertura de portas profissionais, contanto que você aja com estratégia e determinação.`,
+          presagio: `Os 16 búzios caíram na mesa revelando a energia dominante de ${oduAtual.nome} (regido por ${oduAtual.orixa}). Para a sua pergunta: "${perguntaText}", o oráculo indica um momento de movimento e abertura de portas profissionais, contanto que você aja com estratégia e determinação.`,
           conselho: `Não espere passivamente pelas oportunidades. O caminho do Odù ${oduAtual.nome} exige clareza e posicionamento firme. É o momento ideal para atualizar seus conhecimentos, networking e demonstrar confiança nas suas competências.`,
           alerta: `Cuidado com conversas paralelas no ambiente de trabalho e com o hábito de divulgar seus projetos antes que o contrato esteja assinado. A energia da inveja pode ser neutralizada com silêncio estratégico.`,
           orientacao: `Acenda uma vela branca ou amarela pedindo clareza mental e abertura de caminhos a ${oduAtual.orixa}. Um banho de alecrim com louro trará foco e magnetismo para entrevistas e reuniões.`
@@ -204,17 +242,34 @@ export default function Home() {
 
       setResultadoConsulta({
         buziosAbertos: oduAtual.numero,
+        buziosFechados: 16 - oduAtual.numero,
         odu: oduAtual,
         conteudo: conteudoResposta
       });
 
       setPerguntasRestantes(prev => prev - 1);
       setJogandoBuzios(false);
-    }, 1500);
+    }, 1800);
   };
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#0b0612', color: '#f3f4f6', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      
+      {/* CSS Inline para Animação de Chacoalhar a Mesa */}
+      <style jsx global>{`
+        @keyframes shakeMesa {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          20% { transform: translate(-8px, 5px) rotate(-3deg); }
+          40% { transform: translate(8px, -5px) rotate(3deg); }
+          60% { transform: translate(-5px, -3px) rotate(-2deg); }
+          80% { transform: translate(5px, 3px) rotate(2deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .animar-mesa {
+          animation: shakeMesa 0.4s infinite ease-in-out;
+        }
+      `}</style>
+
       <div style={{ maxWidth: '850px', margin: '0 auto' }}>
         
         {/* CABEÇALHO */}
@@ -244,7 +299,7 @@ export default function Home() {
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#d4d4d8', marginBottom: '6px' }}>Seu Nome Completo</label>
                 <input
                   type="text"
-                  placeholder="Ex: Tayller Silva"
+                  placeholder="Ex: Bernardo Silva"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                   style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: '#0b0612', border: '1px solid #332147', color: '#fff', boxSizing: 'border-box' }}
@@ -452,9 +507,78 @@ export default function Home() {
                 </button>
               </form>
 
+              {/* PENEIRA / ALGUIDAR SAGRADO COM ANIMAÇÃO DOS BÚZIOS */}
+              {(jogandoBuzios || resultadoConsulta) && (
+                <div style={{ marginTop: '24px', textAlign: 'center' }}>
+                  <h3 style={{ fontSize: '16px', color: '#fbbf24', marginBottom: '10px' }}>
+                    {jogandoBuzios ? '✨ Chacoalhando e Lançando os Búzios na Peneira...' : '📜 Caída Revelada na Mesa'}
+                  </h3>
+
+                  <div 
+                    className={jogandoBuzios ? 'animar-mesa' : ''}
+                    style={{
+                      width: '100%',
+                      maxWidth: '380px',
+                      height: '380px',
+                      margin: '0 auto',
+                      borderRadius: '50%',
+                      backgroundColor: '#1c102b',
+                      border: '8px solid #b45309',
+                      boxShadow: 'inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.2)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      backgroundImage: 'radial-gradient(#2a1742 2px, transparent 2px)',
+                      backgroundSize: '16px 16px'
+                    }}
+                  >
+                    {/* Búzios Espalhados Visualmente */}
+                    {listaBuziosMesa.map((buzio) => (
+                      <div
+                        key={buzio.id}
+                        style={{
+                          position: 'absolute',
+                          top: buzio.top,
+                          left: buzio.left,
+                          transform: `rotate(${buzio.rot})`,
+                          transition: 'all 0.5s ease-out',
+                          width: buzio.aberto ? '32px' : '26px',
+                          height: buzio.aberto ? '42px' : '36px',
+                          borderRadius: '50%',
+                          backgroundColor: buzio.aberto ? '#fef3c7' : '#78350f',
+                          border: buzio.aberto ? '2px solid #d97706' : '2px solid #451a03',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '2px 4px 6px rgba(0,0,0,0.5)'
+                        }}
+                      >
+                        {/* Fenda/Ombro do Búzio se estiver Aberto */}
+                        {buzio.aberto ? (
+                          <div style={{ width: '8px', height: '24px', backgroundColor: '#b45309', borderRadius: '10px', border: '1px solid #78350f' }} />
+                        ) : (
+                          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#451a03' }} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Legenda dos Búzios para Confirmação do Odù */}
+                  {resultadoConsulta && !jogandoBuzios && (
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '14px', fontSize: '13px' }}>
+                      <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>
+                        🐚 {resultadoConsulta.buziosAbertos} Abertos
+                      </span>
+                      <span style={{ color: '#a1a1aa' }}>
+                        🌰 {resultadoConsulta.buziosFechados} Fechados
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* REVELAÇÃO DETALHADA DO BÚZIO */}
               {resultadoConsulta && !jogandoBuzios && (
-                <div style={{ marginTop: '24px', backgroundColor: '#0b0612', padding: '20px', borderRadius: '12px', border: '1px solid #f59e0b' }}>
+                <div style={{ marginTop: '20px', backgroundColor: '#0b0612', padding: '20px', borderRadius: '12px', border: '1px solid #f59e0b' }}>
                   <div style={{ borderBottom: '1px solid #332147', paddingBottom: '12px', marginBottom: '16px' }}>
                     <span style={{ fontSize: '12px', color: '#fbbf24', textTransform: 'uppercase', fontWeight: 'bold' }}>
                       {resultadoConsulta.buziosAbertos} Búzios Abertos na Mesa
