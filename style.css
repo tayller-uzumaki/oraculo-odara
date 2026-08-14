@@ -308,4 +308,18 @@ button:active, .btn-primary:active {
   border: 1px solid #EF4444 !important;
   border-radius: var(--radius-lg);
   padding: 24px;
+} 
+
+/* ==========================================
+   FÍSICA REALISTA DE MOVIMENTO DOS BÚZIOS
+   ========================================== */
+.buzio-item.buzio-lancando {
+  transition: 
+    left 2s cubic-bezier(0.15, 0.85, 0.35, 1), 
+    top 2s cubic-bezier(0.15, 0.85, 0.35, 1), 
+    transform 2s cubic-bezier(0.15, 0.85, 0.35, 1), 
+    opacity 0.6s ease-out !important;
 }
+
+
+
