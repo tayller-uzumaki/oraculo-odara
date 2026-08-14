@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, Compass, CreditCard, RefreshCw, Send, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Sparkles, Compass, CreditCard, RefreshCw, Send, CheckCircle2, ShieldCheck, AlertTriangle, Lightbulb } from 'lucide-react';
 
 export default function Home() {
   const [nome, setNome] = useState('');
@@ -29,9 +29,22 @@ export default function Home() {
       setOduDiretor({
         numero: 6,
         nome: "Obará",
-        orixa: "Xangô / Oxóssi",
-        elemento: "Ar",
-        polaridade: "Masculino"
+        orixa: "Xangô e Oxóssi",
+        elemento: "Ar / Terra",
+        polaridade: "Masculino",
+        caminho: "Obará traz a regência da prosperidade através da sabedoria, da justiça e do discernimento. É o Odù da transformação material pela força do trabalho e da mente. Quem nasce sob este caminho possui uma ligação forte com a fartura, mas aprende que a verdadeira riqueza surge do equilíbrio emocional e da generosidade.",
+        pontosFortes: [
+          "Grande capacidade de atração financeira e fartura.",
+          "Liderança natural, forte carisma e presença marcante.",
+          "Visão estratégica para negócios e resolução de conflitos.",
+          "Proteção espiritual contra calúnias quando mantém a integridade."
+        ],
+        pontosAlerta: [
+          "Cuidado com a vaidade excessiva e a ostentação.",
+          "Evite contar seus planos antes de se concretizarem (inveja).",
+          "Tendência ao orgulho e a querer resolver tudo sozinho.",
+          "Atenção para não alternar entre momentos de extrema fartura e descuido financeiro."
+        ]
       });
       setCarregandoOdu(false);
     }, 1000);
@@ -75,233 +88,283 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0714] text-gray-100 flex flex-col items-center justify-between p-4 md:p-8">
-      <header className="w-full max-w-4xl text-center py-8 border-b border-amber-500/20">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-medium mb-4">
-          <Sparkles className="w-4 h-4" /> Oráculo Sagrado dos Orixás & Odùs
-        </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600">
-          ORÁCULO ODARA
-        </h1>
-        <p className="mt-3 text-lg text-gray-400 max-w-2xl mx-auto">
-          Conecte-se com a sabedoria ancestral através da leitura numerológica dos Odùs e a magia sagrada dos búzios.
-        </p>
-      </header>
-
-      <main className="w-full max-w-4xl my-8 space-y-12">
-        <section className="bg-gradient-to-b from-[#180e29] to-[#120a1f] p-6 md:p-8 rounded-2xl border border-amber-500/30 shadow-2xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400">
-              <Compass className="w-6 h-6" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-amber-200">Etapa 1: Descubra seu Odù Diretor</h2>
-              <p className="text-sm text-gray-400">Insira sua data de nascimento para calcular seu regente de vida gratuitamente.</p>
-            </div>
+    <div style={{ minHeight: '100vh', backgroundColor: '#0d0714', color: '#f3f4f6', padding: '20px', fontFamily: 'sans-serif' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        
+        {/* Cabeçalho */}
+        <header style={{ textAlign: 'center', padding: '30px 0', borderBottom: '1px solid rgba(245, 158, 11, 0.2)' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '20px', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#fbbf24', fontSize: '14px', marginBottom: '16px' }}>
+            <Sparkles size={16} /> Oráculo Sagrado dos Orixás & Odùs
           </div>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#fbbf24', margin: '10px 0' }}>
+            ORÁCULO ODARA
+          </h1>
+          <p style={{ color: '#9ca3af', fontSize: '16px' }}>
+            Conecte-se com a sabedoria ancestral através da leitura numerológica dos Odùs e a magia sagrada dos búzios.
+          </p>
+        </header>
 
-          <form onSubmit={handleCalcularOdu} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-300 uppercase mb-1">Seu Nome Completo</label>
-              <input
-                type="text"
-                placeholder="Ex: Maria Silva"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="w-full bg-[#0d0714] border border-amber-500/30 rounded-xl px-4 py-3 text-gray-200 focus:outline-none focus:border-amber-400 transition"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-300 uppercase mb-1">Data de Nascimento</label>
-              <input
-                type="date"
-                required
-                value={dataNasc}
-                onChange={(e) => setDataNasc(e.target.value)}
-                className="w-full bg-[#0d0714] border border-amber-500/30 rounded-xl px-4 py-3 text-gray-200 focus:outline-none focus:border-amber-400 transition"
-              />
-            </div>
-            <div className="flex items-end">
-              <button
-                type="submit"
-                disabled={carregandoOdu}
-                className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2"
-              >
-                {carregandoOdu ? <RefreshCw className="w-5 h-5 animate-spin" /> : 'Calcular Odù Diretor'}
-              </button>
-            </div>
-          </form>
-
-          {oduDiretor && (
-            <div className="mt-8 p-6 bg-amber-500/10 border border-amber-500/40 rounded-xl">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                  <span className="text-xs uppercase font-bold tracking-wider text-amber-400">Seu Regente Ancestral</span>
-                  <h3 className="text-3xl font-extrabold text-amber-200 mt-1">
-                    Odù #{oduDiretor.numero} - {oduDiretor.nome}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full border border-amber-500/30">Orixá: {oduDiretor.orixa}</span>
-                    <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full border border-amber-500/30">Elemento: {oduDiretor.elemento}</span>
-                  </div>
-                </div>
-                <div className="text-center md:text-right">
-                  <span className="inline-flex items-center gap-1 text-emerald-400 text-sm font-semibold">
-                    <CheckCircle2 className="w-4 h-4" /> Odù Mapeado
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {!pagamentoAprovado && (
-          <section className="bg-gradient-to-b from-[#180e29] to-[#120a1f] p-6 md:p-8 rounded-2xl border border-amber-500/30 shadow-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400">
-                <CreditCard className="w-6 h-6" />
+        <main style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
+          
+          {/* Etapa 1 */}
+          <section style={{ backgroundColor: '#180e29', padding: '24px', borderRadius: '16px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+              <div style={{ padding: '10px', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderRadius: '10px', color: '#fbbf24' }}>
+                <Compass size={24} />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-amber-200">Etapa 2: Escolha seu Pacote de Consulta</h2>
-                <p className="text-sm text-gray-400">Liberado instantaneamente via PIX.</p>
+                <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#fef3c7', margin: 0 }}>Etapa 1: Descubra seu Odù Diretor</h2>
+                <p style={{ fontSize: '13px', color: '#9ca3af', margin: '4px 0 0 0' }}>Insira sua data de nascimento para calcular seu regente de vida gratuitamente.</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div
-                onClick={() => setPacoteSelecionado('PACOTE_5')}
-                className={`cursor-pointer p-6 rounded-2xl border transition ${
-                  pacoteSelecionado === 'PACOTE_5' ? 'border-amber-400 bg-amber-500/10' : 'border-gray-800 bg-[#0d0714]'
-                }`}
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-100">Pacote Essencial</h3>
-                    <p className="text-sm text-gray-400">5 Perguntas ao Oráculo</p>
-                  </div>
-                  <span className="text-2xl font-extrabold text-amber-400">R$ 25,99</span>
-                </div>
-              </div>
-
-              <div
-                onClick={() => setPacoteSelecionado('PACOTE_10')}
-                className={`cursor-pointer p-6 rounded-2xl border transition relative ${
-                  pacoteSelecionado === 'PACOTE_10' ? 'border-amber-400 bg-amber-500/10' : 'border-gray-800 bg-[#0d0714]'
-                }`}
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-100">Pacote Completo</h3>
-                    <p className="text-sm text-gray-400">10 Perguntas ao Oráculo</p>
-                  </div>
-                  <span className="text-2xl font-extrabold text-amber-400">R$ 39,99</span>
-                </div>
-              </div>
-            </div>
-
-            {!pixDados ? (
-              <button
-                onClick={handleGerarPix}
-                disabled={gerandoPix}
-                className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-extrabold py-4 px-8 rounded-xl shadow-xl flex items-center justify-center gap-2 text-lg"
-              >
-                {gerandoPix ? <RefreshCw className="w-6 h-6 animate-spin" /> : 'Gerar Pagamento PIX'}
-              </button>
-            ) : (
-              <div className="bg-[#0d0714] p-6 rounded-2xl border border-amber-500/40 text-center space-y-4">
-                <h3 className="text-lg font-bold text-amber-200">Pagamento PIX Gerado</h3>
-                <div className="bg-[#180e29] p-3 rounded-xl text-xs font-mono text-amber-300 break-all border border-amber-500/20">
-                  {pixDados.qrCode}
-                </div>
-                <div className="pt-2 flex flex-col md:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => navigator.clipboard.writeText(pixDados.qrCode)}
-                    className="bg-amber-500/20 text-amber-300 font-bold py-2.5 px-6 rounded-xl border border-amber-500/30 text-sm"
-                  >
-                    Copiar Código PIX
-                  </button>
-                  <button
-                    onClick={handleSimularAprovacao}
-                    className="bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg text-sm flex items-center justify-center gap-2"
-                  >
-                    <ShieldCheck className="w-5 h-5" /> Confirmar Pagamento & Jogar
-                  </button>
-                </div>
-              </div>
-            )}
-          </section>
-        )}
-
-        {pagamentoAprovado && (
-          <section className="bg-gradient-to-b from-[#180e29] to-[#120a1f] p-6 md:p-8 rounded-2xl border border-amber-500/50 shadow-2xl space-y-8">
-            <div className="flex justify-between items-center border-b border-amber-500/20 pb-6">
-              <h2 className="text-3xl font-extrabold text-amber-200">A Mesa Sagrada de Búzios</h2>
-              <span className="px-4 py-2 bg-amber-500/20 rounded-xl border border-amber-500/40 text-amber-300 text-sm font-bold">
-                Perguntas Restantes: {perguntasRestantes}
-              </span>
-            </div>
-
-            <form onSubmit={handleConsultarOraculo} className="space-y-6">
+            <form onSubmit={handleCalcularOdu} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
               <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase mb-2">Área de Foco</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {['Amor & Relacionamentos', 'Trabalho & Finanças', 'Saúde & Vitalidade', 'Caminho Espiritual'].map((area) => (
-                    <button
-                      type="button"
-                      key={area}
-                      onClick={() => setAreaFoco(area)}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition ${
-                        areaFoco === area ? 'bg-amber-500 text-black border-amber-400' : 'bg-[#0d0714] text-gray-300 border-gray-800'
-                      }`}
-                    >
-                      {area}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase mb-2">Sua Pergunta</label>
-                <textarea
-                  rows={3}
-                  required
-                  placeholder="Escreva sua dúvida com clareza..."
-                  value={perguntaText}
-                  onChange={(e) => setPerguntaText(e.target.value)}
-                  className="w-full bg-[#0d0714] border border-amber-500/30 rounded-xl p-4 text-gray-200 focus:outline-none focus:border-amber-400 transition"
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#d1d5db', marginBottom: '6px' }}>Seu Nome Completo</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Tayller Silva"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: '#0d0714', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#fff', boxSizing: 'border-box' }}
                 />
               </div>
-
-              <button
-                type="submit"
-                disabled={jogandoBuzios || perguntasRestantes <= 0 || !perguntaText}
-                className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-black py-4 px-8 rounded-xl shadow-2xl flex items-center justify-center gap-3 text-lg"
-              >
-                {jogandoBuzios ? (
-                  <>
-                    <RefreshCw className="w-6 h-6 animate-spin" /> Lançando os Búzios...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5" /> Lançar Búzios na Mesa
-                  </>
-                )}
-              </button>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#d1d5db', marginBottom: '6px' }}>Data de Nascimento</label>
+                <input
+                  type="date"
+                  required
+                  value={dataNasc}
+                  onChange={(e) => setDataNasc(e.target.value)}
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: '#0d0714', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#fff', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                <button
+                  type="submit"
+                  disabled={carregandoOdu}
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: '#f59e0b', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                >
+                  {carregandoOdu ? <RefreshCw size={18} className="animate-spin" /> : 'Calcular Odù Diretor'}
+                </button>
+              </div>
             </form>
 
-            {resultadoConsulta && !jogandoBuzios && (
-              <div className="bg-[#0d0714] p-6 rounded-2xl border border-amber-500/40 space-y-4">
-                <h3 className="text-2xl font-bold text-amber-200">
-                  {resultadoConsulta.buziosAbertos} Búzios Abertos - Odù {resultadoConsulta.odu?.nome}
-                </h3>
-                <div className="text-gray-200 text-sm leading-relaxed whitespace-pre-line bg-[#180e29]/50 p-6 rounded-xl">
-                  {resultadoConsulta.resposta}
+            {/* Resultado do Odù Diretor Expandido */}
+            {oduDiretor && (
+              <div style={{ marginTop: '24px', padding: '20px', backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.4)', borderRadius: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                  <div>
+                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fbbf24', textTransform: 'uppercase' }}>Seu Regente Ancestral</span>
+                    <h3 style={{ fontSize: '26px', fontWeight: 'bold', color: '#fef3c7', margin: '4px 0' }}>
+                      Odù #{oduDiretor.numero} - {oduDiretor.nome}
+                    </h3>
+                  </div>
+                  <span style={{ color: '#34d399', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <CheckCircle2 size={16} /> Odù Mapeado
+                  </span>
                 </div>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '8px', flexWrap: 'wrap' }}>
+                  <span style={{ padding: '4px 12px', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderRadius: '20px', fontSize: '12px', color: '#fde68a' }}>Orixás Regentes: {oduDiretor.orixa}</span>
+                  <span style={{ padding: '4px 12px', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderRadius: '20px', fontSize: '12px', color: '#fde68a' }}>Elemento: {oduDiretor.elemento}</span>
+                </div>
+
+                {/* Descrição do Caminho */}
+                <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(245, 158, 11, 0.2)' }}>
+                  <h4 style={{ color: '#fbbf24', fontSize: '15px', fontWeight: 'bold', margin: '0 0 6px 0' }}>📜 O Caminho de {oduDiretor.nome}:</h4>
+                  <p style={{ fontSize: '14px', color: '#e5e7eb', lineHeight: '1.6', margin: 0 }}>
+                    {oduDiretor.caminho}
+                  </p>
+                </div>
+
+                {/* Pontos Fortes e Alerta */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px', marginTop: '16px' }}>
+                  <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                    <h5 style={{ color: '#34d399', fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Lightbulb size={16} /> Pontos Fortes
+                    </h5>
+                    <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', color: '#d1d5db' }}>
+                      {oduDiretor.pontosFortes.map((item, index) => (
+                        <li key={index} style={{ marginBottom: '4px' }}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                    <h5 style={{ color: '#f87171', fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <AlertTriangle size={16} /> Pontos de Alerta
+                    </h5>
+                    <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', color: '#d1d5db' }}>
+                      {oduDiretor.pontosAlerta.map((item, index) => (
+                        <li key={index} style={{ marginBottom: '4px' }}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
               </div>
             )}
           </section>
-        )}
-      </main>
+
+          {/* Etapa 2 */}
+          {!pagamentoAprovado && (
+            <section style={{ backgroundColor: '#180e29', padding: '24px', borderRadius: '16px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ padding: '10px', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderRadius: '10px', color: '#fbbf24' }}>
+                  <CreditCard size={24} />
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#fef3c7', margin: 0 }}>Etapa 2: Escolha seu Pacote de Consulta</h2>
+                  <p style={{ fontSize: '13px', color: '#9ca3af', margin: '4px 0 0 0' }}>Liberado instantaneamente via PIX.</p>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+                <div
+                  onClick={() => setPacoteSelecionado('PACOTE_5')}
+                  style={{
+                    cursor: 'pointer',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    border: pacoteSelecionado === 'PACOTE_5' ? '2px solid #f59e0b' : '1px solid #374151',
+                    backgroundColor: pacoteSelecionado === 'PACOTE_5' ? 'rgba(245, 158, 11, 0.1)' : '#0d0714'
+                  }}
+                >
+                  <h3 style={{ margin: 0, fontSize: '16px', color: '#fff' }}>Pacote Essencial</h3>
+                  <p style={{ margin: '4px 0 12px 0', fontSize: '12px', color: '#9ca3af' }}>5 Perguntas ao Oráculo</p>
+                  <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#fbbf24' }}>R$ 25,99</span>
+                </div>
+
+                <div
+                  onClick={() => setPacoteSelecionado('PACOTE_10')}
+                  style={{
+                    cursor: 'pointer',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    border: pacoteSelecionado === 'PACOTE_10' ? '2px solid #f59e0b' : '1px solid #374151',
+                    backgroundColor: pacoteSelecionado === 'PACOTE_10' ? 'rgba(245, 158, 11, 0.1)' : '#0d0714'
+                  }}
+                >
+                  <h3 style={{ margin: 0, fontSize: '16px', color: '#fff' }}>Pacote Completo</h3>
+                  <p style={{ margin: '4px 0 12px 0', fontSize: '12px', color: '#9ca3af' }}>10 Perguntas ao Oráculo</p>
+                  <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#fbbf24' }}>R$ 39,99</span>
+                </div>
+              </div>
+
+              {!pixDados ? (
+                <button
+                  onClick={handleGerarPix}
+                  disabled={gerandoPix}
+                  style={{ width: '100%', padding: '14px', borderRadius: '10px', backgroundColor: '#f59e0b', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                >
+                  {gerandoPix ? <RefreshCw size={20} className="animate-spin" /> : 'Gerar Pagamento PIX'}
+                </button>
+              ) : (
+                <div style={{ backgroundColor: '#0d0714', padding: '20px', borderRadius: '12px', border: '1px solid rgba(245, 158, 11, 0.4)', textAlign: 'center' }}>
+                  <h3 style={{ margin: '0 0 10px 0', color: '#fef3c7' }}>Pagamento PIX Gerado</h3>
+                  <p style={{ wordBreak: 'break-all', fontSize: '12px', backgroundColor: '#180e29', padding: '10px', borderRadius: '8px', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+                    {pixDados.qrCode}
+                  </p>
+                  <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '14px' }}>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(pixDados.qrCode)}
+                      style={{ padding: '10px 20px', borderRadius: '8px', backgroundColor: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.4)', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      Copiar Código PIX
+                    </button>
+                    <button
+                      onClick={handleSimularAprovacao}
+                      style={{ padding: '10px 20px', borderRadius: '8px', backgroundColor: '#059669', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <ShieldCheck size={18} /> Confirmar Pagamento & Jogar
+                    </button>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* Etapa 3 */}
+          {pagamentoAprovado && (
+            <section style={{ backgroundColor: '#180e29', padding: '24px', borderRadius: '16px', border: '1px solid rgba(245, 158, 11, 0.5)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+                <h2 style={{ fontSize: '22px', fontWeight: 'bold', color: '#fef3c7', margin: 0 }}>A Mesa Sagrada de Búzios</h2>
+                <span style={{ padding: '6px 14px', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderRadius: '10px', color: '#fbbf24', fontSize: '13px', fontWeight: 'bold' }}>
+                  Perguntas Restantes: {perguntasRestantes}
+                </span>
+              </div>
+
+              <form onSubmit={handleConsultarOraculo} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#d1d5db', marginBottom: '8px' }}>Área de Foco</label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+                    {['Amor & Relacionamentos', 'Trabalho & Finanças', 'Saúde & Vitalidade', 'Caminho Espiritual'].map((area) => (
+                      <button
+                        type="button"
+                        key={area}
+                        onClick={() => setAreaFoco(area)}
+                        style={{
+                          padding: '10px',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                          fontWeight: 'bold',
+                          cursor: 'pointer',
+                          border: areaFoco === area ? '1px solid #f59e0b' : '1px solid #374151',
+                          backgroundColor: areaFoco === area ? '#f59e0b' : '#0d0714',
+                          color: areaFoco === area ? '#000' : '#d1d5db'
+                        }}
+                      >
+                        {area}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#d1d5db', marginBottom: '8px' }}>Sua Pergunta</label>
+                  <textarea
+                    rows={3}
+                    required
+                    placeholder="Escreva sua dúvida com clareza..."
+                    value={perguntaText}
+                    onChange={(e) => setPerguntaText(e.target.value)}
+                    style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: '#0d0714', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#fff', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={jogandoBuzios || perguntasRestantes <= 0 || !perguntaText}
+                  style={{ width: '100%', padding: '14px', borderRadius: '10px', backgroundColor: '#f59e0b', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                >
+                  {jogandoBuzios ? (
+                    <>
+                      <RefreshCw size={20} className="animate-spin" /> Lançando os Búzios...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} /> Lançar Búzios na Mesa
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {resultadoConsulta && !jogandoBuzios && (
+                <div style={{ marginTop: '20px', backgroundColor: '#0d0714', padding: '20px', borderRadius: '12px', border: '1px solid rgba(245, 158, 11, 0.4)' }}>
+                  <h3 style={{ fontSize: '20px', color: '#fef3c7', margin: '0 0 10px 0' }}>
+                    {resultadoConsulta.buziosAbertos} Búzios Abertos - Odù {resultadoConsulta.odu?.nome}
+                  </h3>
+                  <div style={{ fontSize: '14px', color: '#e5e7eb', lineHeight: '1.6', whitespace: 'pre-line', backgroundColor: '#180e29', padding: '16px', borderRadius: '8px' }}>
+                    {resultadoConsulta.resposta}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+        </main>
+      </div>
     </div>
   );
 }
