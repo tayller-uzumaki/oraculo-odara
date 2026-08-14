@@ -162,7 +162,7 @@ const ODUS_DATABASE = {
     tituloTendencia: "✅ Tendência: SIM — Ciclo de renovação trazendo flexibilidade e novos caminhos.",
     caminho: "Caminho do arco-íris e da transformação constante. Iká indica que a tempestade passou e traz novas opções.",
     influenciaEspiritual: "Oxumaré renova a energia do ambiente, transformando perdas aparentes em ganhos reais.",
-    fatoresFavoraveis: ["Capacidade de reinvenção", "Atração de oportunidades", "Flexibilidade"],
+    fatoresFavoraveis: ["Capacidade de reinvenção", "Atraction de oportunidades", "Flexibilidade"],
     pontosAtencao: ["Espalhar energia em muitas coisas", "Promessas vagas de terceiros", "Falta de foco"],
     orientacoesPraticas: "Esteja aberto a caminhos e alternativas que você não havia considerado no início.",
     sabedoriaAncestral: "Após a chuva mais densa, o céu se pinta com as cores da renovação.",
