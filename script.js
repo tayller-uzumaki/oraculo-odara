@@ -15,7 +15,7 @@ const ODUS_DATABASE = {
   11: { numero: 11, nome: "Owonrin", orixa: "Exu e Oyá", elemento: "Fogo", tendenciaPadrao: "NÃO", favorabilidade: 30, tituloTendencia: "❌ Tendência: NÃO — Cuidado com reviravoltas inesperadas ou imprevistos de última hora.", caminho: "Caminho do imprevisível e do aprendizado rápido. Owonrin avisa que o cenário pode mudar de posição de repente.", influenciaEspiritual: "Exu e Oyá cobram atenção redobrada com papéis, conversas informais e prazos.", fatoresFavoraveis: ["Capacidade de reação rápida a emergências", "Criatividade para saídas"], pontosAtencao: ["Desorganização ou perda de prazos", "Confiar em promessas verbais", "Desatenção"], orientacoesPraticas: "Confirme dados e acordos por escrito. A prevenção garantirá sua segurança.", sabedoriaAncestral: "Quando o vento muda de direção, o navegador inteligente ajusta as velas.", resumoFinal: "Alerta de risco. Não arrisque recursos ou expectativas nesta questão agora." },
   12: { numero: 12, nome: "Ejilaxeborá", orixa: "Xangô", elemento: "Fogo", tendenciaPadrao: "SIM", favorabilidade: 92, tituloTendencia: "✅ Tendência: SIM — Justiça plena, rigorosa e indiscutível.", caminho: "Caminho da balança exata e do tribunal divino. Ejilaxeborá traz o julgamento imparcial onde a verdade prevalece.", influenciaEspiritual: "Xangô reina supremo nesta caída, pesando os fatos com rigor e abrindo portas para a verdade.", fatoresFavoraveis: ["Provas irrefutáveis ao seu favor", "Sentença ou resolução justa", "Triunfo em disputas"], pontosAtencao: ["Julgar os outros com rigor excessivo", "Orgulho", "Estresse elevado"], orientacoesPraticas: "Permaneça estritamente dentro da verdade. A honestidade é sua maior garantia.", sabedoriaAncestral: "A justiça humana pode falhar por cegueira, mas a lei de causa e efeito nunca erra.", resumoFinal: "A justiça está a seu favor. Permaneça firme na verdade que o resultado virá." },
   13: { numero: 13, nome: "Okanran Meji", orixa: "Nanã e Obaluaê", elemento: "Terra", tendenciaPadrao: "AINDA NÃO", favorabilidade: 45, tituloTendencia: "⏳ Tendência: AINDA NÃO — Exige maturação lenta e paciência no tempo certo.", caminho: "Caminho da sabedoria ancestral da terra profunda. Ensina que frutos não amadurecem à força.", influenciaEspiritual: "Nanã traz a calma dos anciãos, preparando o terreno para que a solução venha sem traumas.", fatoresFavoraveis: ["Estabilidade a longo prazo", "Decisão definitiva e sólida", "Cura de mágoas"], pontosAtencao: ["Impaciência angustiante", "Tentar acelerar burocracias à força", "Melancolia"], orientacoesPraticas: "Respeite o tempo natural dos trâmites. Cuide dos afazeres do presente.", sabedoriaAncestral: "A paciência é a certeza de que a semente germina no escuro antes de ver a luz.", resumoFinal: "A resposta requer tempo. Mantenha a constância sem desespero." },
-  14: { numero: 14, nome: "Iká", orixa: "Oxumaré", elemento: "Água / Ar", tendenciaPadrao: "SIM", favorabilidade: 84, tituloTendencia: "✅ Tendência: SIM — Ciclo de renovação trazendo flexibilidade e novos caminhos.", caminho: "Caminho do arco-íris e da transformação constante. Iká indica que a tempestade passou e traz novas opções.", influenciaEspiritual: "Oxumaré renova a energia do ambiente, transformando perdas aparentes em ganhos reais.", fatoresFavoraveis: ["Capacidade de reinvenção", "Atração de oportunidades", "Flexibilidade"], pontosAtencao: ["Espalhar energia em muitas coisas", "Promessas vagas de terceiros", "Falta de foco"], orientacoesPraticas: "Esteja aberto a caminhos e alternativas que você não havia considerado no início.", sabedoriaAncestral: "Após a chuva mais densa, o céu se pinta com as cores da renovação.", resumoFinal: "Cenário favorável e de renovação. Adapte-se e colha os frutos positivos." },
+  14: { numero: 14, nome: "Iká", orixa: "Oxumaré", elemento: "Água / Ar", tendenciaPadrao: "SIM", favorabilidade: 84, tituloTendencia: "✅ Tendência: SIM — Ciclo de renovação trazendo flexibilidade e novos caminhos.", caminho: "Caminho do arco-íris e da transformação constante. Iká indica que a tempestade passou e traz novas opções.", influenciaEspiritual: "Oxumaré renova a energia do ambiente, transformando perdas aparentes em ganhos reais.", fatoresFavoraveis: ["Capacidade de reinvenção", "Atração de oportunidades", "Flexibilidade"], pontosAtencao: ["Espalhar energia em muitas coisas", "Promessas vagas de terceiros", "Falta de foco"], orientacoesPraticas: "Esteja aberto a caminhos e alternatives que você não havia considerado no início.", sabedoriaAncestral: "Após a chuva mais densa, o céu se pinta com as cores da renovação.", resumoFinal: "Cenário favorável e de renovação. Adapte-se e colha os frutos positivos." },
   15: { numero: 15, nome: "Obeogundá", orixa: "Ewá e Ogum", elemento: "Ar", tendenciaPadrao: "AINDA NÃO", favorabilidade: 38, tituloTendencia: "⏳ Tendência: AINDA NÃO — Exige discernimento apurado para enxergar as entrelinhas.", caminho: "Caminho da visão além do alcance e da intuição afiada. Adverte contra armadilhas disfarçadas de facilidade.", influenciaEspiritual: "Ewá protege os segredos e concede percepção para detectar más intenções a distância.", fatoresFavoraveis: ["Proteção contra traições", "Estratégia perspicaz", "Descoberta de falhas a tempo"], pontosAtencao: ["Desconfiança paranóica", "Isolamento excessivo", "Inquietação quanto ao futuro"], orientacoesPraticas: "Confie na sua percepção interior. Se algo parecer bom demais, investigue a fundo.", sabedoriaAncestral: "O escudo mais forte é a lucidez de enxergar as coisas exatamente como são.", resumoFinal: "Sinal amarelo. Investigue melhor antes de dar o próximo passo." },
   16: { numero: 16, nome: "Alafia", orixa: "Orunmilá e Oxalá", elemento: "Luz / Ar", tendenciaPadrao: "SIM", favorabilidade: 98, tituloTendencia: "✅ Tendência: SIM — Luz absoluta, paz de espírito, confirmação e vitória plena.", caminho: "Caminho da bênção suprema onde todos os búzios se abrem para confirmar a graça do oráculo.", influenciaEspiritual: "Orunmilá e Oxalá derramam sabedoria e luz, dissipando todas as trevas e incertezas.", fatoresFavoraveis: ["Harmonia total dos fatores", "Conclusão extremamente favorável", "Proteção contínua"], pontosAtencao: ["Acomodação ou descuido na reta final", "Ingenuidade diante do ambiente"], orientacoesPraticas: "Agradeça com o coração sereno. Mantenha a postura elevada e desfrute da conquista.", sabedoriaAncestral: "Quando a luz da verdade se acende por completo, a sombra simplesmente deixa de existir.", resumoFinal: "Confirmação absoluta e positiva. Vitória garantida nos caminhos." }
 };
@@ -28,32 +28,43 @@ let ultimaPerguntaFeita = { texto: "", area: "" };
 let historicoConsultas = [];
 
 // ==========================================
-// DETECTOR DE SEGURANÇA E BEM-ESTAR EMOCIONAL
+// DETECTOR DE SEGURANÇA E BEM-ESTAR EMOCIONAL (ULTRA REFORÇADO)
 // ==========================================
 function detectarIdeacaoOuMorte(perguntaTexto) {
-  const padroesSensiveis = [
-    /posso me matar/i,
-    /quero me matar/i,
-    /vou me matar/i,
-    /quando vou morrer/i,
-    /quando ser[aá] minha morte/i,
-    /vale a pena continuar vivendo/i,
-    /minha vida tem sentido/i,
-    /quero desistir de tudo/i,
-    /pensando em acabar com minha vida/i,
-    /acabar com a minha vida/i,
-    /melhor se eu n[ãa]o estivesse aqui/i,
-    /b[úu]zios mostram minha morte/i,
-    /vou morrer em breve/i,
-    /como vou morrer/i,
-    /data da minha morte/i,
-    /desejo morrer/i,
-    /quero morrer/i,
-    /me cortar/i,
-    /autoles[ãa]o/i,
-    /tirar minha vida/i
+  // Normaliza o texto removendo acentos e caracteres especiais para análise
+  const textoLimpo = perguntaTexto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  // 1. Frases diretas de ideação e morte
+  const frasesRisco = [
+    'posso me matar', 'quero me matar', 'vou me matar', 'pensando em me matar',
+    'quando vou morrer', 'quando sera minha morte', 'quando vai ser minha morte',
+    'como vou morrer', 'data da minha morte', 'buzios mostram minha morte',
+    'vou morrer em breve', 'seria melhor morrer', 'melhor eu morrer',
+    'vale a pena continuar vivendo', 'minha vida tem sentido', 'vale a pena viver',
+    'quero desistir de tudo', 'desistir da vida', 'desistir de viver',
+    'pensando em acabar com minha vida', 'acabar com a minha vida', 'acabar com tudo',
+    'melhor se eu nao estivesse aqui', 'nao estivesse aqui', 'sumir para sempre',
+    'desejo morrer', 'quero morrer', 'vontade de morrer',
+    'me cortar', 'autolesao', 'se cortar', 'tirar minha vida'
   ];
-  return padroesSensiveis.some(regex => regex.test(perguntaTexto));
+
+  for (let frase of frasesRisco) {
+    if (textoLimpo.includes(frase)) return true;
+  }
+
+  // 2. Análise Semântica Combinada (Cansaço/Sofrimento + Ideia de Morte/Desistência)
+  const gatilhosSofrendo = ['cansado de tudo', 'cansada de tudo', 'nao aguento mais', 'nao suporto mais', 'dor intensa', 'muita dor', 'desesperado', 'desesperada', 'sofrimento'];
+  const gatilhosMorte = ['morrer', 'morte', 'sumir', 'desistir', 'fim', 'partir'];
+
+  const temSofrendo = gatilhosSofrendo.some(g => textoLimpo.includes(g));
+  const temMorte = gatilhosMorte.some(g => textoLimpo.includes(g));
+
+  if (temSofrendo && temMorte) return true;
+
+  return false;
 }
 
 // ==========================================
@@ -339,7 +350,7 @@ function irParaPacotes() {
 }
 
 // ==========================================
-// ETAPA 3: JOGADA DE BÚZIOS (COM PROTOCOLO DE SEGURANÇA)
+// ETAPA 3: JOGADA DE BÚZIOS (COM PROTOCOLO RIGOROSO DE SEGURANÇA)
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   const formConsulta = document.getElementById('form-consulta');
@@ -381,42 +392,55 @@ document.addEventListener('DOMContentLoaded', () => {
       mesa?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       // ============================================================
-      // PROTOCOLO DE SEGURANÇA: INTERCEPTAÇÃO DE IDEAÇÃO / MORTE
+      // PROTOCOLO DE SEGURANÇA: INTERCEPTAÇÃO DE IDEAÇÃO / MORTE / SOFRIMENTO
       // ============================================================
       if (detectarIdeacaoOuMorte(pergunta)) {
         setTimeout(() => {
+          // Oculta a mesa e a animação do jogo para não simular uma leitura oracular
+          if (mesa) mesa.style.display = 'none';
+
           if (resLeitura) {
             resLeitura.innerHTML = `
-              <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; border: 2px solid #E53E3E; box-shadow: 0 10px 25px rgba(229, 62, 62, 0.15);">
-                <div style="text-align: center; margin-bottom: 18px;">
-                  <span style="font-size: 32px;">🕊️</span>
-                  <h3 style="color: #9B2C2C; font-size: 1.25rem; margin-top: 6px; font-weight: 700;">Mensagem de Acolhimento & Proteção à Vida</h3>
+              <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; border: 2px solid #E53E3E; box-shadow: 0 10px 25px rgba(229, 62, 62, 0.15); max-width: 700px; margin: 0 auto;">
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                  <span style="font-size: 36px;">🕊️</span>
+                  <h3 style="color: #9B2C2C; font-size: 1.3rem; margin-top: 6px; font-weight: 700;">Mensagem de Acolhimento e Apoio</h3>
                 </div>
 
-                <div style="background: #FFF5F5; padding: 16px; border-left: 4px solid #E53E3E; border-radius: 6px; margin-bottom: 16px;">
-                  <p style="color: #2D3748; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px;">
+                <!-- MENSAGEM DE ACOLHIMENTO -->
+                <div style="margin-bottom: 16px; padding: 14px; background: #FFF5F5; border-left: 4px solid #E53E3E; border-radius: 4px;">
+                  <p style="color: #2D3748; font-size: 0.95rem; line-height: 1.6; margin: 0;">
                     Percebo que sua pergunta pode estar relacionada a um momento de dor, sofrimento ou grande preocupação. Antes de qualquer interpretação espiritual, é importante lembrar que sua vida tem valor e que você não precisa enfrentar esse momento sozinho.
                   </p>
+                </div>
+
+                <!-- ORIENTAÇÃO DE APOIO EMOCIONAL -->
+                <div style="margin-bottom: 16px; padding: 14px; background: #F7FAFC; border-left: 4px solid #3182CE; border-radius: 4px;">
                   <p style="color: #2D3748; font-size: 0.95rem; line-height: 1.6; margin: 0;">
                     Se você está passando por pensamentos relacionados à própria vida ou sentindo que não consegue lidar sozinho com o que está acontecendo, procure apoio imediatamente. Conversar com alguém de confiança ou com um profissional pode fazer uma grande diferença.
                   </p>
                 </div>
 
-                <div style="background: #EDF2F7; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #CBD5E0;">
-                  <h4 style="color: #2B6CB0; font-size: 1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    📞 Canal de Apoio Gratuito (24 Horas)
-                  </h4>
-                  <p style="color: #2D3748; font-size: 0.9rem; line-height: 1.5; margin-bottom: 6px;">
+                <!-- CANAL DE APOIO -->
+                <div style="margin-bottom: 16px; padding: 16px; background: #EDF2F7; border-radius: 8px; border: 1px solid #CBD5E0;">
+                  <h4 style="color: #2B6CB0; font-size: 0.95rem; margin-bottom: 6px; font-weight: 700;">📞 Canal de Apoio Emocional (CVV)</h4>
+                  <p style="color: #2D3748; font-size: 0.9rem; line-height: 1.5; margin: 0;">
                     No Brasil, você pode entrar em contato gratuitamente com o <strong>CVV (Centro de Valorização da Vida)</strong> pelo telefone <strong>188</strong>, disponível 24 horas por dia, ou acessar <a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer" style="color: #2B6CB0; text-decoration: underline; font-weight: 600;">www.cvv.org.br</a> para atendimento por chat e outras formas de acolhimento.
                   </p>
                 </div>
 
-                <div style="background: #FDFBF7; padding: 14px; border-radius: 8px; border: 1px solid #E2DBD1; margin-bottom: 16px;">
-                  <p style="color: #4A443E; font-size: 0.88rem; line-height: 1.5; margin-bottom: 8px;">
-                    🌿 <strong>Orientação Espiritual Responsável:</strong> Se fizer sentido para você, também pode buscar orientação com uma Ialorixá ou Babalorixá de confiança, que poderá oferecer acolhimento espiritual responsável e ajudá-lo a fortalecer seus caminhos durante esse momento.
+                <!-- ORIENTAÇÃO ESPIRITUAL RESPONSÁVEL -->
+                <div style="margin-bottom: 16px; padding: 14px; background: #FDFBF7; border-left: 4px solid #D69E2E; border-radius: 4px;">
+                  <p style="color: #2D3748; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                    🌿 <strong>Orientação Espiritual:</strong> Se fizer sentido para você, também pode buscar orientação com uma Ialorixá ou Babalorixá de confiança, que poderá oferecer acolhimento espiritual responsável e ajudá-lo a fortalecer seus caminhos durante esse momento.
                   </p>
-                  <p style="color: #4A443E; font-size: 0.88rem; line-height: 1.5; margin: 0;">
-                    🧠 <strong>Apoio Profissional:</strong> Além do apoio espiritual, é muito importante buscar acompanhamento psicológico ou psiquiátrico quando estiver enfrentando sofrimento emocional intenso.
+                </div>
+
+                <!-- ORIENTAÇÃO PROFISSIONAL -->
+                <div style="margin-bottom: 20px; padding: 14px; background: #F7FAFC; border-left: 4px solid #805AD5; border-radius: 4px;">
+                  <p style="color: #2D3748; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                    🧠 <strong>Orientação Profissional:</strong> Além do apoio espiritual, é muito importante buscar acompanhamento psicológico ou psiquiátrico quando estiver enfrentando sofrimento emocional intenso.
                   </p>
                 </div>
 
@@ -425,6 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     🔮 Fazer Outra Pergunta
                   </button>
                 </div>
+
               </div>
             `;
             resLeitura.style.display = 'block';
@@ -432,9 +457,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if (btn) btn.disabled = false;
-        }, 600);
+        }, 400);
 
-        return; // INTERROMPE O PROCESSAMENTO NORMAL DO JOGO
+        return; // INTERROMPE COMPLETAMENTE A JOGADA
       }
 
       // ============================================================
