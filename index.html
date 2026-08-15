@@ -85,38 +85,25 @@
       <!-- ETAPA 3: MESA SAGRADA DE BÚZIOS -->
       <section class="card" id="secao-jogada" style="display: none;">
         <h2>🔮 Consultar a Mesa Sagrada dos Búzios</h2>
-        <p class="subtitle" style="text-align: left; margin-bottom: 16px;">Consultas restantes: <strong id="qtd-perguntas" style="color: var(--gold-accent);">0</strong></p>
+        <p class="subtitle" style="text-align: left; margin-bottom: 16px;">
+          Consultas restantes: <strong id="qtd-perguntas" style="color: var(--gold-accent);">0</strong>
+        </p>
 
-        <div class="guide-box" style="background: rgba(0,0,0,0.2); padding: 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.88rem;">
-          <h4 style="color: var(--gold-light); margin-bottom: 6px;">🔮 Como consultar:</h4>
-          <ol style="margin-left: 18px; color: var(--text-muted);">
-            <li>Concentre-se por alguns segundos na sua intenção e no seu pedido.</li>
-            <li>Selecione a área e digite sua pergunta de forma clara e sincera.</li>
-            <li>Clique em "Lançar Búzios na Mesa".</li>
-            <li>Aguarde a revelação da queda e receba a interpretação do oráculo.</li>
-          </ol>
+        <!-- GUIA PRÁTICO PARA FAZER A MELHOR PERGUNTA -->
+        <div class="guide-box" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(212, 175, 55, 0.25); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+          <h4 style="color: var(--gold-light); margin-bottom: 8px; font-size: 0.95rem;">💡 Como fazer a melhor pergunta aos Búzios:</h4>
+          <ul style="margin-left: 18px; color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; list-style-type: disc;">
+            <li><strong>Seja específico e direto:</strong> Detalhe o contexto ou a pessoa envolvida para uma orientação precisa.</li>
+            <li><strong>Prefira perguntas abertas:</strong> Em vez de um simples "Sim/Não", pergunte <em>"Quais são as energias para..."</em> ou <em>"Como devo me posicionar em..."</em>.</li>
+            <li><strong>Mantenha a concentração:</strong> Respire fundo e focalize sua intenção antes de enviar a pergunta.</li>
+          </ul>
         </div>
 
+        <!-- FORMULÁRIO DIRETO E FLUIDO -->
         <form id="form-consulta">
-          <div class="input-group">
-            <label for="area-foco">Área da Consulta</label>
-            <select id="area-foco">
-              <option value="Trabalho & Finanças">Trabalho & Finanças</option>
-              <option value="Amor & Relacionamentos">Amor & Relacionamentos</option>
-              <option value="Saúde & Equilíbrio">Saúde & Equilíbrio</option>
-              <option value="Caminhos Espirituais & Proteção">Caminhos Espirituais & Proteção</option>
-              <option value="Família & Decisões Pessoais">Família & Decisões Pessoais</option>
-            </select>
-          </div>
-
-          <div class="input-group">
-            <label for="email-usuario">Seu E-mail (opcional, para receber o resumo)</label>
-            <input type="email" id="email-usuario" placeholder="Ex: seuemail@exemplo.com">
-          </div>
-
-          <div class="input-group">
-            <label for="pergunta">Sua Pergunta Direta ao Oráculo</label>
-            <textarea id="pergunta" rows="3" placeholder="Ex: Vou conseguir fechar esse contrato de trabalho este mês?" required></textarea>
+          <div class="input-group" style="margin-bottom: 16px;">
+            <label for="pergunta" style="display: block; color: var(--gold-light); font-weight: 600; margin-bottom: 6px;">Sua Pergunta Direta ao Oráculo</label>
+            <textarea id="pergunta" rows="4" placeholder="Ex: Quais conselhos os Búzios têm para a minha vida profissional e financeira neste momento?" required></textarea>
           </div>
 
           <button type="submit" class="btn-primary" id="btn-jogar">Lançar Búzios na Mesa</button>
