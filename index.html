@@ -3,131 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oráculo Odara — Búzios Digital & IA</title>
+  <title>Oráculo Odara - Sabedoria dos Búzios & Odùs</title>
   
-  <!-- Fontes Místicas e Elegantes -->
+  <!-- Fontes do Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Arquivo de Estilos em Cascata -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="main-container">
-    <header class="header">
-      <div class="badge">✨ Oráculo Sagrado dos Orixás & Odùs</div>
-      <h1>ORÁCULO ODARA</h1>
-      <p class="subtitle">Conecte-se com a sabedoria ancestral através da leitura dos Odùs e a magia dos búzios.</p>
+  <div class="app-container">
+    
+    <!-- Header Místico -->
+    <header class="main-header">
+      <div class="logo-box">
+        <span class="icon-místico">🐚</span>
+        <h1>Oráculo Odara</h1>
+      </div>
+      <p class="tagline">Orientação Sagrada dos Búzios & Odùs da Tradição Ancestral</p>
     </header>
 
-    <main class="main-content">
-      
-      <!-- ETAPA 1: ODÙ DE NASCIMENTO (GRATUITO) -->
-      <section class="card">
-        <h2>🧭 Descubra gratuitamente seu Odù de Nascimento</h2>
-        <p class="subtitle-desc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
-          Seu Odù revela tendências naturais, potenciais, desafios e energias que acompanham sua jornada ao longo da vida. Antes de consultar os búzios, descubra qual força ancestral influencia seus caminhos.
-        </p>
+    <!-- ETAPA 1: Calculadora Gratuitado Odù de Nascimento -->
+    <section class="card glass-card" id="secao-odu">
+      <div class="card-header">
+        <h2>✨ 1. Descubra Seu Odù de Nascimento (Gratuito)</h2>
+        <p>Insira sua data de nascimento para calcular a regência do seu caminho ancestral.</p>
+      </div>
 
-        <form id="form-odu" class="grid-form">
-          <div class="input-group">
-            <label for="nome">Digite seu Nome</label>
-            <input type="text" id="nome" placeholder="Digite seu Nome" required>
-          </div>
-          <div class="input-group">
-            <label for="dataNasc">Data de Nascimento</label>
-            <input type="date" id="dataNasc" required>
-          </div>
-          <button type="submit" class="btn-primary" id="btn-calc-odu">🔮 Descobrir Meu Odù</button>
-        </form>
-
-        <div id="resultado-odu" class="result-box" style="display: none; margin-top: 20px;">
-          <!-- O conteúdo completo e o botão de CTA serão injetados via script.js -->
+      <form id="form-odu" class="form-grid">
+        <div class="input-group">
+          <label for="dataNasc">Sua Data de Nascimento:</label>
+          <input type="date" id="dataNasc" required>
         </div>
-      </section>
+        <button type="submit" id="btn-calc-odu" class="btn-primary">🔮 Revelar Meu Odù</button>
+      </form>
 
-      <!-- ETAPA 2: PACOTES PREMIUM -->
-      <section class="card" id="secao-pacotes">
-        <h2>💳 Escolha sua Consulta Completa Premium</h2>
-        <p class="subtitle" style="text-align: left; margin-bottom: 16px;">Desbloqueie leituras aprofundadas com orientações detalhadas dos Orixás.</p>
-
-        <div class="premium-benefits" style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-          <h4 style="color: var(--gold-light); font-size: 0.95rem; margin-bottom: 8px;">🌟 O que você desbloqueia na Consulta Completa:</h4>
-          <ul>
-            <li>✦ Interpretação aprofundada e contextualizada à sua pergunta</li>
-            <li>✦ Influências espirituais e atuação dos Orixás</li>
-            <li>✦ Pontos de Atenção, Alertas e Orientações Práticas</li>
-            <li>✦ Recomendações de harmonização e sabedoria ancestral</li>
-          </ul>
-        </div>
-
-        <div class="packages-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
-          <div class="pacote-card active" id="pacote-5" onclick="selecionarPacote(5, 25.99)" style="cursor: pointer;">
-            <h3>Pacote Essencial</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">5 Consultas Aprofundadas</p>
-            <span class="price" style="font-size: 1.2rem; font-weight: bold; color: var(--gold-light); display: block; margin-top: 8px;">R$ 25,99</span>
-          </div>
-          <div class="pacote-card" id="pacote-10" onclick="selecionarPacote(10, 39.99)" style="cursor: pointer;">
-            <span class="badge-pop" style="font-size: 0.7rem; background: var(--purple-accent); padding: 2px 8px; border-radius: 10px; text-transform: uppercase;">Mais Escolhido</span>
-            <h3 style="margin-top: 4px;">Pacote Completo</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">10 Consultas Aprofundadas</p>
-            <span class="price" style="font-size: 1.2rem; font-weight: bold; color: var(--gold-light); display: block; margin-top: 8px;">R$ 39,99</span>
+      <!-- Painel do Resultado do Odù -->
+      <div id="resultado-odu" class="resultado-box" style="display: none;">
+        <div class="odu-badge-container">
+          <span class="odu-number" id="odu-numero">0</span>
+          <div class="odu-title-group">
+            <h3 id="odu-nome">Nome do Odù</h3>
+            <p>Orixá Regente: <strong id="odu-orixa" class="highlight-gold">-</strong> | Elemento: <span id="odu-elemento">-</span></p>
           </div>
         </div>
-
-        <div id="area-pix" style="margin-top: 16px; text-align: center;">
-          <button type="button" class="btn-primary" onclick="gerarPix()">Gerar Pagamento PIX</button>
-        </div>
-      </section>
-
-      <!-- ETAPA 3: MESA SAGRADA DE BÚZIOS -->
-      <section class="card" id="secao-jogada" style="display: none;">
-        <h2>🔮 Consultar a Mesa Sagrada dos Búzios</h2>
         
-        <!-- Contador Permanente de Perguntas Disponíveis -->
-        <div class="contador-perguntas-container">
-          <div class="contador-item">
-            <span>Perguntas Contratadas:</span>
-            <strong id="qtd-contratadas">0</strong>
-          </div>
-          <div class="contador-divider">|</div>
-          <div class="contador-item">
-            <span>Perguntas Restantes:</span>
-            <strong id="qtd-perguntas">0</strong>
-          </div>
+        <div class="odu-description" id="odu-caminho">
+          <!-- Conteúdo gerado dinamicamente -->
         </div>
 
-        <div class="guide-box" style="background: rgba(0,0,0,0.2); padding: 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.88rem;">
-          <h4 style="color: var(--gold-light); margin-bottom: 6px;">🔮 Como Consultar:</h4>
-          <ol style="margin-left: 18px; color: var(--text-muted);">
-            <li>Concentre-se por alguns segundos na sua intenção, no seu momento e na sua questão.</li>
-            <li>Digite sua pergunta de forma clara, direta e sincera ao oráculo.</li>
-            <li>Clique em <strong>"Lançar Búzios na Mesa"</strong> para iniciar o ritual sagrado.</li>
-            <li>Acompanhe a revelação da queda na mesa e receba a interpretação dos Orixás.</li>
-          </ol>
+        <div class="cta-banner">
+          <p>🌟 Seu Odù <strong id="transicao-nome-odu"></strong> abre as portas da percepção. Faça agora sua consulta de búzios!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ETAPA 2: Adquira Suas Consultas (PIX) -->
+    <section class="card glass-card" id="secao-pacotes">
+      <div class="card-header">
+        <h2>🐚 2. Escolha Seu Pacote de Consultas</h2>
+        <p>Acesse a mesa sagrada e faça suas perguntas diretas ao oráculo.</p>
+      </div>
+
+      <div class="packages-grid">
+        <div class="package-card" id="pacote-5" onclick="selecionarPacote(5, 25.99)">
+          <span class="pkg-badge">Mais Popular</span>
+          <h3>5 Consultas</h3>
+          <p class="price">R$ 25,99</p>
+          <p class="pkg-desc">Ideal para dúvidas amorosas, profissionais e espirituais.</p>
         </div>
 
-        <form id="form-consulta">
-          <div class="input-group">
-            <label for="pergunta">Sua Pergunta Direta ao Oráculo</label>
-            <textarea id="pergunta" rows="3" placeholder="Ex: Vou conseguir fechar esse contrato de trabalho este mês?" required></textarea>
-          </div>
+        <div class="package-card active" id="pacote-10" onclick="selecionarPacote(10, 42.99)">
+          <span class="pkg-badge gold">Melhor Valor</span>
+          <h3>10 Consultas</h3>
+          <p class="price">R$ 42,99</p>
+          <p class="pkg-desc">Acompanhamento completo de caminhos e orientações.</p>
+        </div>
+      </div>
 
-          <button type="submit" class="btn-primary" id="btn-jogar">Lançar Búzios na Mesa</button>
-        </form>
+      <div class="action-center">
+        <button onclick="gerarPix()" class="btn-secondary">⚡ Gerar Pagamento PIX</button>
+      </div>
 
-        <!-- Mesa / Peneira dos Búzios -->
-        <div id="mesa-buzios" style="display: none;">
-          <div id="peneira"></div>
+      <div id="area-pix"></div>
+    </section>
+
+    <!-- ETAPA 3: Mesa Sagrada de Búzios & Pergunta -->
+    <section class="card glass-card" id="secao-jogada" style="display: none;">
+      <div class="card-header">
+        <h2>🔮 3. Mesa Sagrada dos Búzios</h2>
+        <div class="saldo-badge">
+          Consultas Disponíveis: <strong id="qtd-perguntas">0</strong>
+        </div>
+      </div>
+
+      <form id="form-consulta" class="form-grid">
+        <div class="input-group">
+          <label for="area-foco">Área da Sua Dúvida:</label>
+          <select id="area-foco" required>
+            <option value="Amor & Relacionamentos">❤️ Amor & Relacionamentos</option>
+            <option value="Trabalho & Carreira">💼 Trabalho & Carreira</option>
+            <option value="Dinheiro & Prosperidade">💰 Dinheiro & Prosperidade</option>
+            <option value="Família & Lar">🏡 Família & Lar</option>
+            <option value="Orixá de Cabeça & Espiritualidade">🕊️ Orixá de Cabeça & Espiritualidade</option>
+            <option value="Caminhos Gerais">✨ Caminhos Gerais</option>
+          </select>
         </div>
 
-        <!-- Veredito Completo -->
-        <div id="resultado-leitura" style="display: none; margin-top: 20px;"></div>
-      </section>
+        <div class="input-group">
+          <label for="pergunta">Digite sua Pergunta ao Oráculo:</label>
+          <textarea id="pergunta" rows="3" placeholder="Ex: Qual energia rege minha vida amorosa hoje? O que devo fazer para prosperar?" required></textarea>
+        </div>
 
-    </main>
+        <button type="submit" id="btn-jogar" class="btn-primary btn-gold">🐚 Lançar os Búzios na Mesa</button>
+      </form>
+
+      <!-- Animação da Mesa de Búzios -->
+      <div id="mesa-buzios" class="mesa-container" style="display: none;">
+        <div class="peneira-sagrada" id="peneira">
+          <!-- Búzios em SVG gerados via JS -->
+        </div>
+        <p id="status-jogo" class="status-animacao">🔮 Preparando a mesa de jogo...</p>
+      </div>
+
+      <!-- Container do Resultado da Leitura -->
+      <div id="resultado-leitura" class="resultado-box leitura-box" style="display: none;">
+        <!-- Preenchido dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p>© 2026 Oráculo Odara. Respeito e reverência às tradições ancestrais dos Orixás e Odùs.</p>
+    </footer>
+
   </div>
 
   <script src="script.js"></script>
