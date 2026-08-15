@@ -387,3 +387,19 @@ button:active, .btn-primary:active {
   align-items: center;
   gap: 6px;
 }
+
+/* ==========================================
+   DISCLAIMER OBRIGATÓRIO (CALLOUT)
+   ========================================== */
+.disclaimer-callout {
+  margin-top: 20px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--gold-accent);
+  border-left: 4px solid var(--gold-accent);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--gold-light);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
