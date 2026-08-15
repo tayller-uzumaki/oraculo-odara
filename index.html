@@ -43,8 +43,19 @@
           <button type="submit" class="btn-primary" id="btn-calc-odu">🔮 Descobrir Meu Odù</button>
         </form>
 
-        <!-- O painel abaixo é renderizado dinamicamente via script.js -->
-        <div id="resultado-odu" class="result-box" style="display: none; margin-top: 20px;"></div>
+        <!-- Painel de Resultado do Odù de Nascimento -->
+        <div id="resultado-odu" class="result-box" style="display: none; margin-top: 20px;">
+          <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; border: 1px solid var(--gold-accent, #d4af37);">
+            <h3 style="color: var(--gold-light, #fef3c7); margin-bottom: 8px;">
+              Seu Odù de Nascimento é: <span id="odu-nome" style="color: #fff;"></span> (Nº <span id="odu-numero"></span>)
+            </h3>
+            <p style="color: var(--text-muted, #a1a1aa); font-size: 0.9rem; margin-bottom: 6px;">
+              <strong>Orixá Regente:</strong> <span id="odu-orixa" style="color: #fff;"></span> | 
+              <strong>Elemento:</strong> <span id="odu-elemento" style="color: #fff;"></span>
+            </p>
+            <div id="odu-caminho" style="margin-top: 12px; font-size: 0.92rem; color: #e4e4e7;"></div>
+          </div>
+        </div>
       </section>
 
       <!-- ETAPA 2: PACOTES PREMIUM -->
@@ -99,8 +110,10 @@
           </ul>
         </div>
 
-        <!-- FORMULÁRIO DIRETO E FLUIDO -->
+        <!-- FORMULÁRIO COM CAMPO OCULTO DE ÁREA (PARA MANTER A COMPATIBILIDADE DO SCRIPT) -->
         <form id="form-consulta">
+          <input type="hidden" id="area-foco" value="Geral & Caminhos">
+
           <div class="input-group" style="margin-bottom: 16px;">
             <label for="pergunta" style="display: block; color: var(--gold-light); font-weight: 600; margin-bottom: 6px;">Sua Pergunta Direta ao Oráculo</label>
             <textarea id="pergunta" rows="4" placeholder="Ex: Quais conselhos os Búzios têm para a minha vida profissional e financeira neste momento?" required></textarea>
@@ -109,9 +122,10 @@
           <button type="submit" class="btn-primary" id="btn-jogar">Lançar Búzios na Mesa</button>
         </form>
 
-        <!-- Mesa / Peneira dos Búzios -->
-        <div id="mesa-buzios" style="display: none;">
-          <div id="peneira"></div>
+        <!-- MESA E STATUS MÍSTICO PARA A ANIMAÇÃO -->
+        <div id="mesa-buzios" style="display: none; margin-top: 24px; text-align: center;">
+          <div id="status-jogo" style="color: var(--gold-light, #fbbf24); font-weight: 600; font-size: 0.95rem; margin-bottom: 12px; min-height: 24px;"></div>
+          <div id="peneira" style="position: relative; width: 280px; height: 280px; margin: 0 auto; background: radial-gradient(circle, #2d1842 0%, #0f071a 100%); border: 3px solid #d4af37; border-radius: 50%; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); overflow: hidden;"></div>
         </div>
 
         <!-- Veredito Completo -->
