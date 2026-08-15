@@ -1,30 +1,38 @@
-/* ==========================================================================
-   RESET & VARIÁVEIS GLOBAIS
-   ========================================================================== */
+/* ==========================================
+   ORÁCULO ODARA - DESIGN PREMIUM & MÍSTICO
+   ========================================== */
+
+/* 1. VARIÁVEIS DE CORES & PALETA PURPLE/GOLD */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
 :root {
-  --bg-main: #0a0512;
-  --bg-card: #150a24;
-  --bg-card-border: #332147;
-  --bg-highlight: #28173d;
+  /* Fundo Principal - Roxo Profundo */
+  --bg-gradient: linear-gradient(135deg, #120A1F 0%, #1A1028 50%, #1F1433 100%);
   
-  --gold-primary: #f59e0b;
-  --gold-light: #fbbf24;
-  --gold-dark: #b45309;
-  --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  /* Cards e Elementos - Roxo Elegante com Transparência */
+  --card-bg: rgba(36, 21, 61, 0.75);
+  --card-bg-inner: rgba(26, 16, 40, 0.6);
+  --card-border: rgba(212, 175, 55, 0.2);
+  --card-border-active: rgba(168, 85, 247, 0.5);
 
-  --text-bright: #ffffff;
-  --text-muted: #a1a1aa;
-  --text-subtle: #d4d4d8;
+  /* Acentos - Dourado Suave & Lilás Sofisticado */
+  --gold-accent: #D4AF37;
+  --gold-light: #F3E5AB;
+  --purple-glow: #8B5CF6;
+  --purple-accent: #A855F7;
+  
+  /* Gradiente dos Botões */
+  --btn-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+  --btn-gradient-hover: linear-gradient(135deg, #6D28D9 0%, #9333EA 100%);
 
-  --accent-green: #10b981;
-  --accent-red: #ef4444;
+  /* Textos Legíveis */
+  --text-main: #F8F5F0;
+  --text-muted: #C9C4D6;
 
-  --font-serif: 'Cinzel', serif;
-  --font-sans: 'Inter', sans-serif;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  /* Geometria e Sombras */
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-premium: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.08);
 }
 
 * {
@@ -34,396 +42,364 @@
 }
 
 body {
-  background-color: var(--bg-main);
-  background-image: radial-gradient(circle at 50% 0%, #210d38 0%, #0a0512 70%);
-  color: var(--text-bright);
-  font-family: var(--font-sans);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.6;
+  padding: 30px 15px;
   min-height: 100vh;
-  line-height: 1.5;
-  padding-bottom: 40px;
 }
 
-/* ==========================================================================
-   CABEÇALHO & RODAPÉ
-   ========================================================================== */
-.main-header {
+.main-container {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* 2. CABEÇALHOS E HIERARQUIA TIPOGRÁFICA */
+h1, h2, h3, h4 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-accent);
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-size: 2.3rem;
   text-align: center;
-  padding: 32px 16px 20px 16px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
 }
 
-.logo-container {
-  display: flex;
+.header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--gold-accent);
+}
+
+/* 3. CARDS E PAINÉIS PREMIUM */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-premium);
+  transition: border-color 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+/* 4. FORMULÁRIOS E INPUTS REFINADOS */
+.input-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input[type="text"], 
+input[type="date"], 
+input[type="email"], 
+select, 
+textarea {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(18, 10, 31, 0.7);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--purple-accent);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+  background: rgba(18, 10, 31, 0.9);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* 5. BOTÕES ROXO -> LILÁS COM EFEITO PREMIUM */
+button, .btn-primary {
+  background: var(--btn-gradient);
+  color: #FFFFFF;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
 }
 
-.logo-icon {
-  font-size: 32px;
+button:hover, .btn-primary:hover {
+  background: var(--btn-gradient-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.5);
 }
 
-.main-header h1 {
-  font-family: var(--font-serif);
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--gold-light);
-  letter-spacing: 1px;
+button:disabled, .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
-.tagline {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-top: 4px;
+button:active, .btn-primary:active {
+  transform: translateY(0);
 }
 
-.main-footer {
-  text-align: center;
-  padding: 24px 16px;
-  font-size: 12px;
-  color: var(--text-muted);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 40px;
-}
-
-/* ==========================================================================
-   LAYOUT CONTAINERS & CARDS
-   ========================================================================== */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.card-section {
-  background: var(--bg-card);
-  border: 1px solid var(--bg-card-border);
+/* 6. LISTAS E BENEFÍCIOS */
+.premium-benefits {
+  background: var(--card-bg-inner);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   border-radius: var(--radius-md);
-  padding: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-}
-
-.card-header {
+  padding: 20px;
   margin-bottom: 20px;
 }
 
-.card-header h2 {
-  font-family: var(--font-serif);
-  font-size: 18px;
-  color: var(--gold-light);
-  margin-bottom: 4px;
+.premium-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
 }
 
-.card-header p {
-  font-size: 13px;
-  color: var(--text-muted);
+.premium-benefits li {
+  padding: 8px 0;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
 }
 
-/* ==========================================================================
-   FORMULÁRIOS & BOTÕES
-   ========================================================================== */
-.form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.premium-benefits li:last-child {
+  border-bottom: none;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* 7. CARDS DE PACOTES DE CONSULTA */
+.pacote-card, .package-card {
+  background: var(--card-bg-inner);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.form-group label {
-  font-size: 12px;
+.pacote-card.active, .package-card.active,
+.pacote-card:hover, .package-card:hover {
+  border-color: var(--purple-accent);
+  background: rgba(42, 25, 70, 0.85);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+.badge-pop {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  background: var(--btn-gradient);
+  color: #FFF;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--gold-light);
+  padding: 3px 10px;
+  border-radius: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-input[type="date"],
-input[type="text"],
-select {
-  width: 100%;
-  padding: 12px;
-  background: #0b0612;
-  border: 1px solid var(--bg-card-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-bright);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-input[type="date"]:focus,
-input[type="text"]:focus,
-select:focus {
-  border-color: var(--gold-primary);
-}
-
-.btn-primary {
-  background: var(--gold-gradient);
-  color: #000;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 14px;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
-  width: 100%;
-  text-align: center;
-}
-
-.btn-primary:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* ==========================================================================
-   ODÙ DE NASCIMENTO (QUADRO EXPANDIDO)
-   ========================================================================== */
-.resultado-box {
-  margin-top: 20px;
-  background: #0b0612;
-  border: 1px solid var(--bg-card-border);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-}
-
-.odu-badge-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border-bottom: 1px solid var(--bg-card-border);
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-}
-
-.odu-number-circle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--gold-gradient);
-  color: #000;
-  font-family: var(--font-serif);
-  font-weight: 900;
-  font-size: 24px;
+/* 8. CONTADOR PERMANENTE DE PERGUNTAS */
+.contador-perguntas-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
-}
-
-.odu-title-info h3 {
-  font-family: var(--font-serif);
-  font-size: 20px;
-  color: var(--gold-light);
-}
-
-.odu-orixa-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.sub-title-gold {
-  color: var(--gold-light);
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.odu-caminho-texto {
-  font-size: 13.5px;
-  color: var(--text-subtle);
-}
-
-/* ==========================================================================
-   PACOTES & PIX
-   ========================================================================== */
-.banner-transicao {
-  background: var(--bg-highlight);
-  border-left: 4px solid var(--gold-primary);
-  padding: 10px 14px;
-  font-size: 12px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  color: var(--text-subtle);
-}
-
-.pacotes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
-  margin-bottom: 20px;
+  background: rgba(18, 10, 31, 0.8);
+  border: 1px solid var(--gold-accent);
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
 }
 
-.pacote-card {
-  background: #0b0612;
-  border: 2px solid var(--bg-card-border);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  cursor: pointer;
-  position: relative;
-  transition: border-color 0.2s, transform 0.2s;
-}
-
-.pacote-card.active {
-  border-color: var(--gold-primary);
-  background: #140a21;
-}
-
-.pacote-badge {
-  position: absolute;
-  top: -10px;
-  right: 12px;
-  background: #3b82f6;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 10px;
-  text-transform: uppercase;
-}
-
-.pacote-badge.gold {
-  background: var(--gold-gradient);
-  color: #000;
-}
-
-.pacote-card h3 {
-  font-size: 16px;
-  color: var(--text-bright);
-}
-
-.preco {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--gold-light);
-  margin: 4px 0 2px 0;
-}
-
-.preco-unitario {
-  font-size: 11px;
+.contador-item {
+  font-size: 0.9rem;
   color: var(--text-muted);
-  margin-bottom: 12px;
 }
 
-.pacote-recursos {
-  list-style: none;
-  font-size: 12px;
-  color: var(--text-subtle);
+.contador-item strong {
+  color: var(--gold-accent);
+  font-size: 1.1rem;
+  margin-left: 6px;
 }
 
-.pacote-recursos li {
-  margin-bottom: 4px;
+.contador-divider {
+  color: var(--card-border);
 }
 
-.highlight-gold {
-  color: var(--gold-light);
-  font-weight: 700;
-}
-
-/* ==========================================================================
-   MESA ANIMAÇÃO DOS BÚZIOS
-   ========================================================================== */
-.mesa-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.peneira-sagrada {
-  width: 260px;
-  height: 260px;
-  margin: 0 auto;
-  border-radius: 50%;
-  border: 6px solid #78350f;
-  background: radial-gradient(circle, #2d1810 0%, #170a05 100%);
+/* 9. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
+#mesa-buzios {
   position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 300px;
+  margin: 25px auto;
+  background: radial-gradient(circle, #2A1642 0%, #120A20 100%);
+  border: 2px solid var(--gold-accent);
+  border-radius: 50%;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
   overflow: hidden;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.15);
+  scroll-margin-top: 30px;
+}
+
+#peneira {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.buzio-item {
+  position: absolute;
+  width: 32px !important;
+  height: 46px !important;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.buzio-item svg {
+  width: 100% !important;
+  height: 100% !important;
+  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.7));
+}
+
+@keyframes chacoalhar {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, 3px) rotate(-1deg); }
+  50% { transform: translate(3px, -3px) rotate(1deg); }
+  75% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
 }
 
 .mesa-chacoalhando {
-  animation: shakeMesa 0.15s infinite alternate;
+  animation: chacoalhar 0.15s infinite;
 }
 
-@keyframes shakeMesa {
-  0% { transform: translate(2px, 1px) rotate(0deg); }
-  100% { transform: translate(-2px, -2px) rotate(1deg); }
+/* 10. CARDS DE RESULTADOS E DESTAQUES */
+.card-resultado-dark {
+  background: rgba(30, 18, 52, 0.95) !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  color: var(--text-main) !important;
 }
 
-.buzio {
-  width: 28px;
-  height: 38px;
-  position: absolute;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.box-destaque-dark {
+  background: rgba(18, 10, 31, 0.6) !important;
+  border-left: 3px solid var(--gold-accent) !important;
+  padding: 16px;
+  border-radius: 6px;
+  margin: 14px 0;
+  color: var(--text-main) !important;
 }
 
-.buzio-animando {
-  animation: dropBuzio 0.6s ease-out forwards;
+/* Listas de Pontos Fortes e Atenção */
+.odu-pontos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
 
-@keyframes dropBuzio {
-  0% { opacity: 0; transform: scale(2) rotate(180deg); }
-  100% { opacity: 1; transform: scale(1); }
+.box-pontos-fortes {
+  background: rgba(16, 42, 26, 0.6);
+  border: 1px solid #10B981;
+  border-radius: var(--radius-md);
+  padding: 16px;
 }
 
-.status-animacao {
-  margin-top: 12px;
-  font-size: 12px;
+.box-pontos-atencao {
+  background: rgba(45, 20, 20, 0.6);
+  border: 1px solid #EF4444;
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.box-pontos-fortes h4 {
+  color: #34D399;
+  margin-bottom: 8px;
+}
+
+.box-pontos-atencao h4 {
+  color: #F87171;
+  margin-bottom: 8px;
+}
+
+.box-pontos-fortes ul, .box-pontos-atencao ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.box-pontos-fortes li, .box-pontos-atencao li {
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================
+   DISCLAIMER OBRIGATÓRIO (CALLOUT)
+   ========================================== */
+.disclaimer-callout {
+  margin-top: 20px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--gold-accent);
+  border-left: 4px solid var(--gold-accent);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 0.85rem;
+  line-height: 1.5;
   color: var(--gold-light);
-  font-style: italic;
-}
-
-/* ==========================================================================
-   BARRA DE FAVORABILIDADE
-   ========================================================================== */
-.favorability-container {
-  margin: 12px 0;
-}
-
-.favorability-bar-bg {
-  width: 100%;
-  height: 10px;
-  background: #1f1133;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-top: 4px;
-  border: 1px solid var(--bg-card-border);
-}
-
-.favorability-bar-fill {
-  height: 100%;
-  background: var(--gold-gradient);
-  transition: width 1s ease-in-out;
-}
-
-/* ==========================================================================
-   RESPONSIVIDADE
-   ========================================================================== */
-@media (max-width: 600px) {
-  .card-section {
-    padding: 16px;
-  }
-
-  .peneira-sagrada {
-    width: 220px;
-    height: 220px;
-  }
-
-  .odu-badge-header {
-    flex-direction: column;
-    text-align: center;
-  }
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
