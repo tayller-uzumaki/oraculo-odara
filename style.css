@@ -1,197 +1,189 @@
-/* Reseta estilos básicos e configurações gerais */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 body {
-  background-color: #0b0512;
-  color: #f3f4f6;
-  padding: 20px 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  background-color: #0b0612;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
 
-.container {
-  width: 100%;
-  max-width: 650px;
-  background: #130a21;
-  border: 1px solid #2d1847;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+.main-container {
+  max-width: 750px;
+  margin: 0 auto;
 }
 
-.header-status {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #fbbf24;
-  border-radius: 30px;
-  padding: 8px 18px;
-  background: rgba(251, 191, 36, 0.05);
-  margin-bottom: 20px;
+.header-oraculo {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
-.badge-info {
-  font-size: 13px;
+.header-oraculo h1 {
   color: #fbbf24;
-  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-.card-instrucoes {
-  background: #1a0e2e;
+.card-section {
+  background: #150a24;
+  border: 1px solid #332147;
   border-radius: 12px;
-  padding: 16px;
-  border: 1px solid #2d1b4d;
-  margin-bottom: 20px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-.card-instrucoes h4 {
+.card-section h2 {
   color: #fbbf24;
-  font-size: 14px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 18px;
+  margin-top: 0;
 }
 
-.card-instrucoes ol {
-  padding-left: 20px;
-  font-size: 12.5px;
-  color: #d1d5db;
-  line-height: 1.6;
+.subtitle {
+  font-size: 13px;
+  color: #a1a1aa;
+  margin-bottom: 15px;
 }
 
-.label-input {
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
   display: block;
   font-size: 13px;
-  color: #e5e7eb;
-  margin-bottom: 8px;
-  font-weight: 500;
+  color: #fbbf24;
+  margin-bottom: 5px;
 }
 
-textarea.input-pergunta {
+.input-group input, .input-group select, .input-group textarea {
   width: 100%;
-  height: 90px;
-  background: #090310;
-  border: 1px solid #331e50;
+  padding: 10px;
+  background: #0b0612;
+  border: 1px solid #332147;
+  border-radius: 6px;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: #7c3aed;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 10px;
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.pacotes-grid {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.pacote-card {
+  flex: 1;
+  background: #0b0612;
+  border: 2px solid #332147;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pacote-card.active {
+  border-color: #fbbf24;
+  background: #28173d;
+}
+
+.pacote-card h3 {
+  font-size: 14px;
+  margin: 0 0 5px 0;
+  color: #fbbf24;
+}
+
+.pacote-card .preco {
+  font-size: 18px;
+  font-weight: bold;
+  color: #34d399;
+  margin: 0;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #0b0612;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #f59e0b;
+  color: #fbbf24;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.como-consultar {
+  background: #0b0612;
+  border: 1px solid #332147;
   border-radius: 8px;
   padding: 12px;
-  color: #fff;
-  font-size: 13.5px;
-  resize: none;
-  outline: none;
-  transition: border-color 0.3s;
+  margin-bottom: 15px;
+  font-size: 12px;
+  color: #d4d4d8;
 }
 
-textarea.input-pergunta:focus {
-  border-color: #8b5cf6;
+.como-consultar h4 {
+  color: #fbbf24;
+  margin: 0 0 8px 0;
 }
 
-.btn-lancar {
-  width: 100%;
-  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 30px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 14px;
-  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-  transition: transform 0.2s, box-shadow 0.2s;
+.como-consultar ol {
+  margin: 0;
+  padding-left: 18px;
 }
 
-.btn-lancar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+.resultado-box {
+  background: #0b0612;
+  border: 1px solid #fbbf24;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
 }
 
-.btn-lancar:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* --- MESA DE BÚZIOS (RESTAURADA E COMPATÍVEL COM O PRINT ORIGINAL) --- */
-#mesa-buzios {
-  margin: 30px auto;
+.mesa-container {
   text-align: center;
-  position: relative;
-  width: 100%;
-  max-width: 420px;
+  margin: 20px 0;
 }
 
-#peneira {
-  position: relative;
-  width: 320px;
-  height: 320px;
-  margin: 0 auto;
+.peneira-bg {
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
-  background: radial-gradient(circle, #1a082b 0%, #0d0417 70%, #05010a 100%);
-  border: 1.5px solid #fbbf24; /* Fio dourado circular perfeito */
-  box-shadow: 0 0 25px rgba(251, 191, 36, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.85);
+  border: 3px solid #f59e0b;
+  background: #1c0e2d;
+  margin: 0 auto;
+  position: relative;
   overflow: hidden;
 }
 
-/* Animação do Chacoalhar */
-.mesa-chacoalhando {
-  animation: chacoalharMesa 0.4s infinite ease-in-out;
-}
-
-@keyframes chacoalharMesa {
-  0% { transform: rotate(0deg) translate(0, 0); }
-  25% { transform: rotate(-1.5deg) translate(-3px, 2px); }
-  50% { transform: rotate(1.5deg) translate(3px, -2px); }
-  75% { transform: rotate(-1deg) translate(-2px, -1px); }
-  100% { transform: rotate(0deg) translate(0, 0); }
-}
-
-/* Estilo Individual dos Búzios */
 .buzio {
   position: absolute;
-  width: 38px;
-  height: 52px;
-  transition: all 0.5s ease-out;
-  filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.8));
-}
-
-.buzio-animando {
-  animation: cairBuzio 0.6s ease-out forwards;
-}
-
-@keyframes cairBuzio {
-  0% {
-    opacity: 0;
-    transform: scale(1.8) translateY(-60px) rotate(180deg);
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.favorability-container {
-  margin: 14px 0;
-}
-
-.favorability-bar-bg {
-  width: 100%;
-  height: 8px;
-  background: #231238;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.favorability-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #f59e0b 0%, #10b981 100%);
-  border-radius: 4px;
-  transition: width 1s ease-in-out;
+  width: 25px;
+  height: 35px;
 }
