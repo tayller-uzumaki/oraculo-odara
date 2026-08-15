@@ -1,325 +1,187 @@
-/* ==========================================
-   ORÁCULO ODARA - LÓGICA E RITUAL DOS BÚZIOS
-   ========================================== */
+// Variáveis de Controle de Estado e Histórico da Sessão
+let isProcessing = false;
+const perguntasRespondidasSet = new Set();
 
-// Estado global simples com persistência
-let consultasContratadas = 0;
-let consultasRestantes = 0;
-let pacoteSelecionado = { quantidade: 5, valor: 25.99 };
-let isProcessing = false; // Trava de proteção contra múltiplos envios
-
-// 1. MAPEAMENTO DOS ODÙS PELOS BÚZIOS ABERTOS (0 a 16)
-const ODUS_MAP = {
-  0: { nome: "Opira", orixa: "Obaluaiê / Omolu", elemento: "Terra", caminho: "Momento de recolhimento, cautela e preservação. Evite decisões precipitadas." },
-  1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "Caminhos de transformação rápida, dinamismo e necessidade de clareza." },
-  2: { nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra", caminho: "Dualidade, parcerias, união e busca por estabilidade." },
-  3: { nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo", caminho: "Superação de obstáculos, coragem, firmeza e ação." },
-  4: { nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água", caminho: "Intuição afiada, proteção ancestral e atenção a alertas sutis." },
-  5: { nome: "Oxé", orixa: "Oxum", elemento: "Água", caminho: "Prosperidade, sensibilidade, beleza, renovação e caminhos abertos." },
-  6: { nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra", caminho: "Grande riqueza, fartura, expansão e sorte nos negócios." },
-  7: { nome: "Odi", orixa: "Obaluaiê / Oxóssi", elemento: "Terra", caminho: "Resistência, persistência e quebra de amarras antigas." },
-  8: { nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água", caminho: "Sabedoria da maturidade, reflexão profunda e calma." },
-  9: { nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar", caminho: "Ventos de mudança, movimento, intuição e liberdade." },
-  10: { nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço", caminho: "Paz, pureza, bênçãos elevadas e respeito ao sagrado." },
-  11: { nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar", caminho: "Imprevistos produtivos, dinamismo e necessidade de flexibilidade." },
-  12: { nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo", caminho: "Justiça, liderança, vitória sobre demandas e firmeza de propósito." },
-  13: { nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra", caminho: "Transformação espiritual e encerramento de ciclos velhos." },
-  14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "Renovação contínua, sabedoria estratégica e flexibilidade." },
-  15: { nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar", caminho: "Conquistas pela perspicácia, proteção e intuição refinada." },
-  16: { nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "Luz total, confirmação plena, paz e bênção máxima dos caminhos." }
-};
-
-// Atualiza o contador permanente visual de perguntas
-function atualizarContadores() {
-  const elContratadas = document.getElementById('qtd-contratadas');
-  const elRestantes = document.getElementById('qtd-perguntas');
-  if (elContratadas) elContratadas.textContent = consultasContratadas;
-  if (elRestantes) elRestantes.textContent = consultasRestantes;
+// Normalização de texto de pergunta para comparação
+function normalizarTextoPergunta(texto) {
+  return texto.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-// 2. CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO (Estrutura Obrigatória Item 4)
-document.getElementById('form-odu')?.addEventListener('submit', function (e) {
-  e.preventDefault();
-  const nome = document.getElementById('nome').value.trim();
-  const data = document.getElementById('dataNasc').value;
-
-  if (!data || !nome) return;
-
-  // Soma dos dígitos da data de nascimento
-  const numeros = data.replace(/-/g, '');
-  let soma = 0;
-  for (let char of numeros) soma += parseInt(char);
-
-  // Redução oracular para o intervalo 1-16
-  let numOdu = soma;
-  while (numOdu > 16) {
-    let str = numOdu.toString();
-    numOdu = 0;
-    for (let c of str) numOdu += parseInt(c);
-  }
-  if (numOdu === 0) numOdu = 16;
-
-  const infoOdu = ODUS_MAP[numOdu] || ODUS_MAP[16];
-  const painelOdu = document.getElementById('resultado-odu');
-
-  // Construção do Resultado Estruturado conforme Requisito 4
-  painelOdu.innerHTML = `
-    <div class="card-resultado-dark">
-      <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
-        <span style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">Resultado do Odù de Nascimento</span>
-        <h3 style="font-size: 1.4rem; color: var(--gold-light); margin-top: 4px;">Olá, ${nome}! Seus Caminhos sob a Luz de Odù ${infoOdu.nome}</h3>
-      </div>
-
-      <div style="display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;">
-        <span class="badge" style="background: rgba(212,175,55,0.15);">Identificação: Odù #${numOdu} — ${infoOdu.nome}</span>
-        <span class="badge" style="background: rgba(139,92,246,0.15);">Regência: ${infoOdu.orixa}</span>
-        <span class="badge" style="background: rgba(212,175,55,0.15);">Elemento: ${infoOdu.elemento}</span>
-      </div>
-
-      <div class="box-destaque-dark">
-        <h4 style="color: var(--gold-accent); margin-bottom: 10px;">📜 Interpretação Completa dos Seus Caminhos</h4>
-        
-        <p style="margin-bottom: 12px; text-indent: 10px;">
-          <strong>Características Principais:</strong> Que a paz de Axé acompanhe seus passos, ${nome}. O Odù ${infoOdu.nome} manifesta em sua essência a regência de ${infoOdu.orixa}, conferindo uma personalidade marcante, conectada ao elemento ${infoOdu.elemento}. Aqueles que nascem sob esta vibração trazem uma marca única de percepção e presença no mundo.
-        </p>
-
-        <p style="margin-bottom: 12px; text-indent: 10px;">
-          <strong>Potencial Espiritual e Pessoal:</strong> Seus caminhos carregam a força da ancestralidade para superar intempéries com dignidade. Seu potencial interior revela uma capacidade natural de ${infoOdu.caminho.toLowerCase()} Esta bênção oracular indica que, quando alinhado com suas virtudes, você alcança um estado elevado de discernimento e prosperidade.
-        </p>
-
-        <p style="margin-bottom: 12px; text-indent: 10px;">
-          <strong>Desafios e Aprendizados:</strong> Como toda grande força, ${nome}, o Odù ${infoOdu.nome} exige maturidade na condução do livre-arbítrio. O principal aprendizado desta regência é manter o equilíbrio emocional e espiritual nos momentos de oscilação, evitando decisões impulsivas e buscando a sabedoria do silêncio e da reflexão antes de agir.
-        </p>
-
-        <p style="margin-bottom: 4px; text-indent: 10px;">
-          <strong>Orientações Gerais:</strong> Mantenha sua fé firme e cuide de sua energia vital. Respeite seus ciclos, cultive a gratidão aos Orixás e busque sempre a clareza espiritual em suas escolhas. Lembre-se de que o Odù aponta a direção, mas a caminhada é fortalecida pela sua conduta e pureza de coração.
-        </p>
-      </div>
-
-      <div class="odu-pontos-grid">
-        <div class="box-pontos-fortes">
-          <h4>✨ Pontos Fortes</h4>
-          <ul>
-            <li>✦ Intuição e percepção espiritual aguçadas</li>
-            <li>✦ Capacidade de resiliência e renovação</li>
-            <li>✦ Proteção ancestral de ${infoOdu.orixa}</li>
-            <li>✦ Determinação para alcançar seus objetivos</li>
-          </ul>
-        </div>
-
-        <div class="box-pontos-atencao">
-          <h4>⚠️ Pontos de Atenção</h4>
-          <ul>
-            <li>✦ Necessidade de manter a calma perante imprevistos</li>
-            <li>✦ Evitar atitudes precipitadas ou ansiedade</li>
-            <li>✦ Cuidado com desgastes na energia pessoal</li>
-            <li>✦ Atenção ao equilíbrio entre a razão e a emoção</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="banner-transicao" style="margin-top: 20px; padding: 12px; background: rgba(0,0,0,0.25); border-left: 3px solid var(--gold-accent); border-radius: 6px; font-size: 0.88rem;">
-        ✨ ${nome}, agora que você conhece a estrutura do seu Odù de nascimento (${infoOdu.nome}), consulte abaixo a mesa de búzios para obter respostas específicas sobre o seu momento atual.
-      </div>
-    </div>
-  `;
-
-  painelOdu.style.display = 'block';
-  painelOdu.scrollIntoView({ behavior: 'smooth' });
-});
-
-// 3. SELEÇÃO DE PACOTES E PAGAMENTO
-function selecionarPacote(qtd, valor) {
-  pacoteSelecionado = { quantidade: qtd, valor: valor };
-  document.querySelectorAll('.pacote-card, .package-card').forEach(card => card.classList.remove('active'));
-  
-  const el = document.getElementById(`pacote-${qtd}`);
-  if (el) el.classList.add('active');
-}
-
-function gerarPix() {
-  consultasContratadas += pacoteSelecionado.quantidade;
-  consultasRestantes += pacoteSelecionado.quantidade;
-  atualizarContadores();
-  
-  alert(`✨ Pagamento simulado com sucesso!\n\nForam adicionadas ${pacoteSelecionado.quantidade} consultas ao seu saldo.`);
-  
-  const secaoJogada = document.getElementById('secao-jogada');
-  secaoJogada.style.display = 'block';
-  secaoJogada.scrollIntoView({ behavior: 'smooth' });
-}
-
-// 4. REINICIAR FORMULÁRIO DE CONSULTA (Botão "Nova Pergunta")
-function reiniciarConsulta() {
-  const campoPergunta = document.getElementById('pergunta');
-  if (campoPergunta) campoPergunta.value = '';
-
-  const painelResultado = document.getElementById('resultado-leitura');
-  if (painelResultado) painelResultado.style.display = 'none';
-
-  const mesa = document.getElementById('mesa-buzios');
-  if (mesa) mesa.style.display = 'none';
-
-  document.getElementById('form-consulta')?.scrollIntoView({ behavior: 'smooth' });
-}
-
-// 5. RITUAL DA JOGADA DOS BÚZIOS (COM ROLAGEM AUTOMÁTICA E PROTEÇÃO CONTRA DUPLO CLIQUE)
+// Etapa 3: Jogada de Búzios com Trava Concorrente e Validação de Reuso
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  // Proteção contra múltiplos envios (Requisito 1.4)
+  const inputPergunta = document.getElementById('pergunta');
+  const perguntaRaw = inputPergunta ? inputPergunta.value : '';
+  const perguntaNormalizada = normalizarTextoPergunta(perguntaRaw);
+  const area = document.getElementById('area-foco')?.value || 'Geral';
+  const btn = document.getElementById('btn-jogar');
+  const status = document.getElementById('status-jogo');
+
+  // 1. Bloqueio de múltiplas chamadas simultâneas
   if (isProcessing) {
-    alert("Sua pergunta já está sendo processada.");
+    if (status) status.innerText = "Sua pergunta já está sendo processada.";
     return;
   }
 
-  if (consultasRestantes <= 0) {
-    alert("Você precisa adquirir um pacote de consultas para realizar a jogada.");
-    document.getElementById('secao-pacotes').scrollIntoView({ behavior: 'smooth' });
+  // 2. Bloqueio de reuso de pergunta já processada na mesma sessão
+  if (perguntasRespondidasSet.has(perguntaNormalizada)) {
+    if (status) {
+      status.innerText = "Esta pergunta já foi consultada. Para uma nova jogada, faça uma pergunta diferente.";
+    }
+    alert("Esta pergunta já foi consultada. Para uma nova jogada, faça uma pergunta diferente.");
     return;
   }
 
-  const pergunta = document.getElementById('pergunta').value.trim();
-  if (!pergunta) return;
+  // 3. Verificação de Saldo de Consultas
+  if (perguntasRestantes <= 0) {
+    alert("Seu saldo de consultas acabou. Adquira um novo pacote!");
+    return;
+  }
 
-  // Ativar trava de processamento
+  // Ativação imediata da trava de processamento e bloqueio do botão
   isProcessing = true;
+  if (btn) btn.disabled = true;
 
   const mesa = document.getElementById('mesa-buzios');
   const peneira = document.getElementById('peneira');
-  const painelResultado = document.getElementById('resultado-leitura');
-  const btnJogar = document.getElementById('btn-jogar');
-
-  btnJogar.disabled = true;
-  painelResultado.style.display = 'none';
-  peneira.innerHTML = '';
-  mesa.style.display = 'block';
   
-  // Rolagem Automática Imediata para a Mesa (Requisito 1.1)
-  mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  // RITUAL - FASE 1: Chacoalhar a mesa
-  mesa.classList.add('mesa-chacoalhando');
+  if (mesa) mesa.style.display = 'block';
+  if (peneira) peneira.innerHTML = '';
   
-  let statusTexto = document.getElementById('status-jogo');
-  if (!statusTexto) {
-    statusTexto = document.createElement('p');
-    statusTexto.id = 'status-jogo';
-    statusTexto.style.cssText = "text-align: center; color: var(--gold-light); font-weight: 600; margin-top: 15px; font-family: 'Cinzel', serif;";
-    mesa.parentNode.insertBefore(statusTexto, mesa.nextSibling);
+  const resContainer = document.getElementById('resultado-leitura');
+  if (resContainer) resContainer.style.display = 'none';
+
+  if (mesa) {
+    mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    mesa.classList.add('mesa-chacoalhando');
   }
 
-  statusTexto.textContent = "🔮 Concentrando nas energias da sua pergunta...";
+  const numAbertos = Math.floor(Math.random() * 16) + 1;
+  const oduJogo = ODUS_DATABASE[numAbertos];
+
+  for (let i = 0; i < 16; i++) {
+    const eAberto = i < numAbertos;
+    const buzioEl = document.createElement('div');
+    buzioEl.className = 'buzio buzio-animando';
+    buzioEl.innerHTML = criarBuzioSVG(eAberto);
+    
+    const top = Math.floor(Math.random() * 65 + 15);
+    const left = Math.floor(Math.random() * 65 + 15);
+    const rot = Math.floor(Math.random() * 360);
+
+    buzioEl.style.top = `${top}%`;
+    buzioEl.style.left = `${left}%`;
+    buzioEl.style.transform = `rotate(${rot}deg)`;
+    buzioEl.style.animationDelay = `${i * 0.08}s`;
+
+    if (peneira) peneira.appendChild(buzioEl);
+  }
+
+  if (status) status.innerText = "🔮 Lançando os búzios na mesa sagrada...";
 
   setTimeout(() => {
-    statusTexto.textContent = "✨ Evocando os Orixás e ouvindo a voz dos Odùs...";
-  }, 1200);
+    if (mesa) mesa.classList.remove('mesa-chacoalhando');
+    if (status) status.innerText = "✨ Consultando a sabedoria ancestral dos Orixás...";
+  }, 1500);
 
   setTimeout(() => {
-    statusTexto.textContent = "🍃 Lançando os 16 búzios sagrados sobre a mesa...";
-  }, 2400);
+    if (status) status.innerText = "🕯️ Interpretando os sinais e a queda revelada...";
+  }, 3000);
 
-  // RITUAL - FASE 2: Queda e Sorteio
   setTimeout(() => {
-    mesa.classList.remove('mesa-chacoalhando');
-    statusTexto.textContent = "";
-
-    const buziosAbertos = Math.floor(Math.random() * 17);
-    const buziosFechados = 16 - buziosAbertos;
-    const oduSorteado = ODUS_MAP[buziosAbertos] || ODUS_MAP[16];
-
-    for (let i = 0; i < 16; i++) {
-      const buzio = document.createElement('div');
-      buzio.className = 'buzio-item';
-      const isOpen = i < buziosAbertos;
+    try {
+      // Registrar pergunta no histórico da sessão e consumir crédito
+      perguntasRespondidasSet.add(perguntaNormalizada);
+      perguntasRestantes--;
       
-      buzio.innerHTML = isOpen ? `
-        <svg viewBox="0 0 40 60">
-          <ellipse cx="20" cy="30" rx="16" ry="26" fill="#F8F5F0" stroke="#D4AF37" stroke-width="2"/>
-          <ellipse cx="20" cy="30" rx="8" ry="16" fill="#120A1F" stroke="#8B5CF6" stroke-width="1.5"/>
-          <line x1="20" y1="10" x2="20" y2="50" stroke="#D4AF37" stroke-width="1.5"/>
-        </svg>
-      ` : `
-        <svg viewBox="0 0 40 60">
-          <ellipse cx="20" cy="30" rx="16" ry="26" fill="#EAD9C9" stroke="#8B5CF6" stroke-width="2"/>
-          <line x1="20" y1="8" x2="20" y2="52" stroke="#5A3A7E" stroke-width="2"/>
-        </svg>
-      `;
+      const qtdElem = document.getElementById('qtd-perguntas');
+      if (qtdElem) qtdElem.innerText = perguntasRestantes;
 
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.random() * 110; 
-      const x = 160 + radius * Math.cos(angle);
-      const y = 120 + radius * Math.sin(angle);
-      const rot = Math.floor(Math.random() * 360);
-
-      buzio.style.left = `${x}px`;
-      buzio.style.top = `${y}px`;
-      buzio.style.transform = `rotate(${rot}deg) scale(0.1)`;
-      buzio.style.opacity = '0';
-
-      peneira.appendChild(buzio);
-
-      setTimeout(() => {
-        buzio.style.opacity = '1';
-        buzio.style.transform = `rotate(${rot}deg) scale(1)`;
-      }, i * 40);
-    }
-
-    // RITUAL - FASE 3: Revelação Padronizada da Resposta da IA / Oráculo (Requisito 3)
-    setTimeout(() => {
-      // Consumir 1 consulta do saldo e atualizar contador
-      consultasRestantes--;
-      atualizarContadores();
-
-      const favorabilidade = Math.min(100, Math.max(15, Math.floor((buziosAbertos / 16) * 100) + Math.floor(Math.random() * 15)));
-
-      painelResultado.className = "card card-resultado-dark";
-      painelResultado.innerHTML = `
-        <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
-          <span style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Revelação da Consulta Sagrada</span>
-          <h3 style="font-size: 1.4rem; color: var(--gold-light); margin-top: 4px;">Odù ${oduSorteado.nome} (${buziosAbertos} Abertos / ${buziosFechados} Fechados)</h3>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-bottom: 16px; flex-wrap: wrap;">
-          <div style="background: rgba(139, 92, 246, 0.15); padding: 8px 16px; border-radius: 20px; font-size: 0.88rem;">
-            Orixá Regente: <strong style="color: var(--gold-light);">${oduSorteado.orixa}</strong>
+      if (resContainer) {
+        resContainer.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 14px;">
+            <span class="tag-gold">🐚 Caída: ${numAbertos} Búzios Abertos / ${16 - numAbertos} Fechados</span>
+            <span style="font-size: 12px; color: #a1a1aa;">Área: <strong>${area}</strong></span>
           </div>
-          <div style="background: rgba(139, 92, 246, 0.15); padding: 8px 16px; border-radius: 20px; font-size: 0.88rem;">
-            Favorabilidade: <strong style="color: var(--purple-accent);">${favorabilidade}%</strong>
+
+          <div style="background: #28173d; padding: 14px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 16px;">
+            <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">1. Tendência da Consulta</span>
+            <h3 style="color: #fff; font-size: 16px; margin-top: 4px;">${oduJogo.tituloTendencia}</h3>
           </div>
-        </div>
 
-        <div class="box-destaque-dark">
-          <h4 style="color: var(--gold-accent); margin-bottom: 6px;">🎯 Resposta Oracular para a sua Questão:</h4>
-          <p style="font-style: italic; color: var(--text-muted); margin-bottom: 10px;">"${pergunta}"</p>
-          <p style="line-height: 1.7;">
-            Que as bênçãos dos Orixás tragam luz à sua busca. Ao lançar os búzios para a sua dúvida, o sagrado manifestou a energia de <strong>Odù ${oduSorteado.nome}</strong>. Este caminho indica que ${oduSorteado.caminho.toLowerCase()} Mantenha o coração sereno e a firmeza em seu propósito.
-          </p>
-        </div>
+          <div class="favorability-container">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #fbbf24;">
+              <span>Favorabilidade da Consulta</span>
+              <span>${oduJogo.favorabilidade}%</span>
+            </div>
+            <div class="favorability-bar-bg">
+              <div class="favorability-bar-fill" style="width: ${oduJogo.favorabilidade}%;"></div>
+            </div>
+          </div>
 
-        <div style="margin-top: 14px;">
-          <h4 style="color: var(--gold-light); margin-bottom: 6px;">💡 Orientação e Acolhimento Ancestral:</h4>
-          <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
-            A sabedoria dos búzios nos ensina que a clareza vem com a paciência e a fé. Recomendamos acender uma vela branca ao seu anjo da guarda, fortalecendo sua intuição e permitindo que as energias de ${oduSorteado.orixa} abram seus caminhos com prosperidade e proteção.
-          </p>
-        </div>
+          <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
+            <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 8px;">2. O Que os Búzios Revelam (Odù ${oduJogo.nome})</h4>
+            <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6; margin-bottom: 8px;">
+              ${oduJogo.caminho}
+            </p>
+            <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6;">
+              A queda de ${numAbertos} búzios traz a regência direta do Orixá <strong>${oduJogo.orixa}</strong>, ativando energias do elemento <strong>${oduJogo.elemento}</strong> para direcionar esta fase.
+            </p>
+          </div>
 
-        <!-- Botão "Nova Pergunta" conforme Requisito 1.3 -->
-        <div style="margin-top: 24px; text-align: center;">
-          <button type="button" class="btn-primary" onclick="reiniciarConsulta()">✨ Nova Pergunta</button>
-        </div>
-      `;
+          <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #f59e0b;">
+            <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">3. Interpretação Aplicada à Sua Pergunta</h4>
+            <p style="font-size: 12px; color: #a1a1aa; font-style: italic; margin-bottom: 8px;">" Pergunta: ${perguntaRaw} "</p>
+            <p style="font-size: 13.5px; color: #fff; line-height: 1.6;">
+              Em relação à sua dúvida sobre <strong>${area.toLowerCase()}</strong>, o oráculo revela que o cenário atual pede clareza. A energia de ${oduJogo.nome} indica que ${oduJogo.favorabilidade > 60 ? 'existem caminhos abertos e suporte favorável para o desfecho que você busca, desde que mantenha a postura recomendada' : 'existem obstáculos e pendências que precisam ser tratados com cautela antes que o resultado desejado possa se consolidar'}.
+            </p>
+          </div>
 
-      painelResultado.style.display = 'block';
-      painelResultado.scrollIntoView({ behavior: 'smooth' });
+          <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
+            <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">4. Influências Espirituais Associadas</h4>
+            <p style="font-size: 13px; color: #d4d4d8; line-height: 1.5;">${oduJogo.influenciaEspiritual}</p>
+          </div>
 
-      // Liberação dos botões e travas
-      btnJogar.disabled = false;
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0;">
+            <div style="background: #150a24; padding: 12px; border-radius: 8px; border: 1px solid #332147;">
+              <h4 style="color: #34d399; font-size: 13px; margin-bottom: 6px;">5. ✨ Fatores Favoráveis</h4>
+              <ul style="font-size: 12px; color: #a1a1aa; padding-left: 16px;">
+                ${oduJogo.fatoresFavoraveis.map(f => `<li style="margin-bottom: 4px;">${f}</li>`).join('')}
+              </ul>
+            </div>
+            <div style="background: #150a24; padding: 12px; border-radius: 8px; border: 1px solid #332147;">
+              <h4 style="color: #f87171; font-size: 13px; margin-bottom: 6px;">6. ⚠️ Pontos de Atenção</h4>
+              <ul style="font-size: 12px; color: #a1a1aa; padding-left: 16px;">
+                ${oduJogo.pontosAtencao.map(p => `<li style="margin-bottom: 4px;">${p}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
+            <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">7. 💡 Orientações Práticas</h4>
+            <p style="font-size: 13px; color: #d4d4d8; line-height: 1.5;">${oduJogo.orientacoesPraticas}</p>
+          </div>
+
+          <div style="margin: 16px 0; padding: 12px; background: #28173d; border-radius: 8px; font-style: italic; text-align: center; color: #fde68a; font-size: 13px;">
+            "8. ${oduJogo.sabedoriaAncestral}"
+          </div>
+
+          <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #332147; text-align: center;">
+            <span style="font-size: 11px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">9. Resumo Final</span>
+            <p style="font-size: 13.5px; color: #fff; font-weight: bold; margin-top: 4px;">${oduJogo.resumoFinal}</p>
+          </div>
+        `;
+
+        resContainer.style.display = 'block';
+        resContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      if (status) status.innerText = "Leitura concluída com sucesso!";
+    } finally {
+      // Liberação garantida do estado
       isProcessing = false;
-    }, 1000);
-
-  }, 3600);
+      if (btn) btn.disabled = false;
+    }
+  }, 4500);
 });
-
-// Inicialização dos contadores na carga da página
-document.addEventListener('DOMContentLoaded', atualizarContadores);
