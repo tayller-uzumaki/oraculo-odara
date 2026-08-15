@@ -43,29 +43,8 @@
           <button type="submit" class="btn-primary" id="btn-calc-odu">🔮 Descobrir Meu Odù</button>
         </form>
 
-        <div id="resultado-odu" class="result-box" style="display: none; margin-top: 20px;">
-          <div class="result-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 10px; margin-bottom: 12px;">
-            <div>
-              <span class="tag-gold" style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">Sua Força Ancestral Regente</span>
-              <h3 style="margin-top: 4px;">Odù #<span id="odu-numero"></span> — <span id="odu-nome"></span></h3>
-            </div>
-          </div>
-
-          <div class="tags-container" style="display: flex; gap: 12px; margin-bottom: 14px;">
-            <span class="tag-purple" style="background: rgba(212,175,55,0.1); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem;">Orixá: <strong id="odu-orixa" style="color: var(--gold-light);"></strong></span>
-            <span class="tag-purple" style="background: rgba(212,175,55,0.1); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem;">Elemento: <strong id="odu-elemento" style="color: var(--gold-light);"></strong></span>
-          </div>
-
-          <div class="path-details">
-            <h4 style="color: var(--gold-light); margin-bottom: 6px;">📜 O Caminho do seu Odù:</h4>
-            <div id="odu-caminho"></div>
-          </div>
-
-          <!-- Transição para a Consulta -->
-          <div class="banner-transicao" style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.25); border-left: 3px solid var(--gold-accent); border-radius: 6px; font-size: 0.88rem;">
-            ✨ Agora que você conhece seu Odù de nascimento (<strong id="transicao-nome-odu" style="color: var(--gold-accent);">--</strong>), descubra o que os búzios revelam especificamente sobre seus caminhos através de uma consulta personalizada abaixo.
-          </div>
-        </div>
+        <!-- O painel abaixo é renderizado dinamicamente via script.js -->
+        <div id="resultado-odu" class="result-box" style="display: none; margin-top: 20px;"></div>
       </section>
 
       <!-- ETAPA 2: PACOTES PREMIUM -->
@@ -122,11 +101,11 @@
           <div class="input-group">
             <label for="area-foco">Área da Consulta</label>
             <select id="area-foco">
-              <option>Trabalho & Finanças</option>
-              <option>Amor & Relacionamentos</option>
-              <option>Saúde & Equilíbrio</option>
-              <option>Caminhos Espirituais & Proteção</option>
-              <option>Família & Decisões Pessoais</option>
+              <option value="Trabalho & Finanças">Trabalho & Finanças</option>
+              <option value="Amor & Relacionamentos">Amor & Relacionamentos</option>
+              <option value="Saúde & Equilíbrio">Saúde & Equilíbrio</option>
+              <option value="Caminhos Espirituais & Proteção">Caminhos Espirituais & Proteção</option>
+              <option value="Família & Decisões Pessoais">Família & Decisões Pessoais</option>
             </select>
           </div>
 
