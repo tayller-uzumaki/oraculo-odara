@@ -1,4 +1,4 @@
-// BANCO DE DADOS COMPLETO DOS ODÙS DE NASCIMENTO (TEXTOS DENSOS + LISTAS DE PONTOS)
+// BANCO DE DADOS COMPLETO DOS ODÙS DE NASCIMENTO
 const ODUS_NASCIMENTO = {
   1: {
     nome: "Okaran", orixa: "Exu", elemento: "Fogo",
@@ -50,7 +50,7 @@ const ODUS_NASCIMENTO = {
   },
   9: {
     nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar",
-    caminho: "Osa é o Odù da liberdade, dos ventos da transformação rápida e da intuição afiada como um raio. Traz uma força espiritual poderosa que não tolera injustiças ou amarras, impulsionando o regido a estar sempre em movimento produtiva. Sua lição é aprender a canalizar essa grande tempestade criativa com foco, evitando que a inconstância atrapalhe o fechamento de grandes projetos.",
+    caminho: "Osa é o Odù da liberdade, dos ventos da transformação rápida e da intuição afiada como um raio. Traz uma força espiritual poderosa que não tolera injustiças ou amarras, impulsionando o regido a estar sempre em movimento produtivo. Sua lição é aprender a canalizar essa grande tempestade criativa com foco, evitando que a inconstância atrapalhe o fechamento de grandes projetos.",
     fortes: ["Coragem para romper com o que faz mal", "Rapidez de raciocínio e visão de futuro", "Forte proteção contra energias negativas"],
     alertas: ["Inconstância e mudança brusca de rumo", "Acessos de raiva ou reações passionais", "Impaciência com o ritmo mais lento dos outros"]
   },
@@ -92,21 +92,41 @@ const ODUS_NASCIMENTO = {
   },
   16: {
     nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz",
-    caminho: "Alafia é a confirmação do sucesso, da iluminação total, da paz e do alinhamento perfeito com o propósito divino. Traz a bênção da clareza mental, do bem-estar e da facilidade para encontrar caminhos abertos em todas as áreas da vida. Exige apenas a manutenção da humildade e da gratidão diária, garantindo que essa luz permaneça guando e abençoando seus passos.",
+    caminho: "Alafia é a confirmação do sucesso, da iluminação total, da paz e do alinhamento perfeito com o propósito divino. Traz a bênção da clareza mental, do bem-estar e da facilidade para encontrar caminhos abertos em todas as áreas da vida. Exige apenas a manutenção da humildade e da gratidão diária, garantindo que essa luz permaneça guiando e abençoando seus passos.",
     fortes: ["Plenitude, paz de espírito e clareza", "Facilidade para abrir caminhos e obter êxito", "Proteção espiritual máxima e harmonia"],
     alertas: ["Acomodação por excesso de facilidade", "Negligência com os cuidados espirituais diários", "Cuidado para não esquecer as raízes no sucesso"]
   }
 };
 
+// BANCO DE DADOS DAS RESPOSTAS CONSULTIVAS DO ORÁCULO DE BÚZIOS (1 a 16)
+const ODUS_JOGO = {
+  1: { tendencia: "❌ Tendência: NÃO", favorabilidade: 25, titulo: "Bloqueio e Necessidade de Recuo", desc: "Os búzios alertam para atritos ou bloqueios imediatos. Não force decisões agora." },
+  2: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 48, titulo: "Negociação Pendente", desc: "A questão depende de acordos e ajustes interpessoais antes de se definir." },
+  3: { tendencia: "✅ Tendência: SIM", favorabilidade: 82, titulo: "Triunfo Pelo Esforço", desc: "Caminho aberto para a vitória desde que haja firmeza, ética e determinação." },
+  4: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 40, titulo: "Névoa e Revelação", desc: "Existem fatores ocultos que precisam vir à tona. Mantenha a reserva." },
+  5: { tendencia: "✅ Tendência: SIM", favorabilidade: 88, titulo: "Renovação e Prosperidade", desc: "Cenário extremamente favorável trazido por forças de doçura e atração material." },
+  6: { tendencia: "✅ Tendência: SIM", favorabilidade: 95, titulo: "Fartura e Virada de Chave", desc: "Excepcional sinalização de prosperidade, justiça e avanço rápido." },
+  7: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 35, titulo: "Encerramento de Ciclo", desc: "Livre-se de velhas pendências antes de dar início a este novo projeto." },
+  8: { tendencia: "✅ Tendência: SIM", favorabilidade: 90, titulo: "Estratégia e Razão", desc: "Sinal verde. Mantenha a mente serena, a ética e a postura equilibrada." },
+  9: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 42, titulo: "Mudanças Repentinas", desc: "O cenário pode sofrer guinadas inesperadas. Aguarde o vento acalmar." },
+  10: { tendencia: "✅ Tendência: SIM", favorabilidade: 85, titulo: "Bênção e Proteção Superior", desc: "Desfecho honroso e protegido pela luz espiritual e pelo respeito." },
+  11: { tendencia: "❌ Tendência: NÃO", favorabilidade: 30, titulo: "Alerta de Imprevistos", desc: "Atenção com detalhes técnicos, documentos e promessas informais." },
+  12: { tendencia: "✅ Tendência: SIM", favorabilidade: 92, titulo: "Justiça e Resolução", desc: "A verdade prevalecerá a seu favor. Permaneça correto e transparente." },
+  13: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 45, titulo: "Maturação Lenta", desc: "Respeite o tempo de gestação dos acontecimentos sem ansiedade." },
+  14: { tendencia: "✅ Tendência: SIM", favorabilidade: 84, titulo: "Renovação e Flexibilidade", desc: "Adapte-se às novidades e colha os frutos positivos das transformações." },
+  15: { tendencia: "⏳ Tendência: AINDA NÃO", favorabilidade: 38, titulo: "Observação Cautelosa", desc: "Analise melhor as intenções e o cenário antes de assinar ou concordar." },
+  16: { tendencia: "✅ Tendência: SIM", favorabilidade: 98, titulo: "Confirmação Absoluta", desc: "Caminhos abertos, harmonia total e vitória plena concedida pelo Oráculo." }
+};
+
 // ==========================================
-// VARIÁVEIS GLOBAIS DE ESTADO DO SISTEMA
+// VARIÁVEIS GLOBAIS DE ESTADO
 // ==========================================
-let pacoteSelecionado = 5; // Padrão inicial: 5 consultas (R$ 25,99)
+let pacoteSelecionado = 5;
 let valorSelecionado = 25.99;
 let perguntasRestantes = 0;
 
 // ==========================================
-// CÁLCULO E RENDERIZAÇÃO DO ODÙ DE NASCIMENTO
+// 1. CÁLCULO E EXIBIÇÃO DO ODÙ DE NASCIMENTO
 // ==========================================
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -127,11 +147,8 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
   const info = ODUS_NASCIMENTO[numOdu] || ODUS_NASCIMENTO[16];
 
-  // MONTAGEM DO CARD DE RESULTADO
   const painelOdu = document.getElementById('resultado-odu');
-  painelOdu.className = "card card-resultado-dark";
   painelOdu.innerHTML = `
-    <!-- CABEÇALHO -->
     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 12px;">
       <div>
         <span style="color: var(--gold-accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;">SEU REGENTE ANCESTRAL</span>
@@ -142,7 +159,6 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
       </span>
     </div>
 
-    <!-- BADGES DE ORIXÁ E ELEMENTO -->
     <div style="display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;">
       <span style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); padding: 6px 16px; border-radius: 20px; font-size: 0.88rem; color: var(--text-main);">
         Orixá: <strong style="color: var(--gold-light);">${info.orixa}</strong>
@@ -152,77 +168,50 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
       </span>
     </div>
 
-    <!-- TEXTO DENSO DO CAMINHO DO ODÙ -->
     <div style="margin-bottom: 24px;">
-      <h4 style="color: var(--gold-accent); font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-        📜 O Caminho do seu Odù:
-      </h4>
+      <h4 style="color: var(--gold-accent); font-size: 1.05rem; margin-bottom: 8px;">📜 O Caminho do seu Odù:</h4>
       <p style="color: var(--text-main); font-size: 0.96rem; line-height: 1.65; text-align: justify;">
         ${info.caminho}
       </p>
     </div>
 
-    <!-- BOXES LADO A LADO: PONTOS FORTES E PONTOS DE ALERTA -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px;">
-      
-      <!-- BOX PONTOS FORTES -->
       <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 18px;">
-        <h4 style="color: #34D399; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-          💡 Pontos Fortes
-        </h4>
+        <h4 style="color: #34D399; font-size: 1rem; margin-bottom: 12px;">💡 Pontos Fortes</h4>
         <ul style="list-style-type: disc; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; line-height: 1.6;">
           ${info.fortes.map(p => `<li style="margin-bottom: 6px;">${p}</li>`).join('')}
         </ul>
       </div>
 
-      <!-- BOX PONTOS DE ALERTA -->
       <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 18px;">
-        <h4 style="color: #FCA5A5; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-          ⚠️ Pontos de Alerta
-        </h4>
+        <h4 style="color: #FCA5A5; font-size: 1rem; margin-bottom: 12px;">⚠️ Pontos de Alerta</h4>
         <ul style="list-style-type: disc; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; line-height: 1.6;">
           ${info.alertas.map(a => `<li style="margin-bottom: 6px;">${a}</li>`).join('')}
         </ul>
       </div>
-
     </div>
 
-    <!-- CHAMADA PARA AÇÃO (CTA COMERCIAL PARA OS PACOTES) -->
     <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px; text-align: center;">
-      <h4 style="color: var(--gold-light); font-size: 1.15rem; margin-bottom: 8px;">
-        ✨ Quer orientações detalhadas sobre Amor, Trabalho e Saúde?
-      </h4>
-      <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.5; margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">
-        Saber seu Odù de Nascimento é o primeiro passo. Para obter respostas diretas e conselhos ancestrais para suas dúvidas atuais, consulte o <strong>Jogo Sagrado de Búzios Online</strong>.
+      <h4 style="color: var(--gold-light); font-size: 1.15rem; margin-bottom: 8px;">✨ Quer orientações detalhadas sobre Amor, Trabalho e Saúde?</h4>
+      <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.5; margin-bottom: 16px;">
+        Saber seu Odù de Nascimento é o primeiro passo. Consulte o <strong>Jogo Sagrado de Búzios Online</strong> para suas dúvidas imediatas.
       </p>
-      <button id="btn-ir-pacotes" style="background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); color: #0f0a1c; font-weight: 700; border: none; padding: 12px 28px; border-radius: 25px; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);">
-        🔮 Ver Pacotes de Leitura de Búzios
-      </button>
+      <button id="btn-ir-pacotes" class="btn-primary" style="max-width: 320px; margin: 0 auto;">🔮 Ver Pacotes de Leitura de Búzios</button>
     </div>
   `;
 
   painelOdu.style.display = 'block';
   painelOdu.scrollIntoView({ behavior: 'smooth' });
 
-  // AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO CTA
   document.getElementById('btn-ir-pacotes')?.addEventListener('click', function () {
-    const alvo = document.getElementById('secao-pacotes') || 
-                 document.getElementById('planos') || 
-                 document.getElementById('pacotes');
-
-    if (alvo) {
-      alvo.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollBy({ top: 600, behavior: 'smooth' });
-    }
+    const alvo = document.getElementById('secao-pacotes');
+    if (alvo) alvo.scrollIntoView({ behavior: 'smooth' });
   });
 });
 
 // ==========================================
-// SELEÇÃO DE PACOTES E LIBERAÇÃO PIX
+// 2. SELEÇÃO DE PACOTES E LIBERAÇÃO PIX
 // ==========================================
-
-// Função acionada ao clicar em cada Card de Pacote
 function selecionarPacote(qtd, preco) {
   pacoteSelecionado = qtd;
   valorSelecionado = preco;
@@ -241,21 +230,170 @@ function selecionarPacote(qtd, preco) {
   }
 }
 
-// Função acionada ao clicar no botão "Gerar Pagamento PIX"
 function gerarPix() {
-  // Atribui a quantidade de perguntas com base na escolha (5 ou 10)
   perguntasRestantes = pacoteSelecionado;
 
-  // Atualiza o contador exibido na tela
   const contadorEl = document.getElementById('qtd-perguntas');
   if (contadorEl) {
     contadorEl.innerText = perguntasRestantes;
   }
 
-  // Revela a seção da Mesa Sagrada dos Búzios
   const secaoJogada = document.getElementById('secao-jogada');
   if (secaoJogada) {
     secaoJogada.style.display = 'block';
     secaoJogada.scrollIntoView({ behavior: 'smooth' });
   }
 }
+
+// ==========================================
+// 3. ANIMAÇÃO SVG E JOGADA COMPLETA DE BÚZIOS
+// ==========================================
+function criarBuzioSVG(eAberto) {
+  if (eAberto) {
+    return `
+      <svg viewBox="0 0 50 70" width="100%" height="100%">
+        <defs>
+          <radialGradient id="gradAberto" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="65%" stop-color="#fef3c7"/>
+            <stop offset="100%" stop-color="#d97706"/>
+          </radialGradient>
+        </defs>
+        <path d="M25 2 C 42 2, 48 18, 47 35 C 46 52, 38 68, 25 68 C 12 68, 4 52, 3 35 C 2 18, 8 2, 25 2 Z" fill="url(#gradAberto)" stroke="#78350f" stroke-width="1.5"/>
+        <path d="M25 10 C 22 18, 22 52, 25 60 C 28 52, 28 18, 25 10 Z" fill="#451a03"/>
+      </svg>
+    `;
+  } else {
+    return `
+      <svg viewBox="0 0 50 70" width="100%" height="100%">
+        <defs>
+          <radialGradient id="gradFechado" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d97706"/>
+            <stop offset="50%" stop-color="#78350f"/>
+            <stop offset="100%" stop-color="#270e03"/>
+          </radialGradient>
+        </defs>
+        <path d="M25 3 C 41 3, 47 19, 46 35 C 45 51, 37 67, 25 67 C 13 67, 5 51, 4 35 C 3 19, 9 3, 25 3 Z" fill="url(#gradFechado)" stroke="#1c1917" stroke-width="1.5"/>
+      </svg>
+    `;
+  }
+}
+
+document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  if (perguntasRestantes <= 0) {
+    alert("Seu saldo de consultas acabou! Selecione um pacote para liberar mais perguntas.");
+    const secaoPacotes = document.getElementById('secao-pacotes');
+    if (secaoPacotes) secaoPacotes.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  const pergunta = document.getElementById('pergunta').value;
+  const area = document.getElementById('area-foco').value;
+  const btn = document.getElementById('btn-jogar');
+  btn.disabled = true;
+
+  const mesa = document.getElementById('mesa-buzios');
+  const peneira = document.getElementById('peneira');
+  const status = document.getElementById('status-jogo');
+  const resContainer = document.getElementById('resultado-leitura');
+
+  mesa.style.display = 'block';
+  peneira.innerHTML = '';
+  resContainer.style.display = 'none';
+
+  mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  mesa.classList.add('mesa-chacoalhando');
+
+  // Sorteio de Búzios Abertos (1 a 16)
+  const numAbertos = Math.floor(Math.random() * 16) + 1;
+  const odulido = ODUS_JOGO[numAbertos] || ODUS_JOGO[16];
+  const infoNascimento = ODUS_NASCIMENTO[numAbertos] || ODUS_NASCIMENTO[16];
+
+  // Renderiza os 16 Búzios na Peneira
+  for (let i = 0; i < 16; i++) {
+    const eAberto = i < numAbertos;
+    const buzioEl = document.createElement('div');
+    buzioEl.className = 'buzio';
+    buzioEl.innerHTML = criarBuzioSVG(eAberto);
+
+    const top = Math.floor(Math.random() * 60 + 20);
+    const left = Math.floor(Math.random() * 60 + 20);
+    const rot = Math.floor(Math.random() * 360);
+
+    buzioEl.style.top = `${top}%`;
+    buzioEl.style.left = `${left}%`;
+    buzioEl.style.transform = `rotate(${rot}deg)`;
+
+    peneira.appendChild(buzioEl);
+  }
+
+  status.innerText = "🔮 Chacoalhando e lançando os búzios sagrados...";
+
+  setTimeout(() => {
+    mesa.classList.remove('mesa-chacoalhando');
+    status.innerText = "✨ Lendo a posição das caídas e a vontade dos Orixás...";
+  }, 1200);
+
+  setTimeout(() => {
+    // Desconta a consulta utilizada
+    perguntasRestantes--;
+    const contadorEl = document.getElementById('qtd-perguntas');
+    if (contadorEl) contadorEl.innerText = perguntasRestantes;
+
+    status.innerText = "✓ Consulta concluída!";
+
+    resContainer.innerHTML = `
+      <div style="background: #0b0612; padding: 18px; border-radius: 10px; border: 1px solid var(--gold-accent);">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+          <span style="color: var(--gold-accent); font-weight: bold; font-size: 0.9rem;">
+            🐚 Caída: ${numAbertos} Búzios Abertos / ${16 - numAbertos} Fechados
+          </span>
+          <span style="font-size: 0.85rem; color: var(--text-sub);">Área: <strong>${area}</strong></span>
+        </div>
+
+        <h3 style="color: var(--gold-light); font-size: 1.3rem; margin-bottom: 6px;">
+          ${odulido.tendencia} — Odù ${infoNascimento.nome}
+        </h3>
+        <p style="color: var(--gold-accent); font-size: 0.95rem; font-weight: 600; margin-bottom: 14px;">
+          ${odulido.titulo} (Regência de ${infoNascimento.orixa})
+        </p>
+
+        <div class="favorability-container">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--gold-light);">
+            <span>Favorabilidade da Questão</span>
+            <span>${odulido.favorabilidade}%</span>
+          </div>
+          <div class="favorability-bar-bg">
+            <div class="favorability-bar-fill" style="width: ${odulido.favorabilidade}%;"></div>
+          </div>
+        </div>
+
+        <div style="margin: 16px 0; background: #150a24; padding: 14px; border-radius: 8px; border-left: 3px solid var(--gold-accent);">
+          <p style="font-size: 0.88rem; color: var(--text-sub); font-style: italic; margin-bottom: 6px;">" ${pergunta} "</p>
+          <p style="font-size: 0.95rem; color: #fff; line-height: 1.5;">
+            <strong>Interpretação do Oráculo:</strong> ${odulido.desc} Para a área de <strong>${area.toLowerCase()}</strong>, a regência de ${infoNascimento.orixa} sob o elemento ${infoNascimento.elemento} orienta que você aja com prudência e foco nos seus objetivos primordiais.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 14px;">
+          <div style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2);">
+            <strong style="color: #34D399; font-size: 0.85rem;">✨ Ponto Favorável:</strong>
+            <p style="font-size: 0.85rem; color: var(--text-main); margin-top: 2px;">${infoNascimento.fortes[0]}</p>
+          </div>
+          <div style="background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.2);">
+            <strong style="color: #FCA5A5; font-size: 0.85rem;">⚠️ Ponto de Atenção:</strong>
+            <p style="font-size: 0.85rem; color: var(--text-main); margin-top: 2px;">${infoNascimento.alertas[0]}</p>
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    resContainer.style.display = 'block';
+    resContainer.scrollIntoView({ behavior: 'smooth' });
+    btn.disabled = false;
+  }, 2600);
+});
