@@ -1,477 +1,197 @@
-/* style.css - Estilização Roxa Premium Original */
-
-:root {
-  --bg-deep: #0b0512;
-  --card-bg: #140a21;
-  --card-inner: #1c0d30;
-  --border-purple: #321752;
-  --purple-bright: #8b5cf6;
-  --purple-glow: #a855f7;
-  --gold-text: #fef08a;
-  --gold-accent: #f59e0b;
-  --green-bg: #052e16;
-  --green-border: #10b981;
-  --green-text: #34d399;
-  --red-bg: #450a0a;
-  --red-border: #ef4444;
-  --red-text: #f87171;
-  --text-primary: #f4f4f5;
-  --text-muted: #a1a1aa;
-}
-
+/* Reseta estilos básicos e configurações gerais */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: var(--bg-deep);
-  background-image: radial-gradient(circle at 50% 15%, #230d3d 0%, #0b0512 80%);
-  color: var(--text-primary);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  min-height: 100vh;
-  padding: 24px 12px;
-}
-
-.app-container {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-/* Header */
-.main-header {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.top-pill {
-  display: inline-block;
-  background: #200c3b;
-  border: 1px solid var(--purple-glow);
-  padding: 4px 16px;
-  border-radius: 20px;
-  font-size: 11px;
-  color: var(--gold-text);
-  margin-bottom: 12px;
-  letter-spacing: 0.5px;
-}
-
-.main-header h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--gold-text);
-  letter-spacing: 2px;
-}
-
-.tagline {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-/* Cards em Caixa */
-.card-box {
-  background: var(--card-bg);
-  border: 1px solid var(--border-purple);
-  border-radius: 12px;
-  padding: 22px;
-  margin-bottom: 24px;
-}
-
-.card-title-row {
+  background-color: #0b0512;
+  color: #f3f4f6;
+  padding: 20px 10px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  min-height: 100vh;
 }
 
-.icon-header {
-  font-size: 18px;
-}
-
-.card-title-row h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--gold-text);
-  letter-spacing: 0.5px;
-}
-
-.card-subtext {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 18px;
-}
-
-/* Formulários */
-.form-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.input-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.input-field label {
-  font-size: 12px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-input[type="text"], input[type="date"], textarea {
-  background: #190a2b;
-  border: 1px solid var(--border-purple);
-  border-radius: 8px;
-  padding: 12px;
-  color: #fff;
-  font-family: inherit;
-  font-size: 13px;
-  outline: none;
+.container {
   width: 100%;
-}
-
-input:focus, textarea:focus {
-  border-color: var(--purple-glow);
-}
-
-/* Botão Roxo Com Glow */
-.btn-purple {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-  color: #fff;
-  border: none;
-  padding: 13px 20px;
-  border-radius: 24px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.2s ease;
-  letter-spacing: 0.5px;
-}
-
-.btn-glow {
-  box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
-}
-
-.btn-purple:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 22px rgba(168, 85, 247, 0.6);
-}
-
-/* Resultado do Odù de Nascimento */
-.resultado-odu-wrapper {
-  margin-top: 20px;
-}
-
-.divider-line {
-  height: 1px;
-  background: var(--border-purple);
-  margin-bottom: 16px;
-}
-
-.res-subtitle {
-  font-size: 10px;
-  color: var(--gold-text);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  font-weight: 700;
-}
-
-.odu-main-heading {
-  font-family: 'Cinzel', serif;
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 16px;
-}
-
-.pills-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.pill-badge {
-  background: #25103c;
-  border: 1px solid var(--purple-glow);
-  color: var(--text-primary);
-  padding: 6px 14px;
+  max-width: 650px;
+  background: #130a21;
+  border: 1px solid #2d1847;
   border-radius: 16px;
-  font-size: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.header-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #fbbf24;
+  border-radius: 30px;
+  padding: 8px 18px;
+  background: rgba(251, 191, 36, 0.05);
+  margin-bottom: 20px;
+}
+
+.badge-info {
+  font-size: 13px;
+  color: #fbbf24;
   font-weight: 600;
 }
 
-.interpretação-card {
-  background: var(--card-inner);
-  border: 1px solid var(--border-purple);
-  border-radius: 8px;
+.card-instrucoes {
+  background: #1a0e2e;
+  border-radius: 12px;
   padding: 16px;
-  margin-bottom: 16px;
+  border: 1px solid #2d1b4d;
+  margin-bottom: 20px;
 }
 
-.interpretação-card h4 {
-  font-size: 11px;
-  color: var(--gold-text);
-  margin-bottom: 12px;
-  letter-spacing: 0.5px;
-}
-
-.odu-caminho-body p {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--text-primary);
+.card-instrucoes h4 {
+  color: #fbbf24;
+  font-size: 14px;
   margin-bottom: 8px;
-}
-
-/* Grid de Pontos Fortes e Atenção */
-.grid-pontos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.card-ponto {
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 12px;
-}
-
-.ponto-fortes {
-  background: var(--green-bg);
-  border: 1px solid var(--green-border);
-  color: var(--green-text);
-}
-
-.ponto-atencao {
-  background: var(--red-bg);
-  border: 1px solid var(--red-border);
-  color: var(--red-text);
-}
-
-.card-ponto h5 {
-  font-size: 11px;
-  font-weight: 800;
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
-}
-
-.card-ponto ul {
-  list-style: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 6px;
 }
 
-.card-ponto li::before {
-  content: "✦ ";
-}
-
-/* Banner CTA Roxo */
-.cta-banner-purple {
-  background: var(--card-inner);
-  border: 1px solid var(--purple-glow);
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-}
-
-.cta-banner-purple p {
-  font-size: 12px;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-/* Pacotes e Benefícios */
-.card-beneficios {
-  background: var(--card-inner);
-  border: 1px solid var(--border-purple);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 18px;
-}
-
-.card-beneficios h3 {
-  font-size: 11px;
-  color: var(--gold-text);
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
-}
-
-.card-beneficios ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-primary);
-}
-
-.card-beneficios li {
-  border-bottom: 1px dashed var(--border-purple);
-  padding-bottom: 6px;
-}
-
-.card-beneficios li:last-child {
-  border-bottom: none;
-}
-
-.pacotes-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.pacote-card {
-  background: var(--card-inner);
-  border: 1px solid var(--border-purple);
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-}
-
-.pacote-card.active {
-  border-color: var(--purple-glow);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
-}
-
-.badge-destaque {
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  background: var(--purple-glow);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 10px;
-}
-
-.pacote-card h3 {
-  font-size: 12px;
-  color: var(--gold-text);
-  margin-bottom: 4px;
-}
-
-.pkg-qtd {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.pkg-preco {
-  font-size: 16px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.action-center {
-  text-align: center;
-}
-
-/* Mesa dos Búzios */
-.saldo-pill {
-  background: #25103c;
-  border: 1px solid var(--purple-glow);
-  padding: 4px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  color: var(--gold-text);
-  display: inline-block;
-  margin-bottom: 14px;
-}
-
-.mesa-wrapper {
-  text-align: center;
-  margin-top: 18px;
-}
-
-.peneira-circulo {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #2a1147 0%, #110521 100%);
-  border: 3px solid var(--purple-glow);
-  border-radius: 50%;
-  margin: 0 auto 12px auto;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-}
-
-.buzio {
-  position: absolute;
-  width: 22px;
-  height: 30px;
-}
-
-@keyframes sacudir {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-6px, 6px) rotate(-6deg); }
-  50% { transform: translate(6px, -6px) rotate(6deg); }
-  75% { transform: translate(-4px, -4px) rotate(-3deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-.mesa-sacudindo .peneira-circulo {
-  animation: sacudir 0.12s infinite;
-}
-
-.status-texto {
-  font-size: 12px;
-  color: var(--gold-text);
-  font-style: italic;
-}
-
-/* Leitura dos Búzios (Resposta em 4 Blocos) */
-.resultado-leitura-box {
-  background: var(--card-inner);
-  border: 1px solid var(--purple-glow);
-  border-radius: 8px;
-  padding: 18px;
-  margin-top: 18px;
-}
-
-.resposta-texto {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--text-primary);
-}
-
-.resposta-texto strong {
-  color: var(--gold-text);
-}
-
-.card-alerta-sensivel {
-  background: #210810;
-  border: 1px solid var(--red-border);
-  border-radius: 8px;
-  padding: 14px;
-  color: var(--red-text);
-  font-size: 13px;
+.card-instrucoes ol {
+  padding-left: 20px;
+  font-size: 12.5px;
+  color: #d1d5db;
   line-height: 1.6;
 }
 
-.main-footer {
-  text-align: center;
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 24px;
+.label-input {
+  display: block;
+  font-size: 13px;
+  color: #e5e7eb;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
-@media (max-width: 580px) {
-  .grid-pontos, .pacotes-row {
-    grid-template-columns: 1fr;
+textarea.input-pergunta {
+  width: 100%;
+  height: 90px;
+  background: #090310;
+  border: 1px solid #331e50;
+  border-radius: 8px;
+  padding: 12px;
+  color: #fff;
+  font-size: 13.5px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+textarea.input-pergunta:focus {
+  border-color: #8b5cf6;
+}
+
+.btn-lancar {
+  width: 100%;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 14px;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-lancar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+}
+
+.btn-lancar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- MESA DE BÚZIOS (RESTAURADA E COMPATÍVEL COM O PRINT ORIGINAL) --- */
+#mesa-buzios {
+  margin: 30px auto;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+}
+
+#peneira {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a082b 0%, #0d0417 70%, #05010a 100%);
+  border: 1.5px solid #fbbf24; /* Fio dourado circular perfeito */
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+}
+
+/* Animação do Chacoalhar */
+.mesa-chacoalhando {
+  animation: chacoalharMesa 0.4s infinite ease-in-out;
+}
+
+@keyframes chacoalharMesa {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  25% { transform: rotate(-1.5deg) translate(-3px, 2px); }
+  50% { transform: rotate(1.5deg) translate(3px, -2px); }
+  75% { transform: rotate(-1deg) translate(-2px, -1px); }
+  100% { transform: rotate(0deg) translate(0, 0); }
+}
+
+/* Estilo Individual dos Búzios */
+.buzio {
+  position: absolute;
+  width: 38px;
+  height: 52px;
+  transition: all 0.5s ease-out;
+  filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.8));
+}
+
+.buzio-animando {
+  animation: cairBuzio 0.6s ease-out forwards;
+}
+
+@keyframes cairBuzio {
+  0% {
+    opacity: 0;
+    transform: scale(1.8) translateY(-60px) rotate(180deg);
   }
+  100% {
+    opacity: 1;
+  }
+}
+
+.favorability-container {
+  margin: 14px 0;
+}
+
+.favorability-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #231238;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.favorability-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b 0%, #10b981 100%);
+  border-radius: 4px;
+  transition: width 1s ease-in-out;
 }
