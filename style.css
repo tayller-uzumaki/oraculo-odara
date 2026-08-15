@@ -120,6 +120,10 @@ h2 {
 }
 
 /* 4. FORMULÁRIOS E INPUTS REFINADOS */
+.input-group {
+  margin-bottom: 16px;
+}
+
 label {
   display: block;
   font-size: 0.85rem;
@@ -177,6 +181,12 @@ button:hover, .btn-primary:hover {
   background: var(--btn-gradient-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(168, 85, 247, 0.5);
+}
+
+button:disabled, .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 button:active, .btn-primary:active {
@@ -240,7 +250,36 @@ button:active, .btn-primary:active {
   letter-spacing: 0.5px;
 }
 
-/* 8. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
+/* 8. CONTADOR PERMANENTE DE PERGUNTAS */
+.contador-perguntas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(18, 10, 31, 0.8);
+  border: 1px solid var(--gold-accent);
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.contador-item {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.contador-item strong {
+  color: var(--gold-accent);
+  font-size: 1.1rem;
+  margin-left: 6px;
+}
+
+.contador-divider {
+  color: var(--card-border);
+}
+
+/* 9. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
 #mesa-buzios {
   position: relative;
   width: 100%;
@@ -252,6 +291,7 @@ button:active, .btn-primary:active {
   border-radius: 50%;
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
   overflow: hidden;
+  scroll-margin-top: 30px;
 }
 
 #peneira {
@@ -285,7 +325,7 @@ button:active, .btn-primary:active {
   animation: chacoalhar 0.15s infinite;
 }
 
-/* 9. CARDS DE RESULTADOS E DESTAQUES */
+/* 10. CARDS DE RESULTADOS E DESTAQUES */
 .card-resultado-dark {
   background: rgba(30, 18, 52, 0.95) !important;
   border: 1px solid rgba(212, 175, 55, 0.3) !important;
@@ -303,9 +343,47 @@ button:active, .btn-primary:active {
   color: var(--text-main) !important;
 }
 
-.box-alerta-seguranca {
-  background: rgba(45, 15, 25, 0.9) !important;
-  border: 1px solid #EF4444 !important;
-  border-radius: var(--radius-lg);
-  padding: 24px;
+/* Listas de Pontos Fortes e Atenção */
+.odu-pontos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.box-pontos-fortes {
+  background: rgba(16, 42, 26, 0.6);
+  border: 1px solid #10B981;
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.box-pontos-atencao {
+  background: rgba(45, 20, 20, 0.6);
+  border: 1px solid #EF4444;
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.box-pontos-fortes h4 {
+  color: #34D399;
+  margin-bottom: 8px;
+}
+
+.box-pontos-atencao h4 {
+  color: #F87171;
+  margin-bottom: 8px;
+}
+
+.box-pontos-fortes ul, .box-pontos-atencao ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.box-pontos-fortes li, .box-pontos-atencao li {
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
