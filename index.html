@@ -3,53 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oráculo Odù - Mesa Sagrada dos Búzios</title>
+  <title>Oráculo Odù - Leitura Sagrada de Búzios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Topo de Consultas Disponíveis -->
-    <div class="header-status">
-      <span class="badge-info">Perguntas Contratadas: <strong id="qtd-contratadas">5</strong></span>
-      <span class="badge-info">Perguntas Restantes: <strong id="qtd-perguntas">4</strong></span>
-    </div>
+  <div class="main-container">
 
-    <!-- Instruções da Consulta -->
-    <div class="card-instrucoes">
-      <h4>🔮 COMO CONSULTAR:</h4>
-      <ol>
-        <li>Concentre-se por alguns segundos na sua intenção, no seu momento e na sua questão.</li>
-        <li>Digite sua pergunta de forma clara, direta e sincera ao oráculo.</li>
-        <li>Clique em "Lançar Búzios na Mesa" para iniciar o ritual sagrado.</li>
-        <li>Acompanhe a revelação da queda na mesa e receba a interpretação dos Orixás.</li>
-      </ol>
-    </div>
+    <!-- CABEÇALHO -->
+    <header class="header-oraculo">
+      <h1>✨ Oráculo Odù</h1>
+      <p>Sabedoria Ancestral, Revelação dos Búzios e Mapeamento de Orixás</p>
+    </header>
 
-    <!-- Formulario de Leitura -->
-    <form id="form-consulta">
-      <label class="label-input" for="pergunta">Sua Pergunta Direta ao Oráculo</label>
-      <textarea id="pergunta" class="input-pergunta" placeholder="Digite aqui sua pergunta..." required></textarea>
+    <!-- ETAPA 1: CÁLCULO DO ODÙ DE NASCIMENTO -->
+    <section id="secao-odu-nascimento" class="card-section">
+      <h2>📅 Descubra o Seu Odù de Nascimento</h2>
+      <p class="subtitle">Insira sua data de nascimento para mapear a sua regência ancestral e seus Orixás protetores.</p>
+      
+      <form id="form-odu">
+        <div class="input-group">
+          <label for="dataNasc">Data de Nascimento:</label>
+          <input type="date" id="dataNasc" required>
+        </div>
+        <button type="submit" id="btn-calc-odu" class="btn-primary">🔮 Descobrir Meu Odù</button>
+      </form>
 
-      <!-- Campo de Área de Foco (Opcional) -->
-      <input type="hidden" id="area-foco" value="Geral">
+      <!-- Resultado do Odù de Nascimento (Preenchido via JS) -->
+      <div id="resultado-odu" class="resultado-box" style="display: none;">
+        <h3>Seu Odù de Nascimento: <span id="odu-numero">--</span> - <span id="odu-nome">--</span></h3>
+        <p><strong>Orixá Regente:</strong> <span id="odu-orixa">--</span></p>
+        <p><strong>Elemento:</strong> <span id="odu-elemento">--</span></p>
+        <div id="odu-caminho" class="odu-detalhes"></div>
+      </div>
+    </section>
 
-      <button type="submit" id="btn-jogar" class="btn-lancar">
-        Lançar Búzios na Mesa
-      </button>
-    </form>
+    <!-- ETAPA 2: ESCOLHA DOS PACOTES & PAGAMENTO PIX -->
+    <section id="secao-pacotes" class="card-section">
+      <h2>💳 Selecione Seu Pacote de Consultas</h2>
+      <p class="subtitle">Escolha quantas perguntas deseja fazer ao Oráculo:</p>
 
-    <!-- Área da Mesa Sagrada de Búzios -->
-    <div id="mesa-buzios" style="display: none;">
-      <p id="status-jogo" style="color: #fbbf24; font-weight: bold; margin-bottom: 12px; font-size: 13.5px; font-style: italic;">
-        🔮 Lançando os búzios na mesa sagrada...
-      </p>
-      <div id="peneira"></div>
-    </div>
+      <div class="pacotes-grid">
+        <div id="pacote-5" class="pacote-card active" onclick="selecionarPacote(5, 25.99)">
+          <h3>Pacote Básico</h3>
+          <p class="qtd">5 Perguntas</p>
+          <p class="preco">R$ 25,99</p>
+        </div>
+        <div id="pacote-10" class="pacote-card" onclick="selecionarPacote(10, 45.99)">
+          <h3>Pacote Completo</h3>
+          <p class="qtd">10 Perguntas</p>
+          <p class="preco">R$ 45,99</p>
+        </div>
+      </div>
 
-    <!-- Container de Leitura do Resultado -->
-    <div id="resultado-leitura" style="display: none; margin-top: 20px;"></div>
+      <button id="btn-gerar-pix" onclick="gerarPix()" class="btn-secondary">✨ Liberar Consultas via PIX</button>
+      
+      <div id="area-pix"></div>
+    </section>
+
+    <!-- ETAPA 3: CONSULTA / JOGO DE BÚZIOS -->
+    <section id="secao-jogada" class="card-section">
+      <div class="status-bar">
+        <span>Perguntas Contratadas: <strong id="qtd-contratadas">5</strong></span>
+        <span>Perguntas Restantes: <strong id="qtd-perguntas">5</strong></span>
+      </div>
+
+      <div class="como-consultar">
+        <h4>🧙‍♂️ COMO CONSULTAR:</h4>
+        <ol>
+          <li>Concentre-se por alguns segundos na sua intenção, no seu momento e na sua questão.</li>
+          <li>Digite sua pergunta de forma clara, direta e sincera ao oráculo.</li>
+          <li>Clique em "Lançar Búzios na Mesa" para iniciar o ritual sagrado.</li>
+          <li>Acompanhe a revelação da queda na mesa e receba a interpretação dos Orixás.</li>
+        </ol>
+      </div>
+
+      <form id="form-consulta">
+        <div class="input-group">
+          <label for="area-foco">Área da Vida:</label>
+          <select id="area-foco">
+            <option value="Geral">Geral / Espiritualidade</option>
+            <option value="Amor">Amor e Relacionamentos</option>
+            <option value="Trabalho">Trabalho e Carreira</option>
+            <option value="Finanças">Finanças e Prosperidade</option>
+            <option value="Saúde">Saúde e Bem-Estar</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="pergunta">Sua Pergunta Direta ao Oráculo:</label>
+          <textarea id="pergunta" rows="3" placeholder="Digite aqui sua pergunta..." required></textarea>
+        </div>
+
+        <button type="submit" id="btn-jogar" class="btn-primary">Lançar Búzios na Mesa</button>
+      </form>
+
+      <!-- Mesa Digital dos Búzios -->
+      <div id="mesa-buzios" class="mesa-container" style="display: none;">
+        <div id="peneira" class="peneira-bg"></div>
+        <p id="status-jogo" class="status-texto"></p>
+      </div>
+
+      <!-- Resultado Detalhado da Leitura -->
+      <div id="resultado-leitura" class="resultado-box" style="display: none;"></div>
+    </section>
 
   </div>
 
