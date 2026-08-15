@@ -212,3 +212,11 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
     }
   });
 });
+
+// AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO
+  document.getElementById('btn-ir-pacotes')?.addEventListener('click', function () {
+    const alvo = document.getElementById('secao-pacotes');
+    if (alvo) {
+      alvo.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
