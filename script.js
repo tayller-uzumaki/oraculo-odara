@@ -177,6 +177,19 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
       </div>
 
     </div>
+
+    <!-- CHAMADA PARA AÇÃO (CTA COMERCIAL PARA OS PACOTES) -->
+    <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px; text-align: center;">
+      <h4 style="color: var(--gold-light); font-size: 1.15rem; margin-bottom: 8px;">
+        ✨ Quer orientações detalhadas sobre Amor, Trabalho e Saúde?
+      </h4>
+      <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.5; margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Saber seu Odù de Nascimento é o primeiro passo. Para obter respostas diretas e conselhos ancestrais para suas dúvidas atuais, consulte o <strong>Jogo Sagrado de Búzios Online</strong>.
+      </p>
+      <button onclick="document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })" style="background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); color: #0f0a1c; font-weight: 700; border: none; padding: 12px 28px; border-radius: 25px; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);">
+        🔮 Ver Pacotes de Leitura de Búzios
+      </button>
+    </div>
   `;
 
   painelOdu.style.display = 'block';
