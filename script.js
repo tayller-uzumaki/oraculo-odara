@@ -1,106 +1,59 @@
-// BANCO DE DADOS COMPLETO DOS ODÙS DE NASCIMENTO (TEXTOS DENSOS + LISTAS DE PONTOS)
+// ==========================================
+// ESTADO GLOBAL DA APLICAÇÃO
+// ==========================================
+let pacoteSelecionado = 5;
+let valorSelecionado = 25.99;
+let perguntasRestantes = 0;
+
+// ==========================================
+// BANCO DE DADOS DOS ODÙS DE NASCIMENTO
+// ==========================================
 const ODUS_NASCIMENTO = {
-  1: {
-    nome: "Okaran", orixa: "Exu", elemento: "Fogo",
-    caminho: "O Odù Okaran representa a força primordial da transformação, da rapidez e da capacidade de abrir caminhos onde antes só existiam obstáculos. Quem nasce sob a regência deste Odù carrega uma mente aguçada, um espírito independente e um forte dom para a liderança. No entanto, é um caminho que exige constante domínio da impulsividade para que a própria energia não crie turbulências desnecessárias nas relações pessoais e profissionais.",
-    fortes: ["Capacidade de superação rápida de crises", "Independência e forte poder de decisão", "Espírito protetor e guerreiro"],
-    alertas: ["Impulsividade e precipitação ao falar", "Tendência a atritos por falta de paciência", "Cuidado com o orgulho em momentos de discórdia"]
-  },
-  2: {
-    nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra",
-    caminho: "Ejioko é o Odù da dualidade, da união e da busca por estabilidade material e emocional. Traz a bênção da aliança, do trabalho em equipe e da capacidade de conciliar interesses opostos com diplomacia. Sua jornada exige o aprendizado do equilíbrio interior, ensinando que para alcançar grandes conquistas é necessário manter a mente calma e os pés bem firmes sobre o solo.",
-    fortes: ["Habilidade para parcerias e sociedades", "Firmeza de caráter e lealdade", "Visão prática para prosperidade material"],
-    alertas: ["Indecisão prolongada diante de escolhas", "Apego à zona de conforto", "Medo excessivo de mudanças e riscos"]
-  },
-  3: {
-    nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo",
-    caminho: "Etaogundá é a representação do trabalho incansável, da coragem e da quebra de barreiras pela força da determinação. Os regidos por este Odù são construtores por natureza, dotados de uma resiliência única que transforma qualquer desafio em degrau para a vitória. Sua missão é aprender a dosar a rigidez, aplicando a estratégia antes da força bruta para evitar desgaste desnecessário.",
-    fortes: ["Foco inabalável em objetivos difíceis", "Capacidade de proteger e defender os seus", "Determinação e garra para vencer disputas"],
-    alertas: ["Estresse e sobrecarga por carregar tudo sozinho", "Rigidez e teimosia em aceitar opiniões", "Tendência a reações defensivas ou agressivas"]
-  },
-  4: {
-    nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água",
-    caminho: "Irosun é o caminho da intuição afiada, da proteção ancestral e da visão profunda que enxerga através das aparências. Traz a bênção do olhar calmo e da sabedoria interior, permitindo antecipar problemas e tomar decisões baseadas em sentimentos nobres. Exige cuidado com momentos de ilusão ou melancolia, mantendo a mente sempre conectada com a luz espiritual e com a realidade.",
-    fortes: ["Intuição apurada para farejar perigos", "Forte proteção de ancestrais e guias", "Sensibilidade e capacidade de acolhimento"],
-    alertas: ["Melancolia ou apego a lembranças dolorosas", "Tendência a idealizar pessoas ou situações", "Cuidado com a ingenuidade e falsas promessas"]
-  },
-  5: {
-    nome: "Oxé", orixa: "Oxum", elemento: "Água",
-    caminho: "Oxé é o Odù do encanto, da prosperidade, da cura e da renovação constante das energias vitais. Os filhos deste caminho possuem um magnetismo natural, sabedoria para atrair oportunidades e uma facilidade enorme para se reinventar após períodos difíceis. Sua regência ensina que a verdadeira força reside na flexibilidade da água e na valorização da autoestima sem cair no vício do egocentrismo.",
-    fortes: ["Magnetismo e facilidade para prosperar", "Poder de cura emocional e diplomacia", "Intuição refinada para artes e negócios"],
-    alertas: ["Vaidade e necessidade constante de aprovação", "Volatilidade emocional diante de críticas", "Apego ao supérfluo ou superficial"]
-  },
-  6: {
-    nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra",
-    caminho: "Obará é o Odù da grande fartura, do brilho pessoal, da prosperidade ilimitada e da vitória sobre as dificuldades financeiras. Traz a energia da expansão e do sucesso comercial, abençoando o regido com ideias criativas e grande liderança. Sua grande lição é manter a simplicidade e a generosidade, pois a fartura multiplicada deve ser usada para proteger e elevar todos ao seu redor.",
-    fortes: ["Sorte extraordinária para negócios e ganhos", "Liderança nata e carisma contagiante", "Capacidade de dar a volta por cima na vida"],
-    alertas: ["Ostentação ou desperdício de recursos", "Inveja gerada pelo próprio brilho exagerado", "Orgulho e dificuldade em admitir fraquezas"]
-  },
-  7: {
-    nome: "Odi", orixa: "Obaluaiê / Oxalufã", elemento: "Terra",
-    caminho: "Odi é o caminho da resistência inabalável, do encerramento de ciclos estagnados e do renascimento espiritual forte. Ensina que após cada momento de provação surge uma estabilidade duradoura e inquebrável. Os regidos por Odi possuem uma estrutura moral fortíssima e sabedoria para reconstruir a vida do zero, necessitando apenas libertar ressentimentos e desapegar do que já cumpriu seu papel.",
-    fortes: ["Firmeza extraordinária de caráter e resiliência", "Capacidade de recomeçar do zero e vencer", "Proteção para a saúde física e espiritual"],
-    alertas: ["Apegos ao passado ou ressentimentos guardados", "Rigidez excessiva em suas certezas", "Tendência ao pessimismo em momentos difíceis"]
-  },
-  8: {
-    nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água",
-    caminho: "Ejiologbon traz a sabedoria dos anciãos, a paciência madura e o entendimento profundo sobre os ciclos naturais da vida. Quem nasce neste Odù possui uma mente contemplativa e capacidade de dar conselhos valiosos, sabendo esperar o tempo certo para o fruto amadurecer. Exige combate ao desânimo e ao isolamento, lembrando que a paciência deve ser aliada da ação consciente.",
-    fortes: ["Ponderação e sabedoria para resolver conflitos", "Respeito e prestígio acumulados com o tempo", "Paz interior e grande equilíbrio mental"],
-    alertas: ["Lentidão excessiva para tomar atitudes", "Desânimo ou tendência ao isolamento social", "Teimosia por excesso de apego a tradições"]
-  },
-  9: {
-    nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar",
-    caminho: "Osa é o Odù da liberdade, dos ventos da transformação rápida e da intuição afiada como um raio. Traz uma força espiritual poderosa que não tolera injustiças ou amarras, impulsionando o regido a estar sempre em movimento produtiva. Sua lição é aprender a canalizar essa grande tempestade criativa com foco, evitando que a inconstância atrapalhe o fechamento de grandes projetos.",
-    fortes: ["Coragem para romper com o que faz mal", "Rapidez de raciocínio e visão de futuro", "Forte proteção contra energias negativas"],
-    alertas: ["Inconstância e mudança brusca de rumo", "Acessos de raiva ou reações passionais", "Impaciência com o ritmo mais lento dos outros"]
-  },
-  10: {
-    nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço",
-    caminho: "Ofun é o Odù do respeito ao sagrado, da iluminação, da paz de espírito e da pureza de intenções. É considerado o caminho das bênçãos maiores de Oxalá, trazendo proteção e autoridade moral onde quer que o regido esteja. Exige uma vida pautada na verdade, na honestidade e no respeito aos preceitos espirituais, pois sua luz ilumina os caminhos e afasta toda espécie de escuridão.",
-    fortes: ["Elevada proteção espiritual e paz", "Autoridade moral e respeito da comunidade", "Capacidade de pacificar e harmonizar ambientes"],
-    alertas: ["Orgulho espiritual ou ar de superioridade", "Rigidez moral excessiva ao julgar os outros", "Sensibilidade extrema a ambientes pesados"]
-  },
-  11: {
-    nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar",
-    caminho: "Owonrin representa o dinamismo da vida, os giros inesperados da sorte e a capacidade de encontrar oportunidades onde os outros enxergam apenas caos. Traz grande inteligência prática e capacidade de adaptação. Sua missão é usar essa versatilidade com responsabilidade, mantendo a disciplina para não abandonar metas importantes diante de novidades passageiras.",
-    fortes: ["Adaptabilidade incrível a qualquer cenário", "Agilidade mental para resolver imprevistos", "Visão de oportunidades financeiras ocultas"],
-    alertas: ["Falta de constância e dispersão de energia", "Tendência a assumir riscos sem planejar", "Instabilidade interpessoal por tédio fácil"]
-  },
-  12: {
-    nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo",
-    caminho: "Ejila Ebora é o Odù da liderança nata, da busca incessante pela justiça e do triunfo em grandes causas. Traz a firmeza de Xangô para proteger a honra e o direito de quem age com retidão. Os regidos por este caminho são admirados por sua postura e coragem, mas precisam ter cuidado para não agir como juízes implacáveis de si mesmos e das pessoas ao seu redor.",
-    fortes: ["Forte senso de justiça e integridade", "Vitória em questões jurídicas ou disputas", "Liderança natural e respeito público"],
-    alertas: ["Inflexibilidade e intolerância com erros", "Tendência a reações impulsivas de orgulho", "Sobrecarga emocional por buscar perfeição"]
-  },
-  13: {
-    nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra",
-    caminho: "Este Odù representa a necessidade de transformação interior profunda, o encerramento consciente de velhas etapas e a renovação de forças espirituais. Ensina a sabedoria do desapego e a humildade para aceitar que certos ciclos precisam findar para que coisas maiores nasçam. É um caminho de enorme cura e maturidade para quem aprende a ouvir a própria alma.",
-    fortes: ["Profunda maturidade e visão espiritual", "Capacidade de cura emocional e resiliência", "Desapego de coisas que não agregam mais"],
-    alertas: ["Dificuldade em aceitar mudanças impostas", "Melancolia e apego a perdas do passado", "Resistência em pedir ajuda quando precisa"]
-  },
-  14: {
-    nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar",
-    caminho: "Iká é o caminho da renovação contínua, da sabedoria estratégica e do arco-íris da prosperidade após as tempestades. Os regidos por Iká possuem uma mente perspicaz e diplomática, sendo capazes de contornar crises complexas com extrema inteligência. Sua jornada exige foco e determinação, garantindo que suas grandes estratégias saiam do papel e se concretizem em vitórias.",
-    fortes: ["Estratégia brilhante e visão de longo prazo", "Capacidade de renovação física e financeira", "Diplomacia para vencer sem entrar em conflito"],
-    alertas: ["Desconfiança excessiva das intenções alheias", "Tendência a guardar segredos demais", "Inconstância se não houver um objetivo claro"]
-  },
-  15: {
-    nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar",
-    caminho: "Este Odù traz o dom da perspicácia, da proteção contra falsidades e do triunfo alcançado através da observação atenta. Quem nasce sob este Odù possui uma intuição refinada que percebe o perigo antes que ele se aproxime. Sua lição é cultivar a confiança em si mesmo e não permitir que o medo do engano o afaste de construir relacionamentos sinceros e felizes.",
-    fortes: ["Foco cirúrgico e intuição afiada", "Proteção natural contra enganos e falsidades", "Capacidade de superação por perspicácia"],
-    alertas: ["Isolamento por excesso de desconfiança", "Tendência a remoer mágoas antigas", "Dificuldade em se abrir emocionalmente"]
-  },
-  16: {
-    nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz",
-    caminho: "Alafia é a confirmação do sucesso, da iluminação total, da paz e do alinhamento perfeito com o propósito divino. Traz a bênção da clareza mental, do bem-estar e da facilidade para encontrar caminhos abertos em todas as áreas da vida. Exige apenas a manutenção da humildade e da gratidão diária, garantindo que essa luz permaneça guando e abençoando seus passos.",
-    fortes: ["Plenitude, paz de espírito e clareza", "Facilidade para abrir caminhos e obter êxito", "Proteção espiritual máxima e harmonia"],
-    alertas: ["Acomodação por excesso de facilidade", "Negligência com os cuidados espirituais diários", "Cuidado para não esquecer as raízes no sucesso"]
-  }
+  1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "Representa a transformação rápida, a intuição afiada e a quebra de obstáculos.", fortes: ["Resiliência", "Independência"], alertas: ["Impulsividade", "Atritos verbais"] },
+  2: { nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra", caminho: "Caminho da união, alianças estratégicas e conquistas materiais seguras.", fortes: ["Diplomacia", "Determinação"], alertas: ["Indecisão", "Medo de mudanças"] },
+  3: { nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo", caminho: "Energia da batalha, superação e construção de novas oportunidades pelo esforço.", fortes: ["Coragem", "Capacidade de trabalho"], alertas: ["Rigidez", "Estresse acumulado"] },
+  4: { nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água", caminho: "Forte proteção ancestral, clareza mental e sensibilidade aguçada.", fortes: ["Intuição", "Proteção espiritual"], alertas: ["Apego ao passado", "Ingenuidade"] },
+  5: { nome: "Oxé", orixa: "Oxum", elemento: "Água", caminho: "Magnetismo natural, prosperidade material e poder de renovação emocional.", fortes: ["Carisma", "Gosto por artes e beleza"], alertas: ["Vaidade", "Instabilidade de humor"] },
+  6: { nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra", caminho: "Grande fartura, liderança respeitada e capacidade de dar a volta por cima.", fortes: ["Sorte nos negócios", "Visão expansiva"], alertas: ["Desperdício", "Orgulho excessivo"] },
+  7: { nome: "Odi", orixa: "Obaluaiê", elemento: "Terra", caminho: "Resistência inabalável, superação de crises e reconstrução firme da vida.", fortes: ["Resistência", "Honestidade"], alertas: ["Ressentimento", "Apego à rotina"] },
+  8: { nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água", caminho: "Sabedoria madura, paciência estratégica e visão profunda do futuro.", fortes: ["Ponderação", "Calma nas decisões"], alertas: ["Lentidão", "Isolamento"] },
+  9: { nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar", caminho: "Liberdade, transformações rápidas e grande capacidade de renovação espiritual.", fortes: ["Coragem", "Liderança nata"], alertas: ["Inconstância", "Impaciência"] },
+  10: { nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço", caminho: "Caminho da iluminação, paz interior, respeito e elevadas bençãos.", fortes: ["Elevada intuição", "Respeito público"], alertas: ["Perfeccionismo", "Suscetibilidade"] },
+  11: { nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar", caminho: "Dinamismo, versatilidade e talento para movimentar finanças e projetos.", fortes: ["Agilidade", "Adaptabilidade"], alertas: ["Dispersão", "Falta de rotina"] },
+  12: { nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo", caminho: "Triunfo em causas difíceis, busca por justiça e liderança respeitada.", fortes: ["Liderança", "Senso de justiça"], alertas: ["Inflexibilidade", "Intolerância"] },
+  13: { nome: "Okanran Meji", orixa: "Nanã", elemento: "Terra", caminho: "Maturidade espiritual, encerramento consciente de ciclos e renovação.", fortes: ["Introspecção", "Desapego"], alertas: ["Melancolia", "Resistência ao novo"] },
+  14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "Flexibilidade estratégica, visão diplomática e renovação de oportunidades.", fortes: ["Estratégia", "Capacidade de recomeço"], alertas: ["Desconfiança", "Reservado em excesso"] },
+  15: { nome: "Ogbè / Ibeji", orixa: "Obá / Ewá", elemento: "Ar", caminho: "Perspicácia, agilidade de raciocínio e proteção contra enganos.", fortes: ["Foco cirúrgico", "Intuição afiada"], alertas: ["Isolamento", "Remoer mágoas"] },
+  16: { nome: "Alafia", orixa: "Oxalá", elemento: "Luz", caminho: "Confirmação de vitória, clareza absoluta, paz e luz espiritual permanente.", fortes: ["Paz interior", "Êxito completo"], alertas: ["Acomodação", "Negligência"] }
 };
 
-// CÁLCULO E RENDERIZAÇÃO DO ODÙ DE NASCIMENTO (EXAÇÃO DO MODELO ORIGINAL)
+// BANCO DE DADOS DAS RESPOSTAS CONSULTIVAS DO JOGO DE BÚZIOS
+const ODUS_JOGO = {
+  1: { tendencia: "NÃO", favorabilidade: 25, titulo: "Bloqueio Temporário", desc: "Os búzios alertam para atritos e resistências no caminho. Não force situações no momento." },
+  2: { tendencia: "AINDA NÃO", favorabilidade: 48, titulo: "Ajuste e Acordos", desc: "A questão depende do alinhamento entre as partes antes de evoluir." },
+  3: { tendencia: "SIM", favorabilidade: 82, titulo: "Caminho Aberto pelo Trabalho", desc: "O resultado será favorável desde que você mantenha o foco e a determinação." },
+  4: { tendencia: "AINDA NÃO", favorabilidade: 40, titulo: "Aguarde Clareza", desc: "Fatores não revelados precisam ser analisados antes de tomar qualquer decisão." },
+  5: { tendencia: "SIM", favorabilidade: 88, titulo: "Prosperidade e Encanto", desc: "Forças de atração e renovação positiva estão atuando a favor do seu pedido." },
+  6: { tendencia: "SIM", favorabilidade: 95, titulo: "Fartura e Êxito", desc: "Grande indicação de triunfo, avanço rápido e superação de limitações." },
+  7: { tendencia: "AINDA NÃO", favorabilidade: 35, titulo: "Encerramento de Pendências", desc: "Resolva questões antigas antes de investir energia neste novo passo." },
+  8: { tendencia: "SIM", favorabilidade: 90, titulo: "Sabedoria e Razão", desc: "Sinal verde para prosseguir, mantendo a serenidade e o planejamento." },
+  9: { tendencia: "AINDA NÃO", favorabilidade: 42, titulo: "Mudanças de Vento", desc: "O cenário ainda passará por instabilidades. Aguarde alguns dias." },
+  10: { tendencia: "SIM", favorabilidade: 85, titulo: "Bênção e Harmonia", desc: "Caminho protegido e abençoado com paz de espírito e clareza." },
+  11: { tendencia: "NÃO", favorabilidade: 30, titulo: "Atenção com Imprevistos", desc: "Cuidado com documentos, promessas informais ou desatenção." },
+  12: { tendencia: "SIM", favorabilidade: 92, titulo: "Justiça a seu Favor", desc: "A verdade prevalecerá. Aja de forma transparente e correta." },
+  13: { tendencia: "AINDA NÃO", favorabilidade: 45, titulo: "Tempo de Maturação", desc: "Respeite o tempo natural das coisas. A pressa pode atrapalhar." },
+  14: { tendencia: "SIM", favorabilidade: 84, titulo: "Renovação de Estratégia", desc: "Seja flexível e adapte seus planos para obter o resultado desejado." },
+  15: { tendencia: "AINDA NÃO", favorabilidade: 38, titulo: "Observação Atenta", desc: "Avalie com calma o cenário antes de assumir compromissos definitivos." },
+  16: { tendencia: "SIM", favorabilidade: 98, titulo: "Confirmação Plena", desc: "Caminhos abertos, proteção total e luz sobre a sua dúvida." }
+};
+
+// ==========================================
+// 1. CÁLCULO DO ODÙ DE NASCIMENTO (ETAPA 1)
+// ==========================================
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
+  
+  const nome = document.getElementById('nome').value;
   const data = document.getElementById('dataNasc').value;
   if (!data) return;
 
@@ -117,68 +70,151 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   if (numOdu === 0) numOdu = 16;
 
   const info = ODUS_NASCIMENTO[numOdu] || ODUS_NASCIMENTO[16];
-
-  // MONTAGEM DO CARD IDÊNTICO AO MODELO SOLICITADO
   const painelOdu = document.getElementById('resultado-odu');
-  painelOdu.className = "card card-resultado-dark";
+
   painelOdu.innerHTML = `
-    <!-- CABEÇALHO -->
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 12px;">
-      <div>
-        <span style="color: var(--gold-accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;">SEU REGENTE ANCESTRAL</span>
-        <h3 style="font-size: 1.8rem; color: var(--gold-light); margin-top: 2px;">Odù #${numOdu} - ${info.nome}</h3>
-      </div>
-      <span style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">
-        ✓ Odù Mapeado
-      </span>
-    </div>
-
-    <!-- BADGES DE ORIXÁ E ELEMENTO -->
-    <div style="display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;">
-      <span style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); padding: 6px 16px; border-radius: 20px; font-size: 0.88rem; color: var(--text-main);">
-        Orixá: <strong style="color: var(--gold-light);">${info.orixa}</strong>
-      </span>
-      <span style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); padding: 6px 16px; border-radius: 20px; font-size: 0.88rem; color: var(--text-main);">
-        Elemento: <strong style="color: var(--gold-light);">${info.elemento}</strong>
-      </span>
-    </div>
-
-    <!-- TEXTO DENSO DO CAMINHO DO ODÙ (MÍNIMO 4 LINHAS DE APRESENTAÇÃO) -->
-    <div style="margin-bottom: 24px;">
-      <h4 style="color: var(--gold-accent); font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-        📜 O Caminho do seu Odù:
-      </h4>
-      <p style="color: var(--text-main); font-size: 0.96rem; line-height: 1.65; text-align: justify;">
+    <div style="background: rgba(15, 10, 26, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.4); text-align: left;">
+      <h3 style="color: #fce38a; font-family: 'Cinzel', serif; font-size: 1.3rem; margin-bottom: 6px; text-transform: uppercase;">
+        ${nome.toUpperCase()}, SEU ODÙ É #${numOdu} - ${info.nome.toUpperCase()}
+      </h3>
+      <p style="color: #eab308; font-weight: 600; font-size: 0.95rem; margin-bottom: 12px;">
+        Regência: ${info.orixa} | Elemento: ${info.elemento}
+      </p>
+      <p style="font-size: 0.92rem; line-height: 1.5; margin-bottom: 16px; color: #e4e4e7;">
         ${info.caminho}
       </p>
-    </div>
-
-    <!-- BOXES LADO A LADO: PONTOS FORTES E PONTOS DE ALERTA -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px;">
-      
-      <!-- BOX PONTOS FORTES -->
-      <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 18px;">
-        <h4 style="color: #34D399; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-          💡 Pontos Fortes
-        </h4>
-        <ul style="list-style-type: disc; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; line-height: 1.6;">
-          ${info.fortes.map(p => `<li style="margin-bottom: 6px;">${p}</li>`).join('')}
-        </ul>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <span style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;">
+          ✓ Força: ${info.fortes.join(', ')}
+        </span>
+        <span style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;">
+          ⚠️ Atenção: ${info.alertas.join(', ')}
+        </span>
       </div>
-
-      <!-- BOX PONTOS DE ALERTA -->
-      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 18px;">
-        <h4 style="color: #FCA5A5; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-          ⚠️ Pontos de Alerta
-        </h4>
-        <ul style="list-style-type: disc; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; line-height: 1.6;">
-          ${info.alertas.map(a => `<li style="margin-bottom: 6px;">${a}</li>`).join('')}
-        </ul>
-      </div>
-
     </div>
   `;
 
   painelOdu.style.display = 'block';
   painelOdu.scrollIntoView({ behavior: 'smooth' });
+});
+
+// ==========================================
+// 2. SELEÇÃO DE PACOTES E PIX (ETAPA 2)
+// ==========================================
+function selecionarPacote(qtd, preco) {
+  pacoteSelecionado = qtd;
+  valorSelecionado = preco;
+
+  const card5 = document.getElementById('pacote-5');
+  const card10 = document.getElementById('pacote-10');
+
+  if (card5 && card10) {
+    if (qtd === 5) {
+      card5.classList.add('active');
+      card10.classList.remove('active');
+    } else {
+      card10.classList.add('active');
+      card5.classList.remove('active');
+    }
+  }
+}
+
+function gerarPix() {
+  perguntasRestantes = pacoteSelecionado;
+
+  const contadorEl = document.getElementById('qtd-perguntas');
+  if (contadorEl) {
+    contadorEl.innerText = perguntasRestantes;
+  }
+
+  const secaoJogada = document.getElementById('secao-jogada');
+  if (secaoJogada) {
+    secaoJogada.style.display = 'block';
+    secaoJogada.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ==========================================
+// 3. CONSULTA NA MESA DE BÚZIOS (ETAPA 3)
+// ==========================================
+document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  if (perguntasRestantes <= 0) {
+    alert("Seu saldo de consultas acabou! Selecione um pacote para liberar mais perguntas.");
+    document.getElementById('secao-pacotes')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  const pergunta = document.getElementById('pergunta').value;
+  const btn = document.getElementById('btn-jogar');
+  btn.disabled = true;
+
+  const mesa = document.getElementById('mesa-buzios');
+  const peneira = document.getElementById('peneira');
+  const status = document.getElementById('status-jogo');
+  const resContainer = document.getElementById('resultado-leitura');
+
+  mesa.style.display = 'block';
+  peneira.innerHTML = '';
+  resContainer.style.display = 'none';
+
+  mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  status.innerText = "🔮 Lançando os búzios na mesa...";
+
+  const numAbertos = Math.floor(Math.random() * 16) + 1;
+  const odulido = ODUS_JOGO[numAbertos] || ODUS_JOGO[16];
+  const infoNascimento = ODUS_NASCIMENTO[numAbertos] || ODUS_NASCIMENTO[16];
+
+  // Renderizar os 16 búzios com distribuição oval mística
+  for (let i = 0; i < 16; i++) {
+    const eAberto = i < numAbertos;
+    const buzioEl = document.createElement('div');
+    buzioEl.style.position = 'absolute';
+    buzioEl.style.width = '22px';
+    buzioEl.style.height = '30px';
+    buzioEl.style.borderRadius = '50%';
+    buzioEl.style.background = eAberto ? '#fde68a' : '#78350f';
+    buzioEl.style.border = '1px solid #451a03';
+    buzioEl.style.boxShadow = eAberto ? '0 0 6px rgba(253, 230, 138, 0.6)' : 'none';
+
+    const top = Math.floor(Math.random() * 55 + 20);
+    const left = Math.floor(Math.random() * 65 + 18);
+    buzioEl.style.top = `${top}%`;
+    buzioEl.style.left = `${left}%`;
+
+    peneira.appendChild(buzioEl);
+  }
+
+  setTimeout(() => {
+    perguntasRestantes--;
+    const contadorEl = document.getElementById('qtd-perguntas');
+    if (contadorEl) contadorEl.innerText = perguntasRestantes;
+
+    status.innerText = "✓ Consulta realizada!";
+
+    const iconeStatus = odulido.tendencia === 'SIM' ? '✅' : (odulido.tendencia === 'NÃO' ? '❌' : '⏳');
+
+    resContainer.innerHTML = `
+      <div style="background: rgba(15, 10, 26, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.4); text-align: left;">
+        <h3 style="color: #fce38a; font-family: 'Cinzel', serif; font-size: 1.25rem; margin-bottom: 6px; text-transform: uppercase;">
+          ${iconeStatus} TENDÊNCIA: ${odulido.tendencia} — ODÙ ${infoNascimento.nome.toUpperCase()}
+        </h3>
+        <p style="color: #eab308; font-weight: 600; font-size: 0.95rem; margin-bottom: 6px;">
+          ${odulido.titulo} (Regente: ${infoNascimento.orixa})
+        </p>
+        <p style="font-size: 0.88rem; color: #a1a1aa; margin-bottom: 14px;">
+          Favorabilidade: <strong style="color: #fce38a;">${odulido.favorabilidade}%</strong>
+        </p>
+        <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #d4af37;">
+          <p style="font-style: italic; color: #a1a1aa; font-size: 0.88rem; margin-bottom: 6px;">"${pergunta}"</p>
+          <p style="font-size: 0.95rem; color: #f4f4f5; line-height: 1.4;">${odulido.desc}</p>
+        </div>
+      </div>
+    `;
+
+    resContainer.style.display = 'block';
+    resContainer.scrollIntoView({ behavior: 'smooth' });
+    btn.disabled = false;
+  }, 1800);
 });
