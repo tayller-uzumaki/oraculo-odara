@@ -5,159 +5,308 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido.' });
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      error: 'Método não permitido.'
+    });
+  }
 
   try {
-    const { pergunta, oduNumero, oduNome, orixa, elemento, favorabilidade, numAbertos } = req.body;
+    const {
+      pergunta,
+      oduNumero,
+      oduNome,
+      orixa,
+      elemento,
+      favorabilidade,
+      numAbertos
+    } = req.body;
 
-    if (!pergunta || typeof pergunta !== 'string') {
-      return res.status(400).json({ error: 'Pergunta inválida.' });
+    if (
+      !pergunta ||
+      typeof pergunta !== 'string' ||
+      pergunta.trim().length < 3
+    ) {
+      return res.status(400).json({
+        error: 'Pergunta inválida.'
+      });
     }
 
-    const perguntaLower = pergunta.toLowerCase().trim();
+    const perguntaLimpa = pergunta.trim();
+    const perguntaLower = perguntaLimpa.toLowerCase();
 
-    // 1. FILTRO DE SEGURANÇA HUMANA (SUICÍDIO / SAÚDE GRAVE)
+    // =========================================================
+    // 1. SEGURANÇA
+    // =========================================================
+
     const TERMOS_RISCO_EMOCIONAL = [
-      'suicidio', 'suicídio', 'me matar', 'tirar minha vida', 'automutilacao', 'automutilação'
-    ];
-    const TERMOS_SAUDE_GRAVE = [
-      'cancer', 'câncer', 'vai morrer', 'quando vou morrer', 'data da morte', 'doença terminal'
+      'suicidio',
+      'suicídio',
+      'me matar',
+      'tirar minha vida',
+      'automutilacao',
+      'automutilação',
+      'quero morrer',
+      'não quero mais viver',
+      'nao quero mais viver'
     ];
 
-    if (TERMOS_RISCO_EMOCIONAL.some(t => perguntaLower.includes(t))) {
-      return res.status(422).json({
+    if (
+      TERMOS_RISCO_EMOCIONAL.some(
+        termo => perguntaLower.includes(termo)
+      )
+    ) {
+      return res.status(200).json({
         bloqueado: true,
-        mensagem: `🔮 **Aviso do Oráculo:** A espiritualidade valoriza a vida e seu bem-estar.\n\nSe você está passando por um momento difícil, busque ajuda especializada no Centro de Valorização da Vida (CVV) ligando para **188** ou acessando [cvv.org.br](https://www.cvv.org.br).\n\n*(Sua consulta não foi realizada e nenhum crédito foi consumido).*`
+        tipoBloqueio: 'RISCO_EMOCIONAL',
+        consumirCredito: false,
+        mensagem:
+          'Essa pergunta indica um momento que precisa de apoio humano, e não de uma leitura oracular. Procure alguém de confiança e apoio profissional. No Brasil, o CVV atende gratuitamente pelo 188. Sua consulta não foi realizada e nenhum crédito foi consumido.'
       });
     }
 
-    if (TERMOS_SAUDE_GRAVE.some(t => perguntaLower.includes(t))) {
-      return res.status(422).json({
+    const TERMOS_MORTE = [
+      'quando vou morrer',
+      'data da morte',
+      'dia da minha morte',
+      'como vou morrer'
+    ];
+
+    if (
+      TERMOS_MORTE.some(
+        termo => perguntaLower.includes(termo)
+      )
+    ) {
+      return res.status(200).json({
         bloqueado: true,
-        mensagem: `🔮 **Aviso do Oráculo:** Assuntos de saúde grave e previsões de morte não são objeto do jogo de búzios digital. Procure sempre orientação médica qualificada.\n\n*(Seu saldo não foi consumido).*`
+        tipoBloqueio: 'PREVISAO_MORTE',
+        consumirCredito: false,
+        mensagem:
+          'O Oráculo não realiza previsões sobre data ou circunstâncias de morte. A consulta não foi realizada e seu saldo foi preservado.'
       });
     }
 
-    // 2. FILTRO DE APOSTAS / LOTERIAS
     const TERMOS_APOSTAS = [
-      'mega sena', 'megasena', 'numeros da mega', 'palpite', 'quina', 'lotofacil',
-      'jogo do bicho', 'aposta', 'apostas', 'loteria', 'tiger', 'tigrinho', 'bet', 'roleta'
+      'mega sena',
+      'megasena',
+      'numeros da mega',
+      'números da mega',
+      'quina',
+      'lotofacil',
+      'lotofácil',
+      'jogo do bicho',
+      'aposta',
+      'apostas',
+      'loteria',
+      'tiger',
+      'tigrinho',
+      'bet',
+      'roleta'
     ];
 
-    if (TERMOS_APOSTAS.some(t => perguntaLower.includes(t))) {
-      return res.status(422).json({
+    if (
+      TERMOS_APOSTAS.some(
+        termo => perguntaLower.includes(termo)
+      )
+    ) {
+      return res.status(200).json({
         bloqueado: true,
-        mensagem: `🔮 **Consulta Não Realizada:** Os búzios e os Orixás não indicam números de sorte ou palpites para loterias e apostas.\n\n*(Seu saldo foi preservado).*`
+        tipoBloqueio: 'APOSTAS',
+        consumirCredito: false,
+        mensagem:
+          'O Oráculo não fornece números, combinações, garantias ou palpites destinados a apostas e jogos de azar. Reformule sua pergunta para uma orientação sobre seus caminhos financeiros ou decisões pessoais. Seu saldo foi preservado.'
       });
     }
 
-    // 3. DETECÇÃO SEMÂNTICA
-    const TERMOS_ORIXA = ['qual meu orixá', 'qual meu orixa', 'quem é meu orixá', 'pai de cabeça', 'mãe de cabeça'];
-    const TERMOS_NEGATIVOS = ['traição', 'traiçao', 'traindo', 'feitiço', 'macumba', 'inveja', 'demanda'];
+    // =========================================================
+    // 2. CLASSIFICAÇÃO BÁSICA
+    // =========================================================
 
-    const ehPerguntaOrixa = TERMOS_ORIXA.some(t => perguntaLower.includes(t));
-    const ehPerguntaNegativa = TERMOS_NEGATIVOS.some(t => perguntaLower.includes(t));
+    let contexto = 'Geral';
 
-    // 4. SYSTEM PROMPT
-    const systemPrompt = `
-Você é o intérprete de Inteligência Artificial do "Oráculo Odara".
+    if (
+      /amor|relacionamento|namoro|namorada|namorado|casamento|ex|voltar|traição|traicao/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Amor e Relacionamentos';
+    } else if (
+      /trabalho|emprego|vaga|carreira|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Trabalho e Carreira';
+    } else if (
+      /dinheiro|financeiro|finanças|financas|dívida|divida|investimento|comprar|vender/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Finanças';
+    } else if (
+      /orixá|orixa|pai de cabeça|mãe de cabeça|eledá|eleda|juntó|junto/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Orixás';
+    } else if (
+      /espiritual|proteção|protecao|inveja|demanda|energia|axé|axe/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Espiritualidade';
+    }
 
-### PERSONA E TOM DE VOZ
-- **Público-Alvo:** Jovens e leitores buscando orientação espiritual acessível sobre a cultura dos Orixás.
-- **Tom:** Jovem, acolhedor, leve, direto, empático e cristalino.
-- **PROIBIDO:** Usar termos arcaicos ou formalidades jurídicas ("tendência parcialmente favorável").
-- Explique tudo de forma muito simples e pedagógica.
+    // =========================================================
+    // 3. OPENAI
+    // =========================================================
 
----
-
-### ESTRUTURA OBRIGATÓRIA DA RESPOSTA (Siga rigorosamente estes 4 blocos):
-
-1. **✦ Interpretação Direta:**
-   Resposta curta, clara e direta à dúvida do consulente (3 a 4 frases simples). Vá direto ao ponto!
-
-2. **✦ Atuação dos Orixás:**
-   Explique quem são os Orixás associados ao Odù sorteado (${orixa}) e como essa energia atua na vida da pessoa agora.
-
-3. **✦ Pontos de Atenção e Alertas:**
-   Mencione claramente o que evitar, vigiar ou tomar cuidado no momento.
-
-4. **✦ Orientação Prática & Harmonização:**
-   Conselho prático e acionável para o dia a dia.
-
-Ao final dos 4 blocos, inclua EXATAMENTE este aviso:
-> ⚠️ *Aviso Importante: Esta consulta é uma orientação digital baseada em inteligência artificial. Para aprofundamentos, rituais, confirmações de Orixá e assentamentos, procure uma casa de Candomblé ou um Babalorixá / Ialorixá de sua confiança.*
-
-${ehPerguntaOrixa ? `
-A pergunta é sobre Orixá de Cabeça. Use esta estrutura exata:
-**Seus Orixás no Seu Momento Atual:**
-✦ **Seu Pai do Momento:** [Nome do Orixá principal] ([Qualidade simples])
-✦ **Sua Mãe do Momento:** [Nome do Orixá secundário/água] ([Qualidade simples])
-✦ **Força de Apoio (Juntó):** [Nome do Orixá de apoio] ([Qualidade])
-
-**Entendendo a energia deles na sua vida:** [Explicação simples do momento atual]
-
-✦ **Pontos de Atenção:** [O que evitar]
-✦ **Orientação Prática:** [Ação prática]
-*(Nota: A confirmação definitiva do seu Orixá de nascimento/Eledá é feita presencialmente em um terreiro por um Babalorixá ou Ialorixá).*
-⚠️ *Aviso Importante: Esta consulta é uma orientação digital baseada em inteligência artificial. Para aprofundamentos, rituais, confirmações de Orixá e assentamentos, procure uma casa de Candomblé ou um Babalorixá / Ialorixá de sua confiança.*
-` : ''}
-
-${ehPerguntaNegativa ? `
-A pergunta envolve algo negativo (traição, inveja, feitiço).
-- Se a favorabilidade do Odù for alta (>=50%): Diga diretamente que NÃO indica a traição/mal temido ("Não indica traição", "Os caminhos não mostram demanda te parando").
-- Se for baixa (<50%): Recomende cautela sem ser fatalista ou assustador ("O momento pede resguardo e cuidado ao compartilhar planos").
-` : ''}
-    `;
-
-    const userPrompt = `
-DADOS DA CONSULTA:
-- Pergunta: "${pergunta}"
-- Odù Sorteado: Odù nº ${oduNumero} - ${oduNome}
-- Orixá Regente: ${orixa}
-- Elemento: ${elemento}
-- Favorabilidade: ${favorabilidade}%
-- Búzios Abertos: ${numAbertos} de 16.
-    `;
-
-    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
-      const fallback = `
-✦ **Interpretação Direta:**
-${favorabilidade >= 50 
-  ? `Para a sua dúvida, os búzios se mostram abertos e favoráveis. Não há motivos para insegurança; a energia atual favorece seus passos!` 
-  : `Para a sua dúvida, os búzios pedem calma e observação. Não force as coisas agora, prefira escutar sua intuição.`}
-
-✦ **Atuação dos Orixás:**
-A queda traz a regência de **${orixa}** no Odù ${oduNome}. Esse Orixá atua trazendo clareza e abrindo seus caminhos para superar incertezas.
-
-✦ **Pontos de Atenção e Alertas:**
-Evite agir por impulso ou se desgastar com conversas desnecessárias. Guarde seus projetos até que estejam firmes.
-
-✦ **Orientação Prática & Harmonização:**
-Mantenha a mente serena e tome atitudes com confiança no seu próprio valor.
-
-> ⚠️ *Aviso Importante: Esta consulta é uma orientação digital baseada em inteligência artificial. Para aprofundamentos, rituais, confirmações de Orixá e assentamentos, procure uma casa de Candomblé ou um Babalorixá / Ialorixá de sua confiança.*
-      `;
-      return res.status(200).json({ resposta: fallback.trim() });
+      return res.status(500).json({
+        error: 'OPENAI_API_KEY não encontrada na Vercel.'
+      });
     }
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 800 }
-      })
-    });
+    const systemPrompt = `
+Você é o intérprete digital do Oráculo Odara.
+
+Seu papel é interpretar uma pergunta considerando a caída dos búzios e o Odù informado pelo sistema.
+
+REGRAS:
+
+- Responda em português do Brasil.
+- Seja acolhedor, humano, direto e acessível.
+- Não fale como psicólogo, médico ou sacerdote.
+- Não invente fatos que não estejam nos dados recebidos.
+- Não declare certezas absolutas sobre o futuro.
+- Não faça diagnóstico médico.
+- Não forneça números ou estratégias para apostas.
+- Não determine Orixá de cabeça como verdade definitiva.
+- Diferencie orientação simbólica de confirmação religiosa.
+- Não use linguagem assustadora ou fatalista.
+- Responda de forma específica à pergunta apresentada.
+
+ESTRUTURA:
+
+✦ Interpretação da sua pergunta
+
+Primeiro reconheça brevemente o contexto humano presente na pergunta.
+
+✦ O que a caída dos búzios apresenta
+
+Explique o Odù sorteado e relacione-o diretamente ao assunto perguntado.
+
+✦ Resposta objetiva
+
+Diga claramente se o cenário apresentado pela leitura parece favorável, desfavorável, cauteloso ou dependente de determinadas atitudes.
+
+✦ Pontos de atenção
+
+Explique o que merece cuidado.
+
+✦ Orientação prática
+
+Apresente uma orientação simples e aplicável.
+
+Ao final, inclua:
+
+⚠️ Aviso Importante: Esta consulta é uma orientação digital baseada em inteligência artificial e referências culturais sobre os Odùs. Para confirmações religiosas, rituais ou aprofundamentos, procure um Babalorixá ou Ialorixá de sua confiança.
+`;
+
+    const userPrompt = `
+Pergunta:
+${perguntaLimpa}
+
+Contexto identificado:
+${contexto}
+
+Dados da caída:
+
+Odù número:
+${oduNumero}
+
+Nome do Odù:
+${oduNome}
+
+Orixá associado:
+${orixa}
+
+Elemento:
+${elemento}
+
+Favorabilidade calculada:
+${favorabilidade}%
+
+Búzios abertos:
+${numAbertos} de 16
+
+Interprete esses dados exclusivamente dentro da pergunta apresentada.
+`;
+
+    const response = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt
+            },
+            {
+              role: 'user',
+              content: userPrompt
+            }
+          ],
+          temperature: 0.5,
+          max_tokens: 900
+        })
+      }
+    );
 
     const data = await response.json();
-    const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    return res.status(200).json({ resposta: texto || "Não foi possível gerar a leitura no momento." });
+    if (!response.ok) {
+      console.error('Erro OpenAI:', data);
+
+      return res.status(502).json({
+        error: 'Não foi possível gerar a leitura.',
+        detalhes: data?.error?.message || 'Erro desconhecido.'
+      });
+    }
+
+    const texto =
+      data?.choices?.[0]?.message?.content;
+
+    if (!texto) {
+      return res.status(502).json({
+        error: 'A IA não retornou uma leitura válida.'
+      });
+    }
+
+    return res.status(200).json({
+      sucesso: true,
+      bloqueado: false,
+      contexto,
+      consumirCredito: true,
+      resposta: texto
+    });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Erro ao processar consulta.' });
+    console.error('Erro consultar.js:', error);
+
+    return res.status(500).json({
+      error: 'Erro ao processar consulta.'
+    });
   }
 }
