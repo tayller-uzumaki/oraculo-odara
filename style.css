@@ -1,38 +1,14 @@
-/* ==========================================
-   ORÁCULO ODARA - DESIGN PREMIUM & MÍSTICO
-   ========================================== */
-
-/* 1. VARIÁVEIS DE CORES & PALETA PURPLE/GOLD */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+/* style.css - Estilização Mística, Glassmorphism e Componentes da Leitura */
 
 :root {
-  /* Fundo Principal - Roxo Profundo */
-  --bg-gradient: linear-gradient(135deg, #120A1F 0%, #1A1028 50%, #1F1433 100%);
-  
-  /* Cards e Elementos - Roxo Elegante com Transparência */
-  --card-bg: rgba(36, 21, 61, 0.75);
-  --card-bg-inner: rgba(26, 16, 40, 0.6);
-  --card-border: rgba(212, 175, 55, 0.2);
-  --card-border-active: rgba(168, 85, 247, 0.5);
-
-  /* Acentos - Dourado Suave & Lilás Sofisticado */
-  --gold-accent: #D4AF37;
-  --gold-light: #F3E5AB;
-  --purple-glow: #8B5CF6;
-  --purple-accent: #A855F7;
-  
-  /* Gradiente dos Botões */
-  --btn-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
-  --btn-gradient-hover: linear-gradient(135deg, #6D28D9 0%, #9333EA 100%);
-
-  /* Textos Legíveis */
-  --text-main: #F8F5F0;
-  --text-muted: #C9C4D6;
-
-  /* Geometria e Sombras */
-  --radius-lg: 16px;
-  --radius-md: 10px;
-  --shadow-premium: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.08);
+  --bg-dark: #090312;
+  --card-bg: rgba(21, 10, 36, 0.75);
+  --border-purple: #332147;
+  --gold-primary: #f59e0b;
+  --gold-light: #fbbf24;
+  --purple-glow: #7c3aed;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
 }
 
 * {
@@ -42,364 +18,371 @@
 }
 
 body {
-  background: var(--bg-gradient);
-  background-attachment: fixed;
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at 50% 20%, #200b3b 0%, #090312 80%);
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', sans-serif;
-  line-height: 1.6;
-  padding: 30px 15px;
   min-height: 100vh;
+  padding: 20px 12px;
 }
 
-.main-container {
+.app-container {
   max-width: 820px;
   margin: 0 auto;
 }
 
-/* 2. CABEÇALHOS E HIERARQUIA TIPOGRÁFICA */
-h1, h2, h3, h4 {
-  font-family: 'Cinzel', serif;
-  color: var(--gold-accent);
-  letter-spacing: 0.5px;
-}
-
-h1 {
-  font-size: 2.3rem;
+/* Header */
+.main-header {
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 6px;
-  font-weight: 700;
-  text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  margin-bottom: 24px;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 16px;
-  background: rgba(139, 92, 246, 0.15);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: var(--gold-light);
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  font-weight: 400;
-}
-
-h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--gold-accent);
-}
-
-/* 3. CARDS E PAINÉIS PREMIUM */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  margin-bottom: 28px;
-  box-shadow: var(--shadow-premium);
-  transition: border-color 0.3s ease;
-}
-
-.card:hover {
-  border-color: rgba(212, 175, 55, 0.35);
-}
-
-/* 4. FORMULÁRIOS E INPUTS REFINADOS */
-.input-group {
-  margin-bottom: 16px;
-}
-
-label {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  font-weight: 500;
-}
-
-input[type="text"], 
-input[type="date"], 
-input[type="email"], 
-select, 
-textarea {
-  width: 100%;
-  padding: 13px 16px;
-  background: rgba(18, 10, 31, 0.7);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: var(--radius-md);
-  color: var(--text-main);
-  font-size: 0.95rem;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--purple-accent);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
-  background: rgba(18, 10, 31, 0.9);
-}
-
-textarea {
-  resize: vertical;
-}
-
-/* 5. BOTÕES ROXO -> LILÁS COM EFEITO PREMIUM */
-button, .btn-primary {
-  background: var(--btn-gradient);
-  color: #FFFFFF;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
-}
-
-button:hover, .btn-primary:hover {
-  background: var(--btn-gradient-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.5);
-}
-
-button:disabled, .btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-button:active, .btn-primary:active {
-  transform: translateY(0);
-}
-
-/* 6. LISTAS E BENEFÍCIOS */
-.premium-benefits {
-  background: var(--card-bg-inner);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.premium-benefits ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-.premium-benefits li {
-  padding: 8px 0;
-  color: var(--text-main);
-  font-size: 0.9rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-}
-
-.premium-benefits li:last-child {
-  border-bottom: none;
-}
-
-/* 7. CARDS DE PACOTES DE CONSULTA */
-.pacote-card, .package-card {
-  background: var(--card-bg-inner);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.pacote-card.active, .package-card.active,
-.pacote-card:hover, .package-card:hover {
-  border-color: var(--purple-accent);
-  background: rgba(42, 25, 70, 0.85);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
-}
-
-.badge-pop {
-  position: absolute;
-  top: -10px;
-  right: 14px;
-  background: var(--btn-gradient);
-  color: #FFF;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* 8. CONTADOR PERMANENTE DE PERGUNTAS */
-.contador-perguntas-container {
+.logo-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  background: rgba(18, 10, 31, 0.8);
-  border: 1px solid var(--gold-accent);
-  border-radius: 30px;
-  padding: 10px 20px;
-  margin-bottom: 18px;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+  gap: 10px;
 }
 
-.contador-item {
-  font-size: 0.9rem;
+.main-header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  color: var(--gold-light);
+  letter-spacing: 1px;
+}
+
+.icon-místico {
+  font-size: 32px;
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Cards Glassmorphism */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-purple);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.card-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.card-header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* Formulários e Inputs */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 12px;
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+input[type="date"], select, textarea {
+  background: #0b0612;
+  border: 1px solid var(--border-purple);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="date"]:focus, select:focus, textarea:focus {
+  border-color: var(--gold-primary);
+}
+
+/* Botões */
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #18092b;
+}
+
+.btn-secondary {
+  background: #1e112d;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-light);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Resultados do Odù e Búzios */
+.resultado-box {
+  margin-top: 18px;
+  background: #0d0617;
+  border: 1px solid var(--border-purple);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.odu-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border-purple);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.odu-number {
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--gold-light);
+  background: #180a2b;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--gold-primary);
+}
+
+.highlight-gold {
+  color: var(--gold-light);
+}
+
+.cta-banner {
+  margin-top: 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 3px solid var(--gold-primary);
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Pacotes */
+.packages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.package-card {
+  background: #11071f;
+  border: 1px solid var(--border-purple);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.package-card.active {
+  border-color: var(--gold-primary);
+  background: #1e0d36;
+}
+
+.pkg-badge {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background: var(--purple-glow);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.pkg-badge.gold {
+  background: var(--gold-primary);
+  color: #000;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold-light);
+  margin: 6px 0;
+}
+
+.pkg-desc {
+  font-size: 11px;
   color: var(--text-muted);
 }
 
-.contador-item strong {
-  color: var(--gold-accent);
-  font-size: 1.1rem;
-  margin-left: 6px;
+.action-center {
+  text-align: center;
 }
 
-.contador-divider {
-  color: var(--card-border);
+/* Mesa de Búzios */
+.saldo-badge {
+  background: #1c0a30;
+  border: 1px solid var(--gold-primary);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--gold-light);
+  display: inline-block;
+  margin-bottom: 12px;
 }
 
-/* 9. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
-#mesa-buzios {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  height: 300px;
-  margin: 25px auto;
-  background: radial-gradient(circle, #2A1642 0%, #120A20 100%);
-  border: 2px solid var(--gold-accent);
+.mesa-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.peneira-sagrada {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, #2a1445 0%, #11061c 100%);
+  border: 4px solid var(--gold-primary);
   border-radius: 50%;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
-  overflow: hidden;
-  scroll-margin-top: 30px;
-}
-
-#peneira {
+  margin: 0 auto 12px auto;
   position: relative;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
 }
 
-.buzio-item {
+.buzio {
   position: absolute;
-  width: 32px !important;
-  height: 46px !important;
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.buzio-item svg {
-  width: 100% !important;
-  height: 100% !important;
-  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.7));
+  width: 24px;
+  height: 32px;
+  transition: all 0.5s ease;
 }
 
 @keyframes chacoalhar {
   0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-3px, 3px) rotate(-1deg); }
-  50% { transform: translate(3px, -3px) rotate(1deg); }
-  75% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+  25% { transform: translate(-6px, 6px) rotate(-4deg); }
+  50% { transform: translate(6px, -6px) rotate(4deg); }
+  75% { transform: translate(-4px, -4px) rotate(-2deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-.mesa-chacoalhando {
+.mesa-chacoalhando .peneira-sagrada {
   animation: chacoalhar 0.15s infinite;
 }
 
-/* 10. CARDS DE RESULTADOS E DESTAQUES */
-.card-resultado-dark {
-  background: rgba(30, 18, 52, 0.95) !important;
-  border: 1px solid rgba(212, 175, 55, 0.3) !important;
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  color: var(--text-main) !important;
-}
-
-.box-destaque-dark {
-  background: rgba(18, 10, 31, 0.6) !important;
-  border-left: 3px solid var(--gold-accent) !important;
-  padding: 16px;
-  border-radius: 6px;
-  margin: 14px 0;
-  color: var(--text-main) !important;
-}
-
-/* Listas de Pontos Fortes e Atenção */
-.odu-pontos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
-}
-
-.box-pontos-fortes {
-  background: rgba(16, 42, 26, 0.6);
-  border: 1px solid #10B981;
-  border-radius: var(--radius-md);
-  padding: 16px;
-}
-
-.box-pontos-atencao {
-  background: rgba(45, 20, 20, 0.6);
-  border: 1px solid #EF4444;
-  border-radius: var(--radius-md);
-  padding: 16px;
-}
-
-.box-pontos-fortes h4 {
-  color: #34D399;
-  margin-bottom: 8px;
-}
-
-.box-pontos-atencao h4 {
-  color: #F87171;
-  margin-bottom: 8px;
-}
-
-.box-pontos-fortes ul, .box-pontos-atencao ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.box-pontos-fortes li, .box-pontos-atencao li {
-  font-size: 0.88rem;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* ==========================================
-   DISCLAIMER OBRIGATÓRIO (CALLOUT)
-   ========================================== */
-.disclaimer-callout {
-  margin-top: 20px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid var(--gold-accent);
-  border-left: 4px solid var(--gold-accent);
-  border-radius: var(--radius-md);
-  padding: 14px 18px;
-  font-size: 0.85rem;
-  line-height: 1.5;
+.status-animacao {
+  font-size: 13px;
   color: var(--gold-light);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-style: italic;
+}
+
+/* Estilização da Leitura da IA */
+.leitura-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-purple);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.tag-gold {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.favorability-container {
+  margin-bottom: 16px;
+}
+
+.favorability-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--gold-light);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.favorability-bar-bg {
+  background: #180a29;
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-purple);
+}
+
+.favorability-bar-fill {
+  background: linear-gradient(90deg, #f59e0b 0%, #10b981 100%);
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+
+.resposta-ia-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #e4e4e7;
+}
+
+.resposta-ia-content strong {
+  color: var(--gold-light);
+}
+
+.card-bloqueio {
+  background: #180812;
+  border: 1px solid #f87171;
+  border-radius: 10px;
+  padding: 16px;
+  color: #fca5a5;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.nota-saldo {
+  margin-top: 10px;
+  color: var(--gold-light);
+  font-size: 12px;
+}
+
+.main-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 20px;
+  padding-bottom: 20px;
 }
