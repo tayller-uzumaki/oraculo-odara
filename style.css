@@ -1,246 +1,429 @@
+/* ==========================================================================
+   RESET & VARIÁVEIS GLOBAIS
+   ========================================================================== */
+:root {
+  --bg-main: #0a0512;
+  --bg-card: #150a24;
+  --bg-card-border: #332147;
+  --bg-highlight: #28173d;
+  
+  --gold-primary: #f59e0b;
+  --gold-light: #fbbf24;
+  --gold-dark: #b45309;
+  --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+
+  --text-bright: #ffffff;
+  --text-muted: #a1a1aa;
+  --text-subtle: #d4d4d8;
+
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+
+  --font-serif: 'Cinzel', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
 }
 
 body {
-  background-color: #0b0512;
-  color: #f3f4f6;
-  padding: 20px 10px;
+  background-color: var(--bg-main);
+  background-image: radial-gradient(circle at 50% 0%, #210d38 0%, #0a0512 70%);
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: 1.5;
+  padding-bottom: 40px;
 }
 
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-.header {
+/* ==========================================================================
+   CABEÇALHO & RODAPÉ
+   ========================================================================== */
+.main-header {
   text-align: center;
-  margin-bottom: 24px;
+  padding: 32px 16px 20px 16px;
 }
 
-.logo h1 {
-  font-family: 'Cinzel', serif;
-  color: #fbbf24;
-  font-size: 28px;
-  display: inline-block;
-}
-
-.tagline {
-  color: #9ca3af;
-  font-size: 13px;
-}
-
-.card {
-  background: #150a24;
-  border: 1px solid #332147;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-.card-header h2 {
-  font-family: 'Cinzel', serif;
-  color: #f59e0b;
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-
-.card-header p {
-  color: #a1a1aa;
-  font-size: 13px;
-  margin-bottom: 16px;
-}
-
-.input-group {
-  margin-bottom: 14px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 12px;
-  color: #fbbf24;
-  margin-bottom: 4px;
-}
-
-input[type="date"], select, textarea {
-  width: 100%;
-  padding: 10px;
-  background: #0b0612;
-  border: 1px solid #332147;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 14px;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #d97706, #b45309);
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.resultado-box {
-  background: #0b0612;
-  border: 1px solid #f59e0b;
-  border-radius: 10px;
-  padding: 16px;
-  margin-top: 16px;
-}
-
-.odu-badge {
-  width: 50px;
-  height: 50px;
-  background: #f59e0b;
-  color: #000;
-  font-weight: bold;
-  font-size: 22px;
-  border-radius: 50%;
+.logo-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 10px;
+  gap: 12px;
 }
 
-.odu-meta {
+.logo-icon {
+  font-size: 32px;
+}
+
+.main-header h1 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 1px;
+}
+
+.tagline {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.main-footer {
   text-align: center;
+  padding: 24px 16px;
   font-size: 12px;
-  color: #d4d4d8;
-  margin-bottom: 14px;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 40px;
+}
+
+/* ==========================================================================
+   LAYOUT CONTAINERS & CARDS
+   ========================================================================== */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card-section {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.card-header h2 {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.card-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FORMULÁRIOS & BOTÕES
+   ========================================================================== */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input[type="date"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px;
+  background: #0b0612;
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="date"]:focus,
+input[type="text"]:focus,
+select:focus {
+  border-color: var(--gold-primary);
+}
+
+.btn-primary {
+  background: var(--gold-gradient);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   ODÙ DE NASCIMENTO (QUADRO EXPANDIDO)
+   ========================================================================== */
+.resultado-box {
+  margin-top: 20px;
+  background: #0b0612;
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+}
+
+.odu-badge-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--bg-card-border);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.odu-number-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gold-gradient);
+  color: #000;
+  font-family: var(--font-serif);
+  font-weight: 900;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+}
+
+.odu-title-info h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--gold-light);
+}
+
+.odu-orixa-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sub-title-gold {
+  color: var(--gold-light);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.odu-caminho-texto {
+  font-size: 13.5px;
+  color: var(--text-subtle);
+}
+
+/* ==========================================================================
+   PACOTES & PIX
+   ========================================================================== */
+.banner-transicao {
+  background: var(--bg-highlight);
+  border-left: 4px solid var(--gold-primary);
+  padding: 10px 14px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  color: var(--text-subtle);
 }
 
 .pacotes-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .pacote-card {
   background: #0b0612;
-  border: 1px solid #332147;
-  border-radius: 8px;
-  padding: 14px;
-  text-align: center;
+  border: 2px solid var(--bg-card-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
   cursor: pointer;
   position: relative;
+  transition: border-color 0.2s, transform 0.2s;
 }
 
 .pacote-card.active {
-  border-color: #f59e0b;
-  background: #28173d;
+  border-color: var(--gold-primary);
+  background: #140a21;
 }
 
-.badge-pop {
+.pacote-badge {
   position: absolute;
   top: -10px;
-  right: 10px;
-  background: #10b981;
+  right: 12px;
+  background: #3b82f6;
   color: #fff;
   font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
 }
 
-.transicao-odu-banner {
-  background: #28173d;
-  border-left: 4px solid #f59e0b;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: #fde68a;
-  border-radius: 4px;
-  margin-bottom: 16px;
+.pacote-badge.gold {
+  background: var(--gold-gradient);
+  color: #000;
 }
 
-/* MESA E ANIMAÇÃO DE BÚZIOS */
+.pacote-card h3 {
+  font-size: 16px;
+  color: var(--text-bright);
+}
+
+.preco {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin: 4px 0 2px 0;
+}
+
+.preco-unitario {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.pacote-recursos {
+  list-style: none;
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.pacote-recursos li {
+  margin-bottom: 4px;
+}
+
+.highlight-gold {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   MESA ANIMAÇÃO DOS BÚZIOS
+   ========================================================================== */
 .mesa-container {
   margin-top: 20px;
   text-align: center;
 }
 
-.peneira-bg {
-  width: 280px;
-  height: 280px;
+.peneira-sagrada {
+  width: 260px;
+  height: 260px;
   margin: 0 auto;
   border-radius: 50%;
-  background: radial-gradient(circle, #3b2005 0%, #170b02 100%);
-  border: 8px solid #78350f;
-  box-shadow: inset 0 0 20px #000, 0 4px 15px rgba(0,0,0,0.6);
+  border: 6px solid #78350f;
+  background: radial-gradient(circle, #2d1810 0%, #170a05 100%);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+.mesa-chacoalhando {
+  animation: shakeMesa 0.15s infinite alternate;
+}
+
+@keyframes shakeMesa {
+  0% { transform: translate(2px, 1px) rotate(0deg); }
+  100% { transform: translate(-2px, -2px) rotate(1deg); }
 }
 
 .buzio {
-  width: 32px;
-  height: 44px;
+  width: 28px;
+  height: 38px;
   position: absolute;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .buzio-animando {
-  animation: cairBuzio 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+  animation: dropBuzio 0.6s ease-out forwards;
 }
 
-@keyframes cairBuzio {
-  0% { transform: scale(2.5) rotate(0deg); opacity: 0; }
-  100% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+@keyframes dropBuzio {
+  0% { opacity: 0; transform: scale(2) rotate(180deg); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-.mesa-chacoalhando .peneira-bg {
-  animation: chacoalhar 0.2s infinite ease-in-out;
-}
-
-@keyframes chacoalhar {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-3px, 3px) rotate(-1deg); }
-  50% { transform: translate(3px, -2px) rotate(1deg); }
-  75% { transform: translate(-2px, -3px) rotate(-0.5deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-.status-texto {
+.status-animacao {
   margin-top: 12px;
-  font-size: 13px;
-  color: #fbbf24;
+  font-size: 12px;
+  color: var(--gold-light);
   font-style: italic;
 }
 
+/* ==========================================================================
+   BARRA DE FAVORABILIDADE
+   ========================================================================== */
 .favorability-container {
   margin: 12px 0;
 }
 
 .favorability-bar-bg {
   width: 100%;
-  height: 8px;
-  background: #1f122e;
-  border-radius: 4px;
+  height: 10px;
+  background: #1f1133;
+  border-radius: 5px;
   overflow: hidden;
   margin-top: 4px;
+  border: 1px solid var(--bg-card-border);
 }
 
 .favorability-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #10b981);
-  border-radius: 4px;
+  background: var(--gold-gradient);
   transition: width 1s ease-in-out;
 }
 
-.tag-gold {
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 600px) {
+  .card-section {
+    padding: 16px;
+  }
+
+  .peneira-sagrada {
+    width: 220px;
+    height: 220px;
+  }
+
+  .odu-badge-header {
+    flex-direction: column;
+    text-align: center;
+  }
 }
