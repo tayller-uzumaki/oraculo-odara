@@ -98,7 +98,16 @@ const ODUS_NASCIMENTO = {
   }
 };
 
-// CÁLCULO E RENDERIZAÇÃO DO ODÙ DE NASCIMENTO (EXAÇÃO DO MODELO ORIGINAL)
+// ==========================================
+// VARIÁVEIS GLOBAIS DE ESTADO DO SISTEMA
+// ==========================================
+let pacoteSelecionado = 5; // Padrão inicial: 5 consultas (R$ 25,99)
+let valorSelecionado = 25.99;
+let perguntasRestantes = 0;
+
+// ==========================================
+// CÁLCULO E RENDERIZAÇÃO DO ODÙ DE NASCIMENTO
+// ==========================================
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
   const data = document.getElementById('dataNasc').value;
@@ -118,7 +127,7 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
   const info = ODUS_NASCIMENTO[numOdu] || ODUS_NASCIMENTO[16];
 
-  // MONTAGEM DO CARD IDÊNTICO AO MODELO SOLICITADO
+  // MONTAGEM DO CARD DE RESULTADO
   const painelOdu = document.getElementById('resultado-odu');
   painelOdu.className = "card card-resultado-dark";
   painelOdu.innerHTML = `
@@ -143,7 +152,7 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
       </span>
     </div>
 
-    <!-- TEXTO DENSO DO CAMINHO DO ODÙ (MÍNIMO 4 LINHAS DE APRESENTAÇÃO) -->
+    <!-- TEXTO DENSO DO CAMINHO DO ODÙ -->
     <div style="margin-bottom: 24px;">
       <h4 style="color: var(--gold-accent); font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
         📜 O Caminho do seu Odù:
@@ -195,28 +204,58 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   painelOdu.style.display = 'block';
   painelOdu.scrollIntoView({ behavior: 'smooth' });
 
-  // AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO
+  // AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO CTA
   document.getElementById('btn-ir-pacotes')?.addEventListener('click', function () {
-    // Procura por IDs comuns da seção de pacotes
-    const alvo = document.getElementById('planos') || 
-                 document.getElementById('pacotes') || 
-                 document.getElementById('planos-jogo') ||
-                 document.querySelector('.pacotes') ||
-                 document.querySelector('.planos');
+    const alvo = document.getElementById('secao-pacotes') || 
+                 document.getElementById('planos') || 
+                 document.getElementById('pacotes');
 
     if (alvo) {
       alvo.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // Se não achar por ID/classe, rola para baixo um valor padrão
       window.scrollBy({ top: 600, behavior: 'smooth' });
     }
   });
 });
 
-// AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO
-  document.getElementById('btn-ir-pacotes')?.addEventListener('click', function () {
-    const alvo = document.getElementById('secao-pacotes');
-    if (alvo) {
-      alvo.scrollIntoView({ behavior: 'smooth' });
+// ==========================================
+// SELEÇÃO DE PACOTES E LIBERAÇÃO PIX
+// ==========================================
+
+// Função acionada ao clicar em cada Card de Pacote
+function selecionarPacote(qtd, preco) {
+  pacoteSelecionado = qtd;
+  valorSelecionado = preco;
+
+  const card5 = document.getElementById('pacote-5');
+  const card10 = document.getElementById('pacote-10');
+
+  if (card5 && card10) {
+    if (qtd === 5) {
+      card5.classList.add('active');
+      card10.classList.remove('active');
+    } else {
+      card10.classList.add('active');
+      card5.classList.remove('active');
     }
-  });
+  }
+}
+
+// Função acionada ao clicar no botão "Gerar Pagamento PIX"
+function gerarPix() {
+  // Atribui a quantidade de perguntas com base na escolha (5 ou 10)
+  perguntasRestantes = pacoteSelecionado;
+
+  // Atualiza o contador exibido na tela
+  const contadorEl = document.getElementById('qtd-perguntas');
+  if (contadorEl) {
+    contadorEl.innerText = perguntasRestantes;
+  }
+
+  // Revela a seção da Mesa Sagrada dos Búzios
+  const secaoJogada = document.getElementById('secao-jogada');
+  if (secaoJogada) {
+    secaoJogada.style.display = 'block';
+    secaoJogada.scrollIntoView({ behavior: 'smooth' });
+  }
+}
