@@ -186,7 +186,7 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
       <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.5; margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">
         Saber seu Odù de Nascimento é o primeiro passo. Para obter respostas diretas e conselhos ancestrais para suas dúvidas atuais, consulte o <strong>Jogo Sagrado de Búzios Online</strong>.
       </p>
-      <button onclick="document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })" style="background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); color: #0f0a1c; font-weight: 700; border: none; padding: 12px 28px; border-radius: 25px; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);">
+      <button id="btn-ir-pacotes" style="background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); color: #0f0a1c; font-weight: 700; border: none; padding: 12px 28px; border-radius: 25px; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);">
         🔮 Ver Pacotes de Leitura de Búzios
       </button>
     </div>
@@ -194,4 +194,21 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
   painelOdu.style.display = 'block';
   painelOdu.scrollIntoView({ behavior: 'smooth' });
+
+  // AÇÃO DE ROLAGEM INTELIGENTE AO CLICAR NO BOTÃO
+  document.getElementById('btn-ir-pacotes')?.addEventListener('click', function () {
+    // Procura por IDs comuns da seção de pacotes
+    const alvo = document.getElementById('planos') || 
+                 document.getElementById('pacotes') || 
+                 document.getElementById('planos-jogo') ||
+                 document.querySelector('.pacotes') ||
+                 document.querySelector('.planos');
+
+    if (alvo) {
+      alvo.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Se não achar por ID/classe, rola para baixo um valor padrão
+      window.scrollBy({ top: 600, behavior: 'smooth' });
+    }
+  });
 });
