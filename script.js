@@ -6,25 +6,26 @@ let consultasContratadas = 0;
 let consultasRestantes = 0;
 let pacoteSelecionado = { quantidade: 5, valor: 25.99 };
 let isProcessing = false;
+let ultimaPerguntaProcessada = ""; // Controle da trava anti-spam
 
 const ODUS_MAP = {
-  0: { nome: "Opira", orixa: "Obaluaiê / Omolu", elemento: "Terra", caminho: "Momento de recolhimento, cautela e preservação. Evite decisões precipitadas.", tendencia: "Desfavorável neste momento" },
-  1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "Caminhos de transformação rápida, dinamismo e necessidade de clareza.", tendencia: "Parcialmente Favorável / Requer Atenção" },
-  2: { nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra", caminho: "Dualidade, parcerias, união e busca por estabilidade.", tendencia: "Favorável" },
-  3: { nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo", caminho: "Superação de obstáculos, coragem, firmeza e ação.", tendencia: "Favorável" },
-  4: { nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água", caminho: "Intuição afiada, proteção ancestral e atenção a alertas sutis.", tendencia: "Parcialmente Favorável / Requer Atenção" },
-  5: { nome: "Oxé", orixa: "Oxum", elemento: "Água", caminho: "Prosperidade, sensibilidade, beleza, renovação e caminhos abertos.", tendencia: "Favorável" },
-  6: { nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra", caminho: "Grande riqueza, fartura, expansão e sorte nos negócios.", tendencia: "Favorável" },
-  7: { nome: "Odi", orixa: "Obaluaiê / Oxóssi", elemento: "Terra", caminho: "Resistência, persistência e quebra de amarras antigas.", tendencia: "Parcialmente Favorável / Requer Atenção" },
-  8: { nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água", caminho: "Sabedoria da maturidade, reflexão profunda e calma.", tendencia: "Parcialmente Favorável / Requer Atenção" },
-  9: { nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar", caminho: "Ventos de mudança, movimento, intuição e liberdade.", tendencia: "Favorável" },
-  10: { nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço", caminho: "Paz, pureza, bênçãos elevadas e respeito ao sagrado.", tendencia: "Favorável" },
-  11: { nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar", caminho: "Imprevistos produtivos, dinamismo e necessidade de flexibilidade.", tendencia: "Parcialmente Favorável / Requer Atenção" },
-  12: { nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo", caminho: "Justiça, liderança, vitória sobre demandas e firmeza de propósito.", tendencia: "Favorável" },
-  13: { nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra", caminho: "Transformação espiritual e encerramento de ciclos velhos.", tendencia: "Desfavorável neste momento" },
-  14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "Renovação contínua, sabedoria estratégica e flexibilidade.", tendencia: "Favorável" },
-  15: { nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar", caminho: "Conquistas pela perspicácia, proteção e intuição refinada.", tendencia: "Favorável" },
-  16: { nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "Luz total, confirmação plena, paz e bênção máxima dos caminhos.", tendencia: "Favorável" }
+  0: { nome: "Opira", orixa: "Obaluaiê / Omolu", elemento: "Terra", caminho: "momento de recolhimento, cautela e preservação, evitando decisões precipitadas.", tendencia: "não tão favorável neste momento" },
+  1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "caminhos de transformação rápida, dinamismo e necessidade de clareza.", tendencia: "parcialmente favorável e requer atenção" },
+  2: { nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra", caminho: "dualidade, parcerias, união e busca por estabilidade solida.", tendencia: "positiva e bastante favorável" },
+  3: { nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo", caminho: "superação de obstáculos com coragem, firmeza e determinação.", tendencia: "positiva e favorável" },
+  4: { nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água", caminho: "intuição afiada, proteção ancestral e atenção aos alertas sutis.", tendencia: "parcialmente favorável" },
+  5: { nome: "Oxé", orixa: "Oxum", elemento: "Água", caminho: "prosperidade, sensibilidade, beleza, renovação e caminhos abertos.", tendencia: "muito positiva e favorável" },
+  6: { nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra", caminho: "grande riqueza, fartura, expansão e sorte nos empreendimentos.", tendencia: "plenamente positiva e favorável" },
+  7: { nome: "Odi", orixa: "Obaluaiê / Oxóssi", elemento: "Terra", caminho: "resistência, persistência e quebra gradual de amarras antigas.", tendencia: "parcialmente favorável" },
+  8: { nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água", caminho: "sabedoria da maturidade, reflexão profunda e calma estratégica.", tendencia: "parcialmente favorável com ressalvas" },
+  9: { nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar", caminho: "ventos de mudança rápida, movimento, intuição e libertação.", tendencia: "positiva e dinamizadora" },
+  10: { nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço", caminho: "paz, pureza, bênçãos elevadas e respeito profundo ao sagrado.", tendencia: "positiva e abençoada" },
+  11: { nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar", caminho: "imprevistos produtivos, dinamismo e necessidade de flexibilidade.", tendencia: "parcialmente favorável" },
+  12: { nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo", caminho: "justiça, liderança, vitória sobre demandas e firmeza moral.", tendencia: "positiva e favorável" },
+  13: { nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra", caminho: "transformação espiritual exigente e encerramento de ciclos antigos.", tendencia: "não tão favorável no presente" },
+  14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "renovação contínua, sabedoria estratégica e capacidade de adaptação.", tendencia: "positiva e favorável" },
+  15: { nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar", caminho: "conquistas pela perspicácia, proteção sutil e intuição refinada.", tendencia: "positiva e favorável" },
+  16: { nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "luz total, confirmação plena, paz e bênção máxima dos caminhos.", tendencia: "plenamente positiva e muito favorável" }
 };
 
 function atualizarContadores() {
@@ -34,7 +35,12 @@ function atualizarContadores() {
   if (elRestantes) elRestantes.textContent = consultasRestantes;
 }
 
-// CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO
+function rolarParaPacotes() {
+  const secao = document.getElementById('secao-pacotes');
+  if (secao) secao.scrollIntoView({ behavior: 'smooth' });
+}
+
+// 1. CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO COM CTA DE VENDAS
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
   const nome = document.getElementById('nome').value.trim();
@@ -72,9 +78,9 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
 
       <div class="box-destaque-dark">
         <h4 style="color: var(--gold-accent); margin-bottom: 10px;">📜 Interpretação Completa dos Seus Caminhos</h4>
-        <p style="margin-bottom: 12px;"><strong>Características Principais:</strong> O Odù ${infoOdu.nome} traz a regência de ${infoOdu.orixa}, conferindo conexão especial ao elemento ${infoOdu.elemento}.</p>
-        <p style="margin-bottom: 12px;"><strong>Potencial Espiritual:</strong> Sua energia nativa favorece ${infoOdu.caminho.toLowerCase()}</p>
-        <p style="margin-bottom: 4px;"><strong>Desafios:</strong> Mantenha o equilíbrio nos momentos de transição, agindo com sabedoria e paciência.</p>
+        <p style="margin-bottom: 12px;"><strong>Características Principais:</strong> O Odù ${infoOdu.nome} traz a regência de ${infoOdu.orixa}, conferindo uma conexão especial com o elemento ${infoOdu.elemento}. Quem nasce sob este Odù possui uma presença marcante e capacidade natural para buscar o discernimento.</p>
+        <p style="margin-bottom: 12px;"><strong>Potencial Espiritual:</strong> Sua vibração nativa favorece ${infoOdu.caminho} Esta influência confere resiliência e amparo em momentos de decisão.</p>
+        <p style="margin-bottom: 4px;"><strong>Desafios e Aprendizados:</strong> O principal desafio deste Odù é manter o equilíbrio emocional e a paciência nas fases de transição, agindo sempre com reflexão antes de tomar atitudes definitivas.</p>
       </div>
 
       <div class="odu-pontos-grid">
@@ -92,6 +98,14 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
             <li>✦ Cuidado com desgastes na energia pessoal</li>
           </ul>
         </div>
+      </div>
+
+      <!-- CALL TO ACTION DE VENDA (REQUISITO PARTE 1.2) -->
+      <div style="margin-top: 24px; padding: 20px; background: rgba(139, 92, 246, 0.12); border: 1px solid var(--purple-accent); border-radius: 12px; text-align: center;">
+        <p style="font-size: 0.98rem; color: var(--gold-light); line-height: 1.6; margin-bottom: 16px;">
+          ✨ Quer se aprofundar e entender o que os búzios mostram sobre seus caminhos atuais, amor e carreira? Clique abaixo, escolha um dos nossos pacotes e faça sua consulta agora!
+        </p>
+        <button type="button" class="btn-primary" onclick="rolarParaPacotes()">🔮 Ver Pacotes e Consultar os Búzios</button>
       </div>
     </div>
   `;
@@ -130,11 +144,11 @@ function reiniciarConsulta() {
   document.getElementById('form-consulta')?.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ANALISADOR SEMÂNTICO LOCAL E REGRAS DE BLOQUEIO
+// CLASSIFICAÇÃO SEMÂNTICA LOCAL & REGRAS DE SEGURANÇA HUMANA
 function classificarPergunta(texto) {
   const t = texto.toLowerCase();
 
-  if (['me matar', 'quer morrer', 'quero morrer', 'desaparecer', 'nao agumento mais', 'não aguento mais', 'suicidio', 'suicídio'].some(g => t.includes(g))) {
+  if (['me matar', 'quer morrer', 'quero morrer', 'desaparecer', 'nao aguento mais', 'não aguento mais', 'suicidio', 'suicídio'].some(g => t.includes(g))) {
     return { bloqueado: true, tipo: 'RISCO_EMOCIONAL', msg: "Percebo que você está passando por um momento de dor intensa. O jogo de búzios não é o recurso adequado para este momento. Por favor, busque ajuda profissional. Ligue gratuitamente para o CVV no número 188 (disponível 24h) ou procure um serviço de emergência e alguém de sua confiança." };
   }
 
@@ -161,7 +175,7 @@ function classificarPergunta(texto) {
   return { bloqueado: false, contexto };
 }
 
-// RITUAL DE LANÇAMENTO DOS BÚZIOS
+// 2. RITUAL DE JOGADA DOS BÚZIOS
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -176,10 +190,30 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
   const pergunta = document.getElementById('pergunta').value.trim();
   if (!pergunta) return;
 
-  // Analisa semanticamente antes de debitar saldo ou mover a mesa
-  const analise = classificarPergunta(pergunta);
+  // TRAVA DE REPETIÇÃO DE PERGUNTAS / ANTI-SPAM (REQUISITO PARTE 2.1)
+  const perguntaNormalizada = pergunta.toLowerCase().replace(/[^\w\s]/gi, '').trim();
+  if (perguntaNormalizada === ultimaPerguntaProcessada) {
+    const painelResultado = document.getElementById('resultado-leitura');
+    painelResultado.className = "card card-resultado-dark";
+    painelResultado.innerHTML = `
+      <div style="border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 12px; margin-bottom: 16px;">
+        <span style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">⚠️ Atenção do Oráculo</span>
+        <h3 style="font-size: 1.3rem; color: var(--gold-light); margin-top: 4px;">Pergunta Repetida Detectada</h3>
+      </div>
+      <div class="box-destaque-dark" style="border-left-color: var(--gold-accent) !important;">
+        <p style="font-size: 0.95rem; line-height: 1.6;">
+          Você já fez essa pergunta recentemente. Para obter uma boa orientação, reflita sobre a resposta recebida antes de consultar os búzios novamente sobre o mesmo tema.
+        </p>
+      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 10px;">ℹ️ Seu saldo de consultas foi totalmente preservado.</p>
+    `;
+    painelResultado.style.display = 'block';
+    painelResultado.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
 
-  // SE FOR PERGUNTA BLOQUEADA: Não consome saldo e exibe o painel de suporte
+  // ANALISA SEGURANÇA HUMANA
+  const analise = classificarPergunta(pergunta);
   if (analise.bloqueado) {
     const painelResultado = document.getElementById('resultado-leitura');
     painelResultado.className = "card card-resultado-dark";
@@ -286,67 +320,42 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
       consultasRestantes--;
       atualizarContadores();
 
-      const favorabilidade = Math.min(100, Math.max(15, Math.floor((buziosAbertos1 / 16) * 100) + Math.floor(Math.random() * 10)));
+      // Guarda a pergunta processada com sucesso
+      ultimaPerguntaProcessada = perguntaNormalizada;
 
-      // Verificação de perguntas sobre terceiros
-      const sobreTerceiros = /ele|ela|marido|esposa|namorado|namorada|chefe|parceiro/i.test(pergunta);
-      const notaTerceiros = sobreTerceiros ? `<p style="font-size: 0.88rem; color: var(--gold-light); margin-top: 8px;"><strong>Nota sobre Leitura de Terceiros:</strong> O oráculo reflete como essas energias impactam <em>sua vida e suas decisões</em>, preservando o livre-arbítrio alheio.</p>` : '';
-
-      let blocoResultadoEspecial = '';
+      // PARÁGRAFOS DETALHADOS E EXTENSOS (MÍNIMO DE 2 PARÁGRAFOS COM 4 LINHAS CADA)
+      let paragrafo1 = "";
+      let paragrafo2 = "";
 
       if (ehOrixaCabeca) {
-        blocoResultadoEspecial = `
-          <div class="box-destaque-dark">
-            <h4 style="color: var(--gold-accent); margin-bottom: 8px;">👑 Leitura do Orixá de Cabeça (Dupla Queda)</h4>
-            <p style="margin-bottom: 10px;"><strong>1ª Queda (Orixá de Frente):</strong> Odù ${oduSorteado1.nome} — Regência de <strong>${oduSorteado1.orixa}</strong>. Traz a energia principal que guia seus passos, sua liderança e sua força de vontade no mundo.</p>
-            <p style="margin-bottom: 10px;"><strong>2ª Queda (Orixá Adjunto / Juntó):</strong> Odù ${oduSorteado2.nome} — Regência de <strong>${oduSorteado2.orixa}</strong>. Representa seu suporte emocional, equilíbrio e sustentação em momentos de oscilação.</p>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">A aliança entre ${oduSorteado1.orixa} e ${oduSorteado2.orixa} mostra que suas decisões precisam equilibrar dinamismo e sabedoria espiritual.</p>
-          </div>
-        `;
+        paragrafo1 = `Em relação à sua busca sincera sobre "<strong>${pergunta}</strong>", os búzios se moveram na mesa em uma dupla queda reveladora. A primeira queda manifestou a regência de <strong>${oduSorteado1.orixa}</strong> através de Odù ${oduSorteado1.nome}, mostrando que a tendência para a sua liderança e presença no mundo é ${oduSorteado1.tendencia}. Esta primeira vibração direciona como você enfrenta os desafios diários, indicando que sua força interior se renova quando você atua com coragem, ética e alinhamento com a energia ancestral que o protege.`;
+
+        paragrafo2 = `Na segunda queda da mesa sagrada, a energia do seu Orixá Adjunto (Juntó) revelou a força de <strong>${oduSorteado2.orixa}</strong> sob o Odù ${oduSorteado2.nome}. Esta combinação mostra que o seu suporte emocional e sustentação espiritual atuam em perfeita complementaridade com seu Orixá de Frente. Para manter seus caminhos abertos e prósperos diante do que foi perguntado, é fundamental cultivar a paciência e manter atitudes ponderadas no cotidiano, lembrando sempre que a confirmação definitiva dessa regência é um ato sagrado presencial.`;
       } else {
-        blocoResultadoEspecial = `
-          <div class="box-destaque-dark">
-            <h4 style="color: var(--gold-accent); margin-bottom: 6px;">🎯 Interpretação Contextual: ${analise.contexto}</h4>
-            <p style="font-style: italic; color: var(--text-muted); margin-bottom: 10px;">"${pergunta}"</p>
-            <p style="line-height: 1.7;">
-              Ao analisar sua questão sob o tema de <strong>${analise.contexto}</strong>, o sagrado manifestou o <strong>Odù ${oduSorteado1.nome}</strong>. Esta regência de ${oduSorteado1.orixa} indica que ${oduSorteado1.caminho.toLowerCase()} 
-            </p>
-            ${notaTerceiros}
-          </div>
-        `;
+        paragrafo1 = `Diante da sua questão específica — "<strong>${pergunta}</strong>" —, a mesa sagrada de búzios manifestou a vibração de <strong>Odù ${oduSorteado1.nome}</strong>, sob a regência direta de <strong>${oduSorteado1.orixa}</strong>. Ao analisar o momento que você atravessa na área de ${analise.contexto}, a queda oracular indica que a tendência para a sua pergunta é <strong>${oduSorteado1.tendencia}</strong>. Essa manifestação revela que o momento exige que você observe com atenção os sinais ao seu redor, pois a energia presente favorece que você ${oduSorteado1.caminho}`;
+
+        paragrafo2 = `Para que você consiga caminhar com firmeza e sabedoria em direção ao que busca, o oráculo orienta que você mantenha o discernimento e evite tomar decisões motivadas pela ansiedade ou por impulsos do momento. Lembre-se de que a leitura dos búzios ilumina as tendências do seu presente, mas o resultado final é moldado pelas suas atitudes e pela sua fé. Cultive pensamentos elevados, busque equilibrar sua energia e confie na proteção dos Orixás para guiar cada um dos seus passos com prosperidade e paz.`;
       }
 
       painelResultado.className = "card card-resultado-dark";
       painelResultado.innerHTML = `
-        <!-- 1. ACOLHIMENTO E CABEÇALHO -->
         <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
-          <span style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Revelação Oracular Acolhedora</span>
+          <span style="color: var(--gold-accent); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Revelação da Consulta Sagrada</span>
           <h3 style="font-size: 1.4rem; color: var(--gold-light); margin-top: 4px;">Odù ${oduSorteado1.nome} (${buziosAbertos1} Abertos / ${buziosFechados1} Fechados)</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 6px;">Compreendemos a importância da sua pergunta. Que as luzes dos Orixás tragam clareza e paz ao seu coração.</p>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">Regência Principal: <strong>${oduSorteado1.orixa}</strong></p>
         </div>
 
-        <!-- 2. RESULTADO DA CONSULTA (TENDÊNCIA) -->
-        <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-          <div style="background: rgba(139, 92, 246, 0.15); padding: 8px 16px; border-radius: 20px; font-size: 0.88rem;">
-            Tendência: <strong style="color: var(--gold-light);">${oduSorteado1.tendencia}</strong>
-          </div>
-          <div style="background: rgba(139, 92, 246, 0.15); padding: 8px 16px; border-radius: 20px; font-size: 0.88rem;">
-            Favorabilidade: <strong style="color: var(--purple-accent);">${favorabilidade}%</strong>
-          </div>
-        </div>
-
-        <!-- 3. INTERPRETAÇÃO DO ODÙ + CONTEXTO -->
-        ${blocoResultadoEspecial}
-
-        <!-- 4. ORIENTAÇÃO PRÁTICA E ÉTICA -->
-        <div style="margin-top: 14px;">
-          <h4 style="color: var(--gold-light); margin-bottom: 6px;">💡 Orientação Prática e Ética</h4>
-          <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
-            A sabedoria ancestral nos lembra que as cartas e os búzios mostram tendências, mas quem constrói o caminho é você através das suas atitudes no presente. Mantenha a clareza, evite agir por impulso e busque equilibrar suas energias com pensamentos elevados.
+        <!-- TEXTO DA RESPOSTA RESTRUTURADO (PARÁGRAFOS DENSOS E EXTENSOS) -->
+        <div class="box-destaque-dark" style="line-height: 1.8; font-size: 0.95rem;">
+          <p style="margin-bottom: 16px; text-indent: 12px;">
+            ${paragrafo1}
+          </p>
+          <p style="text-indent: 12px;">
+            ${paragrafo2}
           </p>
         </div>
 
-        <!-- DISCLAIMER OBRIGATÓRIO (AVISO LEGAL/RELIGIOSO) -->
+        <!-- DISCLAIMER OBRIGATÓRIO (MANTIDO CONFORME PARTE 3.1) -->
         <div class="disclaimer-callout">
           ⚠️ <strong>Aviso Importante:</strong> Esta é uma consulta orientativa realizada por uma inteligência artificial digital. Para aprofundamentos, trabalhos espirituais, rituais, confirmações de Odù e assentamentos, procure uma casa de Candomblé ou um Babalorixá / Ialorixá de sua extrema confiança.
         </div>
