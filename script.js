@@ -1,4 +1,4 @@
-// Banco de Dados Sagrado dos 16 Odùs (Estrutura Completa Original)
+// Banco de Dados Sagrado dos 16 Odùs
 const ODUS_DATABASE = {
   1: {
     numero: 1, nome: "Okaran", orixa: "Exu", elemento: "Fogo", tendenciaPadrao: "NÃO",
@@ -31,13 +31,13 @@ const ODUS_DATABASE = {
     caminho: "Caminho do guerreiro incansável. Etaogundá promete o triunfo para quem não recua diante das batalhas difíceis.",
     influenciaEspiritual: "Ogum quebra correntes de injustiça, abrindo caminhos à força para quem age com verdade e retidão.",
     fatoresFavoraveis: ["Provas e argumentos sólidos ao seu favor", "Força de vontade inabalável", "Proteção contra manobras desleais"],
-    pontosAtencao: ["Agressividade nas palavras", "Exaustão física", "Teimosia em detalhes menores"],
+    pontosAtencao: ["Agressividade nas palavras", "Exhaustão física", "Teimosia em detalhes menores"],
     orientacoesPraticas: "Mantenha foco absoluto nos fatos concretos. Não gaste energia com provações emocionais.",
     sabedoriaAncestral: "As espadas da justiça cortam os nós que o medo tentou dar no seu caminho.",
     resumoFinal: "Cenário altamente positivo. Avance com determinação e sem medo."
   },
   4: {
-    numero: 4, nome: "Irosun", orixa: "Iemanjá e Oxóssi", elemento: "Terra", tendenciaPadrao: "AINDA NÃO",
+    numero: 4, nome: "Irosun", orixa: "Iemanjá e Oxossi", elemento: "Terra", tendenciaPadrao: "AINDA NÃO",
     favorabilidade: 40,
     tituloTendencia: "⏳ Tendência: AINDA NÃO — Há verdades ocultas que precisam emergir primeiro.",
     caminho: "Caminho da prudência e do olhar atento. Irosun pede paciência para que a névoa se desfaça antes do veredito.",
@@ -97,7 +97,7 @@ const ODUS_DATABASE = {
     resumoFinal: "Sinal verde do oráculo. Mantenha a cabeça fria e a conduta ética para triunfar."
   },
   9: {
-    numero: 9, nome: "Osa", orixa: "Oyá (Iansã) e Yemanjá", elemento: "Fogo / Água", tendenciaPadrao: "AINDA NÃO",
+    numero: 9, nome: "Osa", orixa: "Oyá (Iansã) e Yemanja", elemento: "Fogo / Água", tendenciaPadrao: "AINDA NÃO",
     favorabilidade: 42,
     tituloTendencia: "⏳ Tendência: AINDA NÃO — Ventos de mudança repentina podem alterar o rumo do processo.",
     caminho: "Caminho da tempestade que varre o ultrapassado. Osa exige flexibilidade para se adaptar às guinadas.",
@@ -164,7 +164,7 @@ const ODUS_DATABASE = {
     influenciaEspiritual: "Oxumaré renova a energia do ambiente, transformando perdas aparentes em ganhos reais.",
     fatoresFavoraveis: ["Capacidade de reinvenção", "Atração de oportunidades", "Flexibilidade"],
     pontosAtencao: ["Espalhar energia em muitas coisas", "Promessas vagas de terceiros", "Falta de foco"],
-    orientacoesPraticas: "Esteja aberto a caminhos e alternativas que você não havia considerado no início.",
+    orientacoesPraticas: "Esteja aberto a caminhos e alternatives que você não havia considerado no início.",
     sabedoriaAncestral: "Após a chuva mais densa, o céu se pinta com as cores da renovação.",
     resumoFinal: "Cenário favorável e de renovação. Adapte-se e colha os frutos positivos."
   },
@@ -194,42 +194,11 @@ const ODUS_DATABASE = {
   }
 };
 
-// ----------------------------------------------------
-// TRAVA DE SEGURANÇA CONTRA CONTEÚDO SENSÍVEL
-// ----------------------------------------------------
-function verificarPerguntaSensivel(textoPergunta) {
-  const perguntaLower = textoPergunta.toLowerCase();
-
-  const termosMorteSuicidio = [
-    'quero morrer', 'desejo morrer', 'vou me matar', 'pensando em me matar',
-    'suicidio', 'suicídio', 'cometer suicidio', 'tirar minha vida', 'tirar a minha vida',
-    'fim da minha vida', 'nao quero mais viver', 'não quero mais viver', 'me matar',
-    'cortar os pulsos', 'me enforcar', 'overdose'
-  ];
-
-  const termosJogosAzar = [
-    'jogo do bicho', 'loteria', 'mega sena', 'megasena', 'quina', 'lotofacil',
-    'lotofácil', 'tigrinho', 'bet', 'aposta', 'numeros da sorte', 'números da sorte',
-    'palpite de hoje', 'ganhar na loteria', 'cassino'
-  ];
-
-  for (let termo of termosMorteSuicidio) {
-    if (perguntaLower.includes(termo)) return { bloqueado: true, tipo: 'SAUDE_MENTAL' };
-  }
-
-  for (let termo of termosJogosAzar) {
-    if (perguntaLower.includes(termo)) return { bloqueado: true, tipo: 'JOGOS_AZAR' };
-  }
-
-  return { bloqueado: false };
-}
-
-// Estado Global da Aplicação
 let oduDiretorAtual = null;
-let perguntasRestantes = 5;
+let perguntasRestantes = 0;
 let pacoteAtivo = { qtd: 5, valor: 25.99 };
 
-// Calculadora do Odù de Nascimento
+// Calculadora de Odù
 function calcularOduNumerologia(dataStr) {
   if (!dataStr) return 6;
   const numeros = dataStr.replace(/\D/g, '');
@@ -240,16 +209,14 @@ function calcularOduNumerologia(dataStr) {
   return soma === 0 ? 1 : soma;
 }
 
-// ----------------------------------------------------
-// ETAPA 1: Odù de Nascimento (Com Quadro Expandido e 3 Requisitos)
-// ----------------------------------------------------
+// Etapa 1: Odù de Nascimento
 document.getElementById('form-odu')?.addEventListener('submit', function (e) {
   e.preventDefault();
   const dataInput = document.getElementById('dataNasc').value;
   if (!dataInput) return;
 
   const btn = document.getElementById('btn-calc-odu');
-  if (btn) btn.innerText = '🔮 Mapeando Força Ancestral...';
+  btn.innerText = '🔮 Mapeando Força Ancestral...';
 
   setTimeout(() => {
     const numOdu = calcularOduNumerologia(dataInput);
@@ -278,61 +245,48 @@ document.getElementById('form-odu')?.addEventListener('submit', function (e) {
     `;
 
     document.getElementById('odu-caminho').innerHTML = textoCaminhoExpandido;
-
+    
     const elemTransicao = document.getElementById('transicao-nome-odu');
     if (elemTransicao) {
       elemTransicao.innerText = `${oduDiretorAtual.nome} (${oduDiretorAtual.orixa})`;
     }
 
     const resOdu = document.getElementById('resultado-odu');
-    if (resOdu) {
-      resOdu.style.display = 'block';
-      resOdu.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    resOdu.style.display = 'block';
+    resOdu.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    if (btn) btn.innerText = '🔮 Descobrir Meu Odù';
+    btn.innerText = '🔮 Descobrir Meu Odù';
   }, 800);
 });
 
-// ----------------------------------------------------
-// ETAPA 2: Seleção de Pacotes & PIX
-// ----------------------------------------------------
+// Etapa 2: Seleção de Pacotes
 function selecionarPacote(qtd, valor) {
   pacoteAtivo = { qtd, valor };
-  document.getElementById('pacote-5')?.classList.toggle('active', qtd === 5);
-  document.getElementById('pacote-10')?.classList.toggle('active', qtd === 10);
+  document.getElementById('pacote-5').classList.toggle('active', qtd === 5);
+  document.getElementById('pacote-10').classList.toggle('active', qtd === 10);
 }
 
 function gerarPix() {
   const container = document.getElementById('area-pix');
-  if (!container) return;
-
   const qrSimulado = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-4266141740005204000053039865405" + pacoteAtivo.valor.toFixed(2) + "5802BR5913Oraculo Odara";
 
   container.innerHTML = `
     <div style="background: #0b0612; padding: 16px; border-radius: 8px; border: 1px solid #f59e0b; text-align: center; margin-top: 10px;">
       <p style="color: #fff; font-size: 14px; margin-bottom: 8px;">Copia e Cola PIX (R$ ${pacoteAtivo.valor.toFixed(2)}):</p>
       <input type="text" value="${qrSimulado}" readonly style="width: 100%; padding: 8px; font-size: 11px; background: #150a24; color: #fbbf24; border: 1px solid #332147; border-radius: 4px; margin-bottom: 12px;" />
-      <button onclick="confirmarPagamento()" class="btn-primary" style="background: #059669; color: #fff; cursor: pointer; padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold;">🛡️ Simular Pagamento Aprovado</button>
+      <button onclick="confirmarPagamento()" class="btn-primary" style="background: #059669; color: #fff;">🛡️ Simular Pagamento Aprovado</button>
     </div>
   `;
 }
 
 function confirmarPagamento() {
   perguntasRestantes = pacoteAtivo.qtd;
-  const elemQtd = document.getElementById('qtd-perguntas');
-  if (elemQtd) elemQtd.innerText = perguntasRestantes;
-  
-  const secaoJogada = document.getElementById('secao-jogada');
-  if (secaoJogada) {
-    secaoJogada.style.display = 'block';
-    secaoJogada.scrollIntoView({ behavior: 'smooth' });
-  }
+  document.getElementById('qtd-perguntas').innerText = perguntasRestantes;
+  document.getElementById('secao-jogada').style.display = 'block';
+  document.getElementById('secao-jogada').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ----------------------------------------------------
-// BÚZIOS EM SVG
-// ----------------------------------------------------
+// Criador de Búzios em SVG
 function criarBuzioSVG(eAberto) {
   if (eAberto) {
     return `
@@ -367,77 +321,32 @@ function criarBuzioSVG(eAberto) {
   }
 }
 
-// ----------------------------------------------------
-// ETAPA 3: Jogada de Búzios (Estrutura Completa de 9 Itens Restaurada)
-// ----------------------------------------------------
+// Etapa 3: Jogada de Búzios
 document.getElementById('form-consulta')?.addEventListener('submit', function (e) {
   e.preventDefault();
-
-  const perguntaInput = document.getElementById('pergunta');
-  const pergunta = perguntaInput ? perguntaInput.value.trim() : '';
-  if (!pergunta) return;
-
   if (perguntasRestantes <= 0) {
     alert("Seu saldo de consultas acabou. Adquira um novo pacote!");
     return;
   }
 
-  // --- TRAVA DE SEGURANÇA ---
-  const checagemSeguranca = verificarPerguntaSensivel(pergunta);
-  if (checagemSeguranca.bloqueado) {
-    const resContainer = document.getElementById('resultado-leitura');
-    if (resContainer) {
-      if (checagemSeguranca.tipo === 'SAUDE_MENTAL') {
-        resContainer.innerHTML = `
-          <div style="background: rgba(220, 38, 38, 0.12); border: 2px solid #ef4444; padding: 22px; border-radius: 12px; color: #fff; line-height: 1.7; margin-top: 15px;">
-            <h3 style="color: #f87171; font-size: 18px; margin-bottom: 10px;">💛 Você não está só. Sua vida é preciosa!</h3>
-            <p style="font-size: 14.5px; color: #fecdd3; margin-bottom: 12px;">
-              O Oráculo é um espaço de orientação ancestral, mas questões delicadas ligadas ao sofrimento emocional profundo precisam de acolhimento profissional adequado.
-            </p>
-            <p style="font-size: 14px; color: #fff; margin-bottom: 12px;"><strong>Busque apoio agora mesmo:</strong></p>
-            <ul style="background: rgba(0,0,0,0.3); padding: 14px 20px; border-radius: 8px; font-size: 14px; color: #fbbf24; list-style: none;">
-              <li style="margin-bottom: 6px;">📞 <strong>CVV (Centro de Valorização da Vida):</strong> Ligue <strong>188</strong> (Gratuito, 24 horas)</li>
-              <li>💬 Chat online: <a href="https://www.cvv.org.br" target="_blank" style="color: #60a5fa;">www.cvv.org.br</a></li>
-            </ul>
-          </div>
-        `;
-      } else if (checagemSeguranca.tipo === 'JOGOS_AZAR') {
-        resContainer.innerHTML = `
-          <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; padding: 20px; border-radius: 12px; color: #fff; line-height: 1.7; margin-top: 15px;">
-            <h3 style="color: #fbbf24; font-size: 17px; margin-bottom: 8px;">⚠️ Política de Uso do Oráculo</h3>
-            <p style="font-size: 14px; color: #e4e4e7;">
-              O jogo sagrado de búzios é voltado para orientação de vida e espiritualidade. Não realizamos palpites ou previsões para loterias e jogos de azar.
-            </p>
-          </div>
-        `;
-      }
-      resContainer.style.display = 'block';
-      resContainer.scrollIntoView({ behavior: 'smooth' });
-    }
-    return;
-  }
-
-  // --- LEITURA NORMAL ---
-  const areaSelect = document.getElementById('area-foco');
-  const area = areaSelect ? areaSelect.value : 'Geral';
+  const pergunta = document.getElementById('pergunta').value;
+  const area = document.getElementById('area-foco').value;
   const btn = document.getElementById('btn-jogar');
-  if (btn) btn.disabled = true;
+  btn.disabled = true;
 
   const mesa = document.getElementById('mesa-buzios');
   const peneira = document.getElementById('peneira');
   const status = document.getElementById('status-jogo');
   
-  if (mesa) mesa.style.display = 'block';
-  if (peneira) peneira.innerHTML = '';
+  mesa.style.display = 'block';
+  peneira.innerHTML = '';
   document.getElementById('resultado-leitura').style.display = 'none';
 
-  if (mesa) {
-    mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    mesa.classList.add('mesa-chacoalhando');
-  }
+  mesa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  mesa.classList.add('mesa-chacoalhando');
 
   const numAbertos = Math.floor(Math.random() * 16) + 1;
-  const oduJogo = ODUS_DATABASE[numAbertos] || ODUS_DATABASE[6];
+  const oduJogo = ODUS_DATABASE[numAbertos];
 
   for (let i = 0; i < 16; i++) {
     const eAberto = i < numAbertos;
@@ -454,39 +363,26 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
     buzioEl.style.transform = `rotate(${rot}deg)`;
     buzioEl.style.animationDelay = `${i * 0.08}s`;
 
-    peneira?.appendChild(buzioEl);
+    peneira.appendChild(buzioEl);
   }
 
-  if (status) status.innerText = "🔮 Lançando os búzios na mesa sagrada...";
+  status.innerText = "🔮 Lançando os búzios na mesa sagrada...";
 
   setTimeout(() => {
-    mesa?.classList.remove('mesa-chacoalhando');
-    if (status) status.innerText = "✨ Consultando a sabedoria ancestral dos Orixás...";
+    mesa.classList.remove('mesa-chacoalhando');
+    status.innerText = "✨ Consultando a sabedoria ancestral dos Orixás...";
   }, 1500);
 
   setTimeout(() => {
-    if (status) status.innerText = "🕯️ Interpretando os sinais e a queda revelada...";
+    status.innerText = "🕯️ Interpretando os sinais e a queda revelada...";
   }, 3000);
 
   setTimeout(() => {
     perguntasRestantes--;
-    const elemQtd = document.getElementById('qtd-perguntas');
-    if (elemQtd) elemQtd.innerText = perguntasRestantes;
+    document.getElementById('qtd-perguntas').innerText = perguntasRestantes;
 
     const resContainer = document.getElementById('resultado-leitura');
-
-    // Trata pergunta especial sobre "Orixá de cabeça"
-    const ehPerguntaOrixaCabeca = pergunta.toLowerCase().includes('orixa') || pergunta.toLowerCase().includes('orixá') || pergunta.toLowerCase().includes('cabeça') || pergunta.toLowerCase().includes('cabeca');
-
-    let interpretacaoPergunta = "";
-    if (ehPerguntaOrixaCabeca) {
-      const orixaPrincipal = oduDiretorAtual ? oduDiretorAtual.orixa : oduJogo.orixa;
-      interpretacaoPergunta = `Para identificar com precisão a sua coroa (Orixá de Cabeça e Ancestralidade), o oráculo analisa a vibração do seu Odù de nascimento e a queda atual. Na energia de <strong>Odù ${oduJogo.nome}</strong> (e regência ancestral de <strong>${orixaPrincipal}</strong>), manifestam-se forças protetoras de cabeça que regem a sua intuição, sua mente e seu equilíbrio espiritual. Aprofunde esta confirmação mantendo suas obrigações e firmezas em dia.`;
-    } else {
-      interpretacaoPergunta = `Em relação à sua dúvida sobre <strong>${area.toLowerCase()}</strong>, o oráculo revela que o cenário atual pede clareza. A energia de ${oduJogo.nome} indica que ${oduJogo.favorabilidade > 60 ? 'existem caminhos abertos e suporte favorável para o desfecho que você busca, desde que mantenha a postura recomendada' : 'existem obstáculos e pendências que precisam ser tratados com cautela antes que o resultado desejado possa se consolidar'}.`;
-    }
-
-    // EXIBIÇÃO DA ESTRUTURA COMPLETA DE 9 PONTOS ORIGINAL
+    
     resContainer.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #332147; padding-bottom: 10px; margin-bottom: 14px;">
         <span class="tag-gold">🐚 Caída: ${numAbertos} Búzios Abertos / ${16 - numAbertos} Fechados</span>
@@ -498,19 +394,21 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
         <h3 style="color: #fff; font-size: 16px; margin-top: 4px;">${oduJogo.tituloTendencia}</h3>
       </div>
 
-      <div class="favorability-container" style="margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #fbbf24; margin-bottom: 4px;">
+      <div class="favorability-container">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #fbbf24;">
           <span>Favorabilidade da Consulta</span>
           <span>${oduJogo.favorabilidade}%</span>
         </div>
-        <div class="favorability-bar-bg" style="background: #150a24; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid #332147;">
-          <div class="favorability-bar-fill" style="width: ${oduJogo.favorabilidade}%; background: linear-gradient(90deg, #f59e0b, #10b981); height: 100%;"></div>
+        <div class="favorability-bar-bg">
+          <div class="favorability-bar-fill" style="width: ${oduJogo.favorabilidade}%;"></div>
         </div>
       </div>
 
       <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
         <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 8px;">2. O Que os Búzios Revelam (Odù ${oduJogo.nome})</h4>
-        <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6; margin-bottom: 8px;">${oduJogo.caminho}</p>
+        <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6; margin-bottom: 8px;">
+          ${oduJogo.caminho}
+        </p>
         <p style="font-size: 13px; color: #d4d4d8; line-height: 1.6;">
           A queda de ${numAbertos} búzios traz a regência direta do Orixá <strong>${oduJogo.orixa}</strong>, ativando energias do elemento <strong>${oduJogo.elemento}</strong> para direcionar esta fase.
         </p>
@@ -519,7 +417,9 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
       <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #f59e0b;">
         <h4 style="color: #fbbf24; font-size: 14px; margin-bottom: 6px;">3. Interpretação Aplicada à Sua Pergunta</h4>
         <p style="font-size: 12px; color: #a1a1aa; font-style: italic; margin-bottom: 8px;">" Pergunta: ${pergunta} "</p>
-        <p style="font-size: 13.5px; color: #fff; line-height: 1.6;">${interpretacaoPergunta}</p>
+        <p style="font-size: 13.5px; color: #fff; line-height: 1.6;">
+          Em relação à sua dúvida sobre <strong>${area.toLowerCase()}</strong>, o oráculo revela que o cenário atual pede clareza. A energia de ${oduJogo.nome} indica que ${oduJogo.favorabilidade > 60 ? 'existem caminhos abertos e suporte favorável para o desfecho que você busca, desde que mantenha a postura recomendada' : 'existem obstáculos e pendências que precisam ser tratados com cautela antes que o resultado desejado possa se consolidar'}.
+        </p>
       </div>
 
       <div style="margin: 16px 0; background: #0b0612; padding: 14px; border-radius: 8px; border: 1px solid #332147;">
@@ -559,7 +459,7 @@ document.getElementById('form-consulta')?.addEventListener('submit', function (e
 
     resContainer.style.display = 'block';
     resContainer.scrollIntoView({ behavior: 'smooth' });
-    if (btn) btn.disabled = false;
-    if (status) status.innerText = "Leitura concluída com sucesso!";
+    btn.disabled = false;
+    status.innerText = "Leitura concluída com sucesso!";
   }, 4500);
 });
