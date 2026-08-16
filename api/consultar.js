@@ -1,272 +1,541 @@
 // api/consultar.js
-// Oráculo Odara
-// Vercel + Supabase + OpenAI
+// =========================================================
+// ORÁCULO ODARA
+// BACKEND OFICIAL DE CONSULTA
 //
 // FLUXO:
 //
-// 1. PREPARAR
-//    - valida sessão
-//    - verifica segurança
-//    - verifica pergunta repetida
-//    - entende a intenção
-//    - define protocolo
-//    - NÃO consome crédito
+// PREPARAR
+// 1. valida sessão
+// 2. aplica segurança
+// 3. verifica repetição
+// 4. interpreta intenção
+// 5. define protocolo e número de quedas
+// 6. NÃO consome crédito
 //
-// 2. INTERPRETAR
-//    - recebe a(s) queda(s)
-//    - consulta a base cultural no Supabase
-//    - registra a pergunta
-//    - consome 1 crédito
-//    - gera a leitura com IA
-//    - salva resultado
-//    - devolve novo saldo
+// INTERPRETAR
+// 7. recebe as quedas reais vistas pelo usuário
+// 8. enriquece os Odùs com a base Supabase
+// 9. consome apenas 1 consulta
+// 10. chama a OpenAI
+// 11. salva a resposta
+// 12. devolve saldo real
+// =========================================================
 
 
 // =========================================================
-// FUNÇÕES AUXILIARES
+// 1. NORMALIZAÇÃO
 // =========================================================
 
 function normalizarTexto(texto) {
+
   return String(texto || '')
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(
+      /[\u0300-\u036f]/g,
+      ''
+    )
+    .replace(
+      /[^\w\s]/g,
+      ' '
+    )
+    .replace(
+      /\s+/g,
+      ' '
+    )
     .trim();
 }
 
 
 // =========================================================
-// SEGURANÇA
+// 2. SEGURANÇA CRÍTICA
 // =========================================================
 
 function detectarRiscoEmocional(texto) {
-  const t = normalizarTexto(texto);
+
+  const t =
+    normalizarTexto(
+      texto
+    );
+
 
   const padroesDiretos = [
+
     /\bsuicid/,
+
     /\bauto ?mutil/,
+
     /\bme matar\b/,
+
     /\bme mato\b/,
-    /\bposso me matar\b/,
-    /\bdevo me matar\b/,
+
     /\bquero morrer\b/,
+
     /\bqueria morrer\b/,
+
     /\bvontade de morrer\b/,
-    /\bpensando em morrer\b/,
+
     /\bpenso em morrer\b/,
-    /\bestou pensando em morrer\b/,
+
+    /\bpensando em morrer\b/,
+
     /\btenho pensado em morrer\b/,
+
     /\bnao quero viver\b/,
+
     /\bnao quero mais viver\b/,
+
     /\bnao aguento mais viver\b/,
+
     /\btirar minha vida\b/,
+
     /\btirar a minha vida\b/,
+
     /\bacabar com minha vida\b/,
+
     /\bacabar com a minha vida\b/,
+
     /\bme machucar\b/,
-    /\bme ferir\b/,
-    /\bme fazer mal\b/,
-    /\bsumir para sempre\b/,
-    /\bdesaparecer para sempre\b/
+
+    /\bme ferir\b/
+
   ];
+
 
   if (
     padroesDiretos.some(
-      padrao => padrao.test(t)
+      padrao =>
+        padrao.test(t)
     )
   ) {
+
     return true;
   }
+
+
+  /*
+    Segunda camada para pegar frases
+    diferentes das cadastradas acima.
+  */
 
   const primeiraPessoa =
     /\b(eu|me|minha|minha vida|comigo)\b/
       .test(t);
 
-  const termosRisco =
-    /\b(morrer|matar|machucar|ferir|suicidio|desaparecer)\b/
+
+  const risco =
+    /\b(morrer|matar|suicidio|machucar|ferir)\b/
       .test(t);
 
-  const termosIntencao =
-    /\b(quero|queria|penso|pensando|vontade|posso|devo|pretendo|considerando)\b/
+
+  const intencao =
+    /\b(quero|queria|penso|pensando|vontade|posso|devo|pretendo)\b/
       .test(t);
+
 
   return (
     primeiraPessoa &&
-    termosRisco &&
-    termosIntencao
+    risco &&
+    intencao
   );
 }
 
 
+// =========================================================
+// 3. BLOQUEIOS OBRIGATÓRIOS
+// =========================================================
+
 function classificarBloqueio(texto) {
-  const t = normalizarTexto(texto);
+
+  const t =
+    normalizarTexto(
+      texto
+    );
+
 
   // -------------------------------------------------------
-  // RISCO EMOCIONAL
+  // A. RISCO EMOCIONAL / AUTOAGRESSÃO
   // -------------------------------------------------------
-
-  if (detectarRiscoEmocional(texto)) {
-    return {
-      bloqueado: true,
-      tipo: 'RISCO_EMOCIONAL',
-      mensagem:
-        'Essa pergunta indica uma situação que precisa de apoio humano e não de uma leitura oracular. ' +
-        'A consulta não será realizada e nenhum crédito será consumido. ' +
-        'Procure uma pessoa de confiança e apoio profissional adequado.'
-    };
-  }
-
-  // -------------------------------------------------------
-  // PREVISÃO DE MORTE
-  // -------------------------------------------------------
-
-  const previsaoMorte = [
-    'quando vou morrer',
-    'quando eu vou morrer',
-    'como vou morrer',
-    'como eu vou morrer',
-    'dia da minha morte',
-    'data da minha morte',
-    'ano da minha morte',
-    'quando ele vai morrer',
-    'quando ela vai morrer',
-    'como ele vai morrer',
-    'como ela vai morrer'
-  ];
 
   if (
-    previsaoMorte.some(
-      termo => t.includes(termo)
+    detectarRiscoEmocional(
+      texto
     )
   ) {
+
     return {
-      bloqueado: true,
-      tipo: 'PREVISAO_MORTE',
+
+      bloqueado:
+        true,
+
+      tipo:
+        'RISCO_EMOCIONAL',
+
       mensagem:
-        'O Oráculo não realiza previsões sobre data ou circunstâncias de morte. ' +
-        'A consulta não será realizada e seu saldo será preservado.'
+        'O que você escreveu merece acolhimento humano imediato, não uma leitura dos búzios. ' +
+        'Por isso, o Oráculo não realizará esta consulta e nenhum crédito será consumido. ' +
+        'Procure agora uma pessoa de confiança e apoio profissional. ' +
+        'No Brasil, você também pode falar gratuitamente com o CVV pelo 188.'
     };
   }
 
+
   // -------------------------------------------------------
-  // APOSTAS
+  // B. PREVISÃO DE MORTE
+  // -------------------------------------------------------
+
+  const termosMorte = [
+
+    'quando vou morrer',
+
+    'quando eu vou morrer',
+
+    'como vou morrer',
+
+    'como eu vou morrer',
+
+    'data da minha morte',
+
+    'dia da minha morte',
+
+    'ano da minha morte',
+
+    'quando ele vai morrer',
+
+    'quando ela vai morrer',
+
+    'como ele vai morrer',
+
+    'como ela vai morrer'
+
+  ];
+
+
+  if (
+    termosMorte.some(
+      termo =>
+        t.includes(termo)
+    )
+  ) {
+
+    return {
+
+      bloqueado:
+        true,
+
+      tipo:
+        'PREVISAO_MORTE',
+
+      mensagem:
+        'O Oráculo não realiza previsões sobre data, forma ou circunstâncias de morte. ' +
+        'A consulta não será realizada e seu saldo permanecerá intacto.'
+    };
+  }
+
+
+  // -------------------------------------------------------
+  // C. APOSTAS E JOGOS DE AZAR
   // -------------------------------------------------------
 
   const termosApostas = [
+
     'mega sena',
+
     'megasena',
+
     'numeros da mega',
+
     'numero da mega',
+
     'quina',
+
     'lotofacil',
+
     'jogo do bicho',
+
     'aposta',
+
     'apostas',
+
     'loteria',
+
     'tigrinho',
+
     'tiger',
+
     'roleta',
+
     'bet',
+
     'numeros da sorte',
-    'numero da sorte'
+
+    'numero da sorte',
+
+    'palpite para apostar',
+
+    'qual numero apostar'
+
   ];
+
 
   if (
     termosApostas.some(
-      termo => t.includes(termo)
+      termo =>
+        t.includes(termo)
     )
   ) {
+
     return {
-      bloqueado: true,
-      tipo: 'APOSTAS',
+
+      bloqueado:
+        true,
+
+      tipo:
+        'APOSTAS',
+
       mensagem:
-        'O Oráculo não fornece números, combinações ou palpites para apostas e jogos de azar. ' +
-        'Você pode reformular sua pergunta para buscar orientação sobre caminhos financeiros ou decisões pessoais. ' +
-        'Seu saldo será preservado.'
+        'Os búzios não serão utilizados para fornecer números, combinações, palpites ou estratégias de apostas. ' +
+        'Se quiser, reformule sua pergunta para compreender seus caminhos financeiros, sua relação com o dinheiro ou uma decisão econômica pessoal. ' +
+        'Nenhum crédito foi consumido.'
     };
   }
 
+
   // -------------------------------------------------------
-  // SAÚDE / DIAGNÓSTICO
+  // D. DIAGNÓSTICO E PROMESSA DE CURA
   // -------------------------------------------------------
 
-  const termosSaude = [
+  const termosDiagnostico = [
+
     'qual minha doenca',
+
     'qual e minha doenca',
+
+    'que doenca eu tenho',
+
     'qual meu diagnostico',
-    'diagnostico medico',
+
+    'me diagnostique',
+
     'tenho cancer',
+
     'estou com cancer',
+
     'vou me curar',
+
     'vou ficar curado',
-    'vou ficar curada'
+
+    'vou ficar curada',
+
+    'essa doenca vai sumir',
+
+    'posso parar meu remedio',
+
+    'devo parar meu remedio'
+
   ];
 
+
   if (
-    termosSaude.some(
-      termo => t.includes(termo)
+    termosDiagnostico.some(
+      termo =>
+        t.includes(termo)
     )
   ) {
+
     return {
-      bloqueado: true,
-      tipo: 'SAUDE',
+
+      bloqueado:
+        true,
+
+      tipo:
+        'SAUDE_MEDICA',
+
       mensagem:
-        'O Oráculo pode oferecer reflexão espiritual, mas não realiza diagnósticos médicos nem promete cura. ' +
-        'Questões de saúde precisam ser acompanhadas por profissionais qualificados. ' +
-        'Seu saldo será preservado.'
+        'O Oráculo pode trabalhar reflexões sobre seu momento e bem-estar, mas não realiza diagnóstico médico, não determina tratamento e não promete cura. ' +
+        'Questões médicas precisam ser avaliadas por profissionais de saúde. ' +
+        'Esta consulta não será realizada e seu saldo será preservado.'
     };
   }
 
+
   return {
-    bloqueado: false,
-    tipo: null,
-    mensagem: null
+
+    bloqueado:
+      false,
+
+    tipo:
+      null,
+
+    mensagem:
+      null
   };
 }
 
 
 // =========================================================
-// CLASSIFICAÇÃO DA INTENÇÃO
+// 4. TEMAS SENSÍVEIS QUE PODEM SER CONSULTADOS
+//
+// NÃO BLOQUEIAM.
+// SERVEM PARA A IA ADOTAR MAIS CUIDADO.
+// =========================================================
+
+function detectarSensibilidades(texto) {
+
+  const t =
+    normalizarTexto(
+      texto
+    );
+
+
+  const sensibilidades =
+    [];
+
+
+  // -------------------------------------------------------
+  // TRAIÇÃO / RELAÇÃO COM TERCEIROS
+  // -------------------------------------------------------
+
+  if (
+    /\btraicao\b|\btraindo\b|\bme trai\b|\besta me traindo\b/
+      .test(t)
+  ) {
+
+    sensibilidades.push(
+      'TRAIÇÃO_OU_SUSPEITA'
+    );
+  }
+
+
+  // -------------------------------------------------------
+  // DEMANDA / FEITIÇO / INVEJA
+  // -------------------------------------------------------
+
+  if (
+    /\bdemanda\b|\bfeitico\b|\bmacumba\b|\binveja\b|\btrabalho contra mim\b|\benergia negativa\b/
+      .test(t)
+  ) {
+
+    sensibilidades.push(
+      'NEGATIVIDADE_ESPIRITUAL'
+    );
+  }
+
+
+  // -------------------------------------------------------
+  // TRABALHISTA / JUDICIAL
+  // -------------------------------------------------------
+
+  if (
+    /\bprocesso\b|\bjustica\b|\badvogado\b|\badvogada\b|\bindenizacao\b|\bacordo judicial\b|\bcausa trabalhista\b/
+      .test(t)
+  ) {
+
+    sensibilidades.push(
+      'QUESTAO_JURIDICA'
+    );
+  }
+
+
+  // -------------------------------------------------------
+  // FINANCEIRO DELICADO
+  // -------------------------------------------------------
+
+  if (
+    /\bdivida\b|\bendividado\b|\bendividada\b|\bsem dinheiro\b|\bfalencia\b|\bperder dinheiro\b/
+      .test(t)
+  ) {
+
+    sensibilidades.push(
+      'FINANCEIRO_DELICADO'
+    );
+  }
+
+
+  // -------------------------------------------------------
+  // SAÚDE EM SENTIDO NÃO DIAGNÓSTICO
+  // -------------------------------------------------------
+
+  if (
+    /\bsaude\b|\btratamento\b|\bcirurgia\b|\brecuperacao\b|\bbem estar\b/
+      .test(t)
+  ) {
+
+    sensibilidades.push(
+      'SAUDE_NAO_DIAGNOSTICA'
+    );
+  }
+
+
+  return sensibilidades;
+}
+
+
+// =========================================================
+// 5. CLASSIFICAÇÃO DA INTENÇÃO
 // =========================================================
 
 function classificarIntencao(pergunta) {
-  const t = normalizarTexto(pergunta);
 
-  let contexto =
-    'Orientação Geral e Caminhos';
-
-  let intencao =
-    'ORIENTACAO_GERAL';
-
-
-  // -------------------------------------------------------
-  // ORIXÁS
-  // -------------------------------------------------------
-
-  const perguntaOrixa =
-    (
-      /\bqual meu orixa\b/.test(t) ||
-      /\bqual e meu orixa\b/.test(t) ||
-      /\bquais sao meus orixas\b/.test(t) ||
-      /\bquem e meu orixa\b/.test(t) ||
-      /\bpai de cabeca\b/.test(t) ||
-      /\bmae de cabeca\b/.test(t) ||
-      /\borixa de cabeca\b/.test(t) ||
-      /\borixas de cabeca\b/.test(t) ||
-      /\bquem rege minha cabeca\b/.test(t) ||
-      /\bquem rege meu caminho\b/.test(t) ||
-      /\bmeu eleda\b/.test(t) ||
-      /\bqual meu eleda\b/.test(t) ||
-      /\bmeu junto\b/.test(t) ||
-      /\bmeu junto\b/.test(t)
+  const t =
+    normalizarTexto(
+      pergunta
     );
 
-  if (perguntaOrixa) {
+
+  // -------------------------------------------------------
+  // A. ORIXÁS / CABEÇA / REGÊNCIA
+  // -------------------------------------------------------
+
+  const perguntaOrixas = [
+
+    /\bqual meu orixa\b/,
+
+    /\bqual e meu orixa\b/,
+
+    /\bquais sao meus orixas\b/,
+
+    /\bquem e meu orixa\b/,
+
+    /\bquem sao meus orixas\b/,
+
+    /\bpai de cabeca\b/,
+
+    /\bmae de cabeca\b/,
+
+    /\borixa de cabeca\b/,
+
+    /\borixas de cabeca\b/,
+
+    /\bquem rege minha cabeca\b/,
+
+    /\bquem rege meu caminho\b/,
+
+    /\bqual meu eleda\b/,
+
+    /\bmeu eleda\b/,
+
+    /\bqual meu junto\b/,
+
+    /\bmeu junto\b/,
+
+    /\bqual meu adjunto\b/
+
+  ];
+
+
+  if (
+    perguntaOrixas.some(
+      padrao =>
+        padrao.test(t)
+    )
+  ) {
+
     return {
+
       contexto:
-        'Orixás e Regências Espirituais',
+        'Identificação de Orixás e Regências',
 
       intencao:
         'IDENTIFICACAO_ORIXAS'
@@ -275,102 +544,155 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // AMOR / RELACIONAMENTO
+  // B. AMOR
   // -------------------------------------------------------
 
   if (
-    /amor|namoro|namorada|namorado|casamento|relacionamento|ex|parceiro|parceira|traicao|voltar|separacao|terminar/
+    /amor|relacionamento|namoro|namorada|namorado|casamento|marido|esposa|ex|parceiro|parceira|traicao|voltar|separacao|terminar/
       .test(t)
   ) {
-    contexto =
-      'Amor e Relacionamentos';
 
-    intencao =
-      'RELACIONAMENTO';
+    return {
+
+      contexto:
+        'Amor e Relacionamentos',
+
+      intencao:
+        'RELACIONAMENTO'
+    };
   }
 
 
   // -------------------------------------------------------
-  // TRABALHO
+  // C. TRABALHO
   // -------------------------------------------------------
 
-  else if (
+  if (
     /trabalho|emprego|vaga|carreira|profissional|profissao|empresa|chefe|promocao|entrevista|negocio|contrato|demissao/
       .test(t)
   ) {
-    contexto =
-      'Trabalho e Carreira';
 
-    intencao =
-      'TRABALHO';
+    return {
+
+      contexto:
+        'Trabalho e Carreira',
+
+      intencao:
+        'TRABALHO'
+    };
   }
 
 
   // -------------------------------------------------------
-  // FINANÇAS
+  // D. FINANÇAS
   // -------------------------------------------------------
 
-  else if (
+  if (
     /dinheiro|financeiro|financas|divida|investimento|comprar|vender|prosperidade|renda|salario/
       .test(t)
   ) {
-    contexto =
-      'Finanças e Prosperidade';
 
-    intencao =
-      'FINANCAS';
+    return {
+
+      contexto:
+        'Finanças e Prosperidade',
+
+      intencao:
+        'FINANCAS'
+    };
   }
 
 
   // -------------------------------------------------------
-  // FAMÍLIA
+  // E. FAMÍLIA
   // -------------------------------------------------------
 
-  else if (
-    /familia|mae|pai|filho|filha|irmao|irma|parentes/
+  if (
+    /familia|filho|filha|irmao|irma|parentes|avo|avó|tio|tia/
       .test(t)
   ) {
-    contexto =
-      'Família';
 
-    intencao =
-      'FAMILIA';
+    return {
+
+      contexto:
+        'Família e Vínculos',
+
+      intencao:
+        'FAMILIA'
+    };
   }
 
 
   // -------------------------------------------------------
-  // ESPIRITUALIDADE
+  // F. QUESTÕES JURÍDICAS
   // -------------------------------------------------------
 
-  else if (
-    /espiritual|protecao|inveja|demanda|energia|axe|feitico|macumba|ancestral/
+  if (
+    /processo|justica|advogado|advogada|indenizacao|audiencia|causa trabalhista/
       .test(t)
   ) {
-    contexto =
-      'Espiritualidade e Proteção';
 
-    intencao =
-      'ESPIRITUALIDADE';
+    return {
+
+      contexto:
+        'Questões Jurídicas e Caminhos de Resolução',
+
+      intencao:
+        'JURIDICO'
+    };
   }
+
+
+  // -------------------------------------------------------
+  // G. ESPIRITUALIDADE
+  // -------------------------------------------------------
+
+  if (
+    /espiritual|protecao|inveja|demanda|energia|axe|feitico|macumba|ancestral|terreiro/
+      .test(t)
+  ) {
+
+    return {
+
+      contexto:
+        'Espiritualidade e Proteção',
+
+      intencao:
+        'ESPIRITUALIDADE'
+    };
+  }
+
 
   return {
-    contexto,
-    intencao
+
+    contexto:
+      'Orientação Geral e Caminhos',
+
+    intencao:
+      'ORIENTACAO_GERAL'
   };
 }
 
 
 // =========================================================
-// PROTOCOLO DE JOGO
+// 6. PROTOCOLO DA CONSULTA
 // =========================================================
 
-function determinarProtocolo(intencao) {
+function determinarProtocolo(
+  intencao
+) {
+
+  // -------------------------------------------------------
+  // CONSULTA ESPECIAL DE ORIXÁS
+  // -------------------------------------------------------
 
   if (
     intencao ===
     'IDENTIFICACAO_ORIXAS'
   ) {
+
     return {
+
       protocolo:
         'ORIXAS_DO_MOMENTO',
 
@@ -378,35 +700,51 @@ function determinarProtocolo(intencao) {
         3,
 
       descricao:
-        'Consulta especial com três quedas simbólicas.',
+        'Consulta especial com três quedas para leitura integrada das forças apresentadas.',
 
       posicoes: [
+
         {
           ordem: 1,
+
           chave:
-            'FORCA_PRINCIPAL',
+            'ORIXA_FRENTE',
+
           titulo:
             'Força principal apresentada'
         },
+
         {
           ordem: 2,
+
           chave:
-            'FORCA_COMPLEMENTAR',
+            'ORIXA_COMPLEMENTAR',
+
           titulo:
             'Força complementar apresentada'
         },
+
         {
           ordem: 3,
+
           chave:
             'FORCA_ANCESTRAL_APOIO',
+
           titulo:
             'Força ancestral ou de apoio apresentada'
         }
+
       ]
     };
   }
 
+
+  // -------------------------------------------------------
+  // CONSULTA NORMAL
+  // -------------------------------------------------------
+
   return {
+
     protocolo:
       'CONSULTA_PADRAO',
 
@@ -417,20 +755,24 @@ function determinarProtocolo(intencao) {
       'Consulta oracular padrão com uma queda.',
 
     posicoes: [
+
       {
         ordem: 1,
+
         chave:
           'QUEDA_PRINCIPAL',
+
         titulo:
           'Queda principal'
       }
+
     ]
   };
 }
 
 
 // =========================================================
-// UTILITÁRIO SUPABASE
+// 7. FUNÇÃO SEGURA DE CONSULTA AO SUPABASE
 // =========================================================
 
 async function consultarSupabase(
@@ -443,14 +785,28 @@ async function consultarSupabase(
     const resposta =
       await fetch(
         url,
-        { headers }
+        {
+          headers
+        }
       );
 
-    if (!resposta.ok) {
+
+    if (
+      !resposta.ok
+    ) {
+
+      console.error(
+        'Consulta complementar Supabase falhou:',
+        resposta.status,
+        url
+      );
+
       return null;
     }
 
+
     return await resposta.json();
+
 
   } catch (erro) {
 
@@ -465,40 +821,53 @@ async function consultarSupabase(
 
 
 // =========================================================
-// BUSCAR CONHECIMENTO DO ODÙ
-//
-// IMPORTANTE:
-//
-// As tabelas complementares do projeto podem ter
-// estruturas diferentes.
-//
-// Por isso esta função é tolerante a falhas:
-// se uma tabela ou coluna ainda não estiver pronta,
-// a consulta principal continua funcionando.
+// 8. BUSCAR BASE CULTURAL DO ODÙ
 // =========================================================
 
 async function buscarConhecimentoOdu({
+
   supabaseUrl,
+
   supabaseHeaders,
+
   numero,
+
   nome
+
 }) {
 
   const conhecimento = {
-    odu: null,
-    arquetipos: [],
-    interpretacoes: [],
-    orixas: [],
-    proverbios: [],
-    mitos: []
+
+    odu:
+      null,
+
+    arquetipos:
+      [],
+
+    interpretacoes:
+      [],
+
+    orixas:
+      [],
+
+    proverbios:
+      [],
+
+    mitos:
+      []
   };
 
 
   // -------------------------------------------------------
-  // 1. TABELA PRINCIPAL ODUS
+  // TABELA PRINCIPAL ODUS
+  //
+  // A BASE DO PROJETO UTILIZA
+  // numero_buzios COMO REFERÊNCIA.
   // -------------------------------------------------------
 
-  let odus = null;
+  let odus =
+    null;
+
 
   if (
     numero !== undefined &&
@@ -507,21 +876,25 @@ async function buscarConhecimentoOdu({
 
     odus =
       await consultarSupabase(
-        `${supabaseUrl}/rest/v1/odus?numero=eq.${encodeURIComponent(numero)}&select=*&limit=1`,
+
+        `${supabaseUrl}/rest/v1/odus` +
+        `?numero_buzios=eq.${encodeURIComponent(numero)}` +
+        `&select=*` +
+        `&limit=1`,
+
         supabaseHeaders
       );
   }
 
 
-  /*
-    Caso o campo "numero" não exista
-    ou não encontre resultado,
-    tentamos pelo nome.
-  */
+  // -------------------------------------------------------
+  // FALLBACK PELO NOME
+  // -------------------------------------------------------
 
   if (
-    !odus ||
-    !Array.isArray(odus) ||
+    !Array.isArray(
+      odus
+    ) ||
     odus.length === 0
   ) {
 
@@ -529,7 +902,12 @@ async function buscarConhecimentoOdu({
 
       odus =
         await consultarSupabase(
-          `${supabaseUrl}/rest/v1/odus?nome=eq.${encodeURIComponent(nome)}&select=*&limit=1`,
+
+          `${supabaseUrl}/rest/v1/odus` +
+          `?nome=eq.${encodeURIComponent(nome)}` +
+          `&select=*` +
+          `&limit=1`,
+
           supabaseHeaders
         );
     }
@@ -537,7 +915,9 @@ async function buscarConhecimentoOdu({
 
 
   if (
-    Array.isArray(odus) &&
+    Array.isArray(
+      odus
+    ) &&
     odus.length > 0
   ) {
 
@@ -550,29 +930,26 @@ async function buscarConhecimentoOdu({
     conhecimento.odu?.id;
 
 
-  /*
-    Sem ID não conseguimos garantir
-    como as tabelas auxiliares estão
-    relacionadas.
-
-    Neste caso retornamos apenas o que
-    conseguimos encontrar.
-  */
-
   if (!oduId) {
+
     return conhecimento;
   }
 
 
   // -------------------------------------------------------
-  // 2. INTERPRETAÇÕES
+  // INTERPRETAÇÕES
   // -------------------------------------------------------
 
   const interpretacoes =
     await consultarSupabase(
-      `${supabaseUrl}/rest/v1/odu_interpretacoes?odu_id=eq.${encodeURIComponent(oduId)}&select=*`,
+
+      `${supabaseUrl}/rest/v1/odu_interpretacoes` +
+      `?odu_id=eq.${encodeURIComponent(oduId)}` +
+      `&select=*`,
+
       supabaseHeaders
     );
+
 
   if (
     Array.isArray(
@@ -586,14 +963,19 @@ async function buscarConhecimentoOdu({
 
 
   // -------------------------------------------------------
-  // 3. ARQUÉTIPOS
+  // ARQUÉTIPOS
   // -------------------------------------------------------
 
   const arquetipos =
     await consultarSupabase(
-      `${supabaseUrl}/rest/v1/odu_arquetipos?odu_id=eq.${encodeURIComponent(oduId)}&select=*`,
+
+      `${supabaseUrl}/rest/v1/odu_arquetipos` +
+      `?odu_id=eq.${encodeURIComponent(oduId)}` +
+      `&select=*`,
+
       supabaseHeaders
     );
+
 
   if (
     Array.isArray(
@@ -607,14 +989,19 @@ async function buscarConhecimentoOdu({
 
 
   // -------------------------------------------------------
-  // 4. ORIXÁS ASSOCIADOS
+  // ORIXÁS RELACIONADOS
   // -------------------------------------------------------
 
   const orixas =
     await consultarSupabase(
-      `${supabaseUrl}/rest/v1/odu_orixas?odu_id=eq.${encodeURIComponent(oduId)}&select=*`,
+
+      `${supabaseUrl}/rest/v1/odu_orixas` +
+      `?odu_id=eq.${encodeURIComponent(oduId)}` +
+      `&select=*`,
+
       supabaseHeaders
     );
+
 
   if (
     Array.isArray(
@@ -628,14 +1015,19 @@ async function buscarConhecimentoOdu({
 
 
   // -------------------------------------------------------
-  // 5. PROVÉRBIOS
+  // PROVÉRBIOS
   // -------------------------------------------------------
 
   const proverbios =
     await consultarSupabase(
-      `${supabaseUrl}/rest/v1/odu_proverbios?odu_id=eq.${encodeURIComponent(oduId)}&select=*`,
+
+      `${supabaseUrl}/rest/v1/odu_proverbios` +
+      `?odu_id=eq.${encodeURIComponent(oduId)}` +
+      `&select=*`,
+
       supabaseHeaders
     );
+
 
   if (
     Array.isArray(
@@ -649,14 +1041,19 @@ async function buscarConhecimentoOdu({
 
 
   // -------------------------------------------------------
-  // 6. MITOS
+  // MITOS
   // -------------------------------------------------------
 
   const mitos =
     await consultarSupabase(
-      `${supabaseUrl}/rest/v1/odu_mitos?odu_id=eq.${encodeURIComponent(oduId)}&select=*`,
+
+      `${supabaseUrl}/rest/v1/odu_mitos` +
+      `?odu_id=eq.${encodeURIComponent(oduId)}` +
+      `&select=*`,
+
       supabaseHeaders
     );
+
 
   if (
     Array.isArray(
@@ -668,33 +1065,23 @@ async function buscarConhecimentoOdu({
       mitos;
   }
 
+
   return conhecimento;
 }
 
 
 // =========================================================
-// NORMALIZAR QUEDAS RECEBIDAS
+// 9. NORMALIZAR QUEDAS RECEBIDAS DO FRONTEND
 // =========================================================
 
-function montarQuedasRecebidas(body) {
-
-  /*
-    NOVO FORMATO:
-
-    quedas: [
-      {
-        numero: 7,
-        nome: "Odi",
-        orixa: "...",
-        elemento: "...",
-        favorabilidade: 35,
-        numAbertos: 7
-      }
-    ]
-  */
+function montarQuedasRecebidas(
+  body
+) {
 
   if (
-    Array.isArray(body.quedas) &&
+    Array.isArray(
+      body.quedas
+    ) &&
     body.quedas.length > 0
   ) {
 
@@ -730,8 +1117,15 @@ function montarQuedasRecebidas(body) {
           null,
 
         numAbertos:
-          queda.numAbertos ??
-          null,
+          Number.isFinite(
+            Number(
+              queda.numAbertos
+            )
+          )
+            ? Number(
+                queda.numAbertos
+              )
+            : null,
 
         numFechados:
           Number.isFinite(
@@ -744,33 +1138,33 @@ function montarQuedasRecebidas(body) {
                 queda.numAbertos
               )
             : null
+
       })
     );
   }
 
 
-  /*
-    COMPATIBILIDADE COM O FRONTEND ANTIGO.
-
-    Enquanto ainda não alteramos o script.js,
-    o endpoint continua aceitando:
-
-    oduNumero
-    oduNome
-    orixa
-    elemento
-    favorabilidade
-    numAbertos
-  */
+  // -------------------------------------------------------
+  // COMPATIBILIDADE COM CHAMADAS ANTIGAS
+  // -------------------------------------------------------
 
   if (
     body.oduNumero !== undefined ||
     body.oduNome
   ) {
 
+    const abertos =
+      Number(
+        body.numAbertos
+      );
+
+
     return [
+
       {
-        ordem: 1,
+
+        ordem:
+          1,
 
         numero:
           body.oduNumero ??
@@ -793,30 +1187,32 @@ function montarQuedasRecebidas(body) {
           null,
 
         numAbertos:
-          body.numAbertos ??
-          null,
+          Number.isFinite(
+            abertos
+          )
+            ? abertos
+            : null,
 
         numFechados:
           Number.isFinite(
-            Number(
-              body.numAbertos
-            )
+            abertos
           )
             ? 16 -
-              Number(
-                body.numAbertos
-              )
+              abertos
             : null
+
       }
+
     ];
   }
+
 
   return [];
 }
 
 
 // =========================================================
-// HANDLER PRINCIPAL
+// 10. HANDLER PRINCIPAL
 // =========================================================
 
 export default async function handler(
@@ -829,10 +1225,12 @@ export default async function handler(
     '*'
   );
 
+
   res.setHeader(
     'Access-Control-Allow-Methods',
     'POST, OPTIONS'
   );
+
 
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -859,19 +1257,27 @@ export default async function handler(
     return res
       .status(405)
       .json({
+
         error:
           'Método não permitido.'
+
       });
   }
 
+
+  // =======================================================
+  // CONFIGURAÇÕES
+  // =======================================================
 
   const supabaseUrl =
     process.env
       .SUPABASE_URL;
 
+
   const supabaseKey =
     process.env
       .SUPABASE_SERVICE_ROLE_KEY;
+
 
   const openaiKey =
     process.env
@@ -886,8 +1292,10 @@ export default async function handler(
     return res
       .status(500)
       .json({
+
         error:
           'Configuração do Supabase não encontrada.'
+
       });
   }
 
@@ -897,8 +1305,10 @@ export default async function handler(
     return res
       .status(500)
       .json({
+
         error:
           'Configuração da OpenAI não encontrada.'
+
       });
   }
 
@@ -919,6 +1329,7 @@ export default async function handler(
   let creditoConsumido =
     false;
 
+
   let perguntaId =
     null;
 
@@ -926,24 +1337,16 @@ export default async function handler(
   try {
 
     // =====================================================
-    // DADOS RECEBIDOS
+    // 11. DADOS RECEBIDOS
     // =====================================================
 
-    const {
-      pedidoId,
-      pergunta
-    } = req.body;
+    const pedidoId =
+      req.body?.pedidoId;
 
 
-    /*
-      "acao" pode ser:
+    const pergunta =
+      req.body?.pergunta;
 
-      PREPARAR
-      INTERPRETAR
-
-      Por compatibilidade, se não for enviado,
-      assumimos INTERPRETAR.
-    */
 
     const acao =
       String(
@@ -955,7 +1358,7 @@ export default async function handler(
 
 
     // =====================================================
-    // 1. VALIDAÇÕES INICIAIS
+    // 12. VALIDAÇÕES
     // =====================================================
 
     if (!pedidoId) {
@@ -963,8 +1366,10 @@ export default async function handler(
       return res
         .status(400)
         .json({
+
           error:
             'Sessão de consulta não informada.'
+
         });
     }
 
@@ -973,16 +1378,16 @@ export default async function handler(
       !pergunta ||
       typeof pergunta !==
         'string' ||
-      pergunta
-        .trim()
-        .length < 3
+      pergunta.trim().length < 3
     ) {
 
       return res
         .status(400)
         .json({
+
           error:
             'Pergunta inválida.'
+
         });
     }
 
@@ -998,7 +1403,7 @@ export default async function handler(
 
 
     // =====================================================
-    // 2. SEGURANÇA
+    // 13. SEGURANÇA ANTES DE QUALQUER JOGADA
     // =====================================================
 
     const seguranca =
@@ -1029,12 +1434,23 @@ export default async function handler(
 
           mensagem:
             seguranca.mensagem
+
         });
     }
 
 
     // =====================================================
-    // 3. BUSCAR SESSÃO
+    // 14. IDENTIFICAR TEMAS SENSÍVEIS
+    // =====================================================
+
+    const sensibilidades =
+      detectarSensibilidades(
+        perguntaLimpa
+      );
+
+
+    // =====================================================
+    // 15. BUSCAR SESSÃO REAL
     // =====================================================
 
     const pedidoResponse =
@@ -1071,22 +1487,28 @@ export default async function handler(
       return res
         .status(500)
         .json({
+
           error:
             'Não foi possível consultar a sessão.'
+
         });
     }
 
 
     if (
-      !pedidos ||
+      !Array.isArray(
+        pedidos
+      ) ||
       pedidos.length === 0
     ) {
 
       return res
         .status(404)
         .json({
+
           error:
             'Sessão de consulta não encontrada.'
+
         });
     }
 
@@ -1094,6 +1516,10 @@ export default async function handler(
     const pedido =
       pedidos[0];
 
+
+    // =====================================================
+    // 16. VALIDAR LIBERAÇÃO
+    // =====================================================
 
     if (
       ![
@@ -1107,15 +1533,18 @@ export default async function handler(
       return res
         .status(403)
         .json({
+
           error:
             'Esta consulta ainda não está liberada para uso.'
+
         });
     }
 
 
     if (
-      pedido.perguntas_restantes <=
-      0
+      Number(
+        pedido.perguntas_restantes
+      ) <= 0
     ) {
 
       return res
@@ -1130,12 +1559,13 @@ export default async function handler(
 
           perguntasRestantes:
             0
+
         });
     }
 
 
     // =====================================================
-    // 4. VERIFICAR PERGUNTA REPETIDA
+    // 17. PERGUNTA REPETIDA
     // =====================================================
 
     const repetidaResponse =
@@ -1188,13 +1618,16 @@ export default async function handler(
             'Você já realizou essa pergunta nesta consulta. Reformule a questão ou faça uma nova pergunta. Seu saldo foi preservado.',
 
           perguntasRestantes:
-            pedido.perguntas_restantes
+            Number(
+              pedido.perguntas_restantes
+            )
+
         });
     }
 
 
     // =====================================================
-    // 5. ENTENDER INTENÇÃO
+    // 18. CLASSIFICAR PERGUNTA
     // =====================================================
 
     const classificacao =
@@ -1218,11 +1651,11 @@ export default async function handler(
 
 
     // =====================================================
-    // 6. ETAPA PREPARAR
+    // 19. ETAPA PREPARAR
     //
-    // NÃO registra pergunta
-    // NÃO consome crédito
-    // NÃO chama IA
+    // NENHUM CRÉDITO É CONSUMIDO.
+    // NENHUMA IA É CHAMADA.
+    // NENHUMA QUEDA É CRIADA NO BACKEND.
     // =====================================================
 
     if (
@@ -1246,12 +1679,11 @@ export default async function handler(
           etapa:
             'PREPARADA',
 
-          nome:
-            pedido.nome,
-
           contexto,
 
           intencao,
+
+          sensibilidades,
 
           protocolo:
             protocolo.protocolo,
@@ -1266,13 +1698,16 @@ export default async function handler(
             protocolo.descricao,
 
           perguntasRestantes:
-            pedido.perguntas_restantes
+            Number(
+              pedido.perguntas_restantes
+            )
+
         });
     }
 
 
     // =====================================================
-    // 7. ETAPA INTERPRETAR
+    // 20. ETAPA INTERPRETAR
     // =====================================================
 
     if (
@@ -1283,8 +1718,10 @@ export default async function handler(
       return res
         .status(400)
         .json({
+
           error:
             'Etapa da consulta inválida.'
+
         });
     }
 
@@ -1295,10 +1732,6 @@ export default async function handler(
       );
 
 
-    // =====================================================
-    // 8. VALIDAR NÚMERO DE QUEDAS
-    // =====================================================
-
     if (
       quedas.length === 0
     ) {
@@ -1306,30 +1739,53 @@ export default async function handler(
       return res
         .status(400)
         .json({
+
           error:
             'Nenhuma caída de búzios foi informada.'
+
         });
     }
 
 
-    /*
-      Para ORIXAS_DO_MOMENTO exigiremos
-      as três quedas quando o novo
-      frontend estiver conectado.
-
-      Entretanto, enquanto estamos em
-      migração, uma única queda ainda
-      pode ser aceita para não quebrar
-      testes antigos.
-    */
+    // =====================================================
+    // 21. GARANTIR PROTOCOLO COMPLETO
+    // =====================================================
 
     const protocoloCompleto =
       quedas.length >=
       protocolo.quedasNecessarias;
 
 
+    /*
+      Para consultas de Orixás,
+      depois que o frontend foi validado
+      com três quedas reais,
+      não permitimos mais que uma única
+      queda gere uma identificação incompleta.
+    */
+
+    if (
+      protocolo.protocolo ===
+        'ORIXAS_DO_MOMENTO' &&
+      !protocoloCompleto
+    ) {
+
+      return res
+        .status(400)
+        .json({
+
+          sucesso:
+            false,
+
+          error:
+            'A consulta de Orixás precisa das três quedas previstas pelo protocolo.'
+
+        });
+    }
+
+
     // =====================================================
-    // 9. ENRIQUECER CADA QUEDA COM O SUPABASE
+    // 22. ENRIQUECER AS QUEDAS
     // =====================================================
 
     const quedasEnriquecidas =
@@ -1358,12 +1814,14 @@ export default async function handler(
 
           nome:
             queda.nome
+
         });
 
 
       const posicao =
         protocolo.posicoes[i] ||
         {
+
           ordem:
             i + 1,
 
@@ -1372,6 +1830,7 @@ export default async function handler(
 
           titulo:
             `Queda ${i + 1}`
+
         };
 
 
@@ -1382,27 +1841,27 @@ export default async function handler(
         posicao,
 
         conhecimento
+
       });
     }
 
 
     // =====================================================
-    // A PARTIR DAQUI:
-    //
-    // - registrar PROCESSANDO
-    // - consumir crédito
-    // - montar prompt inteligente
-    // - chamar OpenAI
-    // - salvar resposta
-    // - devolver saldo
-    //
     // CONTINUA NA PARTE 2/2
+    //
+    // PARTE 2:
+    // - registrar consulta
+    // - consumir apenas 1 crédito
+    // - preparar base cultural
+    // - prompt novo
+    // - regras por tema sensível
+    // - leitura aprofundada de Orixás
+    // - OpenAI
+    // - salvar
+    // - estorno
     // =====================================================
-
-
-
       // =====================================================
-    // 10. REGISTRAR PERGUNTA COMO PROCESSANDO
+    // 23. REGISTRAR A CONSULTA COMO PROCESSANDO
     // =====================================================
 
     const primeiraQueda =
@@ -1452,27 +1911,15 @@ export default async function handler(
                 'PROCESSANDO',
 
               numero_buzios_abertos:
-                Number.isFinite(
-                  Number(
-                    primeiraQueda?.numAbertos
-                  )
-                )
-                  ? Number(
-                      primeiraQueda.numAbertos
-                    )
-                  : null,
+                primeiraQueda
+                  ?.numAbertos ??
+                null,
 
               numero_buzios_fechados:
-                Number.isFinite(
-                  Number(
-                    primeiraQueda?.numAbertos
-                  )
-                )
-                  ? 16 -
-                    Number(
-                      primeiraQueda.numAbertos
-                    )
-                  : null
+                primeiraQueda
+                  ?.numFechados ??
+                null
+
             })
         }
       );
@@ -1492,11 +1939,17 @@ export default async function handler(
         registro
       );
 
+
       return res
         .status(500)
         .json({
+
+          sucesso:
+            false,
+
           error:
             'Não foi possível registrar a consulta.'
+
         });
     }
 
@@ -1507,7 +1960,9 @@ export default async function handler(
 
 
     // =====================================================
-    // 11. CONSUMIR 1 CRÉDITO
+    // 24. CONSUMIR SOMENTE 1 CRÉDITO
+    //
+    // MESMO QUANDO HOUVER 3 QUEDAS.
     // =====================================================
 
     const creditoResponse =
@@ -1524,8 +1979,10 @@ export default async function handler(
 
           body:
             JSON.stringify({
+
               p_pedido_id:
                 pedidoId
+
             })
         }
       );
@@ -1544,7 +2001,8 @@ export default async function handler(
 
         await fetch(
 
-          `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${encodeURIComponent(perguntaId)}`,
+          `${supabaseUrl}/rest/v1/perguntas_consulta` +
+          `?id=eq.${encodeURIComponent(perguntaId)}`,
 
           {
             method:
@@ -1563,7 +2021,8 @@ export default async function handler(
                   false,
 
                 erro_tecnico:
-                  'Não foi possível reservar crédito.'
+                  'Não foi possível reservar o crédito.'
+
               })
           }
         );
@@ -1573,8 +2032,13 @@ export default async function handler(
       return res
         .status(403)
         .json({
+
+          sucesso:
+            false,
+
           error:
             'Não foi possível utilizar uma pergunta desta sessão.'
+
         });
     }
 
@@ -1583,23 +2047,9 @@ export default async function handler(
       true;
 
 
-    /*
-      Dependendo de como a RPC foi criada,
-      o Supabase pode devolver:
-
-      4
-
-      ou
-
-      { perguntas_restantes: 4 }
-
-      ou
-
-      [{ perguntas_restantes: 4 }]
-
-      Tratamos os formatos para não
-      depender de apenas um deles.
-    */
+    // =====================================================
+    // 25. INTERPRETAR NOVO SALDO
+    // =====================================================
 
     let novoSaldo =
       retornoCredito;
@@ -1614,10 +2064,13 @@ export default async function handler(
       novoSaldo =
         retornoCredito?.[0]
           ?.perguntas_restantes ??
+
         retornoCredito?.[0]
           ?.novo_saldo ??
+
         retornoCredito?.[0]
           ?.saldo ??
+
         retornoCredito?.[0] ??
         null;
     }
@@ -1632,10 +2085,13 @@ export default async function handler(
       novoSaldo =
         retornoCredito
           .perguntas_restantes ??
+
         retornoCredito
           .novo_saldo ??
+
         retornoCredito
           .saldo ??
+
         null;
     }
 
@@ -1655,6 +2111,7 @@ export default async function handler(
       novoSaldo =
         Math.max(
           0,
+
           Number(
             pedido.perguntas_restantes
           ) - 1
@@ -1663,19 +2120,8 @@ export default async function handler(
 
 
     // =====================================================
-    // 12. PREPARAR BASE CULTURAL PARA A IA
+    // 26. PREPARAR CONHECIMENTO PARA A IA
     // =====================================================
-
-    /*
-      Não enviamos o banco inteiro para a IA.
-
-      Selecionamos somente os dados
-      relevantes de cada queda para:
-
-      - reduzir custo
-      - evitar excesso de contexto
-      - diminuir chance de respostas confusas
-    */
 
     const baseParaPrompt =
       quedasEnriquecidas.map(
@@ -1694,124 +2140,9 @@ export default async function handler(
               conhecimento.interpretacoes
             )
               ? conhecimento.interpretacoes
-                  .filter(
-                    item => {
-
-                      if (!item) {
-                        return false;
-                      }
-
-                      /*
-                        Priorizamos a categoria
-                        relacionada ao contexto.
-                      */
-
-                      const categoria =
-                        normalizarTexto(
-                          item.categoria
-                        );
-
-                      const contextoAtual =
-                        normalizarTexto(
-                          contexto
-                        );
-
-                      if (
-                        !categoria
-                      ) {
-                        return true;
-                      }
-
-                      if (
-                        contextoAtual.includes(
-                          'amor'
-                        )
-                      ) {
-                        return (
-                          categoria.includes(
-                            'amor'
-                          ) ||
-                          categoria.includes(
-                            'relacion'
-                          )
-                        );
-                      }
-
-                      if (
-                        contextoAtual.includes(
-                          'trabalho'
-                        )
-                      ) {
-                        return (
-                          categoria.includes(
-                            'trabalho'
-                          ) ||
-                          categoria.includes(
-                            'carreira'
-                          ) ||
-                          categoria.includes(
-                            'profissional'
-                          )
-                        );
-                      }
-
-                      if (
-                        contextoAtual.includes(
-                          'financ'
-                        )
-                      ) {
-                        return (
-                          categoria.includes(
-                            'financ'
-                          ) ||
-                          categoria.includes(
-                            'prosper'
-                          ) ||
-                          categoria.includes(
-                            'dinheiro'
-                          )
-                        );
-                      }
-
-                      if (
-                        contextoAtual.includes(
-                          'famil'
-                        )
-                      ) {
-                        return (
-                          categoria.includes(
-                            'famil'
-                          )
-                        );
-                      }
-
-                      if (
-                        contextoAtual.includes(
-                          'espiritual'
-                        ) ||
-                        contextoAtual.includes(
-                          'orixa'
-                        )
-                      ) {
-                        return (
-                          categoria.includes(
-                            'espiritual'
-                          ) ||
-                          categoria.includes(
-                            'orixa'
-                          ) ||
-                          categoria.includes(
-                            'geral'
-                          )
-                        );
-                      }
-
-                      return true;
-                    }
-                  )
                   .slice(
                     0,
-                    6
+                    8
                   )
               : [];
 
@@ -1823,7 +2154,19 @@ export default async function handler(
               ? conhecimento.arquetipos
                   .slice(
                     0,
-                    2
+                    4
+                  )
+              : [];
+
+
+          const orixas =
+            Array.isArray(
+              conhecimento.orixas
+            )
+              ? conhecimento.orixas
+                  .slice(
+                    0,
+                    6
                   )
               : [];
 
@@ -1852,18 +2195,6 @@ export default async function handler(
               : [];
 
 
-          const orixas =
-            Array.isArray(
-              conhecimento.orixas
-            )
-              ? conhecimento.orixas
-                  .slice(
-                    0,
-                    6
-                  )
-              : [];
-
-
           return {
 
             ordem:
@@ -1872,28 +2203,32 @@ export default async function handler(
             posicao:
               queda.posicao,
 
-            numero:
-              queda.numero,
+            queda: {
 
-            nome:
-              queda.nome,
+              numero:
+                queda.numero,
 
-            orixaInformado:
-              queda.orixa,
+              nome:
+                queda.nome,
 
-            elemento:
-              queda.elemento,
+              orixa:
+                queda.orixa,
 
-            favorabilidade:
-              queda.favorabilidade,
+              elemento:
+                queda.elemento,
 
-            buziosAbertos:
-              queda.numAbertos,
+              favorabilidade:
+                queda.favorabilidade,
 
-            buziosFechados:
-              queda.numFechados,
+              buziosAbertos:
+                queda.numAbertos,
 
-            cadastroPrincipal:
+              buziosFechados:
+                queda.numFechados
+
+            },
+
+            cadastroOdu:
               conhecimento.odu,
 
             arquetipos,
@@ -1906,261 +2241,473 @@ export default async function handler(
             proverbios,
 
             mitos
+
           };
         }
       );
 
 
     // =====================================================
-    // 13. PROMPT INTELIGENTE
+    // 27. REGRA EXTRA PARA TEMAS SENSÍVEIS
+    // =====================================================
+
+    let regrasSensibilidade =
+      'Nenhuma regra adicional de sensibilidade foi identificada.';
+
+
+    if (
+      sensibilidades.includes(
+        'TRAIÇÃO_OU_SUSPEITA'
+      )
+    ) {
+
+      regrasSensibilidade += `
+
+TRAIÇÃO OU SUSPEITA:
+
+- Não declare que houve traição como fato comprovado.
+- Leia exclusivamente o que a queda indica.
+- Se a queda não mostrar tensão relevante, diga claramente que a leitura não apresenta confirmação do temor.
+- Se houver cautela, conflito ou ocultação nos dados, explique como sinal de atenção, e não como prova contra outra pessoa.
+- Oriente o consulente a observar fatos concretos e comunicação real.
+`;
+    }
+
+
+    if (
+      sensibilidades.includes(
+        'NEGATIVIDADE_ESPIRITUAL'
+      )
+    ) {
+
+      regrasSensibilidade += `
+
+NEGATIVIDADE ESPIRITUAL:
+
+- Não afirme automaticamente que existe feitiço, demanda, ataque ou perseguição.
+- Diferencie desgaste emocional, conflito, ambiente pesado e interpretação espiritual.
+- Se a queda realmente pedir proteção ou resguardo, explique isso sem assustar.
+- Não prescreva ebó, banho, oferenda, sacrifício ou obrigação.
+- Caso a pessoa queira aprofundar ritualisticamente, a validação deve ser feita com liderança religiosa de confiança.
+`;
+    }
+
+
+    if (
+      sensibilidades.includes(
+        'QUESTAO_JURIDICA'
+      )
+    ) {
+
+      regrasSensibilidade += `
+
+QUESTÃO JURÍDICA:
+
+- O Oráculo pode interpretar tendências, obstáculos, movimento e necessidade de estratégia.
+- Não prometa vitória judicial.
+- Não determine prazo exato para pagamento, sentença ou acordo.
+- Não substitua aconselhamento jurídico.
+- Diferencie claramente a tendência oracular daquilo que depende do processo real.
+`;
+    }
+
+
+    if (
+      sensibilidades.includes(
+        'FINANCEIRO_DELICADO'
+      )
+    ) {
+
+      regrasSensibilidade += `
+
+FINANCEIRO DELICADO:
+
+- Não prometa riqueza ou entrada garantida de dinheiro.
+- Não incentive aposta, endividamento ou investimento arriscado.
+- Traga a responsabilidade pessoal para organização, planejamento e tomada de decisão.
+`;
+    }
+
+
+    if (
+      sensibilidades.includes(
+        'SAUDE_NAO_DIAGNOSTICA'
+      )
+    ) {
+
+      regrasSensibilidade += `
+
+SAÚDE E BEM-ESTAR:
+
+- Não diagnostique doença.
+- Não prometa cura.
+- Não diga para iniciar, interromper ou substituir tratamento.
+- Você pode falar de cuidado, descanso, equilíbrio, apoio e aspectos simbólicos do momento.
+`;
+    }
+
+
+    // =====================================================
+    // 28. PROMPT PRINCIPAL
     // =====================================================
 
     const systemPrompt = `
-Você é o intérprete digital do Oráculo Odara.
+Você é o intérprete digital do ORÁCULO ODARA.
 
-Seu trabalho NÃO é escrever um texto espiritual genérico.
+Seu trabalho é realizar uma leitura inteligente, humana, contextualizada e respeitosa dos dados dos búzios fornecidos pelo sistema.
 
-Seu trabalho é compreender profundamente a pergunta do consulente e interpretar, com responsabilidade, os dados da caída dos búzios e a base cultural fornecida pelo sistema.
+Você NÃO joga os búzios.
 
-A CAÍDA TEM PRIORIDADE.
+Você NÃO altera a queda.
 
-Você não deve mudar o sentido de uma caída para agradar, acalmar ou criar uma resposta positiva.
+Você NÃO escolhe o Odù.
 
-Se a leitura for desfavorável, cautelosa ou indicar obstáculos, diga isso com clareza e cuidado.
+Você interpreta exclusivamente as quedas que já aconteceram.
 
-Se for favorável, diga que existe abertura, mas não transforme tendência em garantia.
+A REGRA MAIS IMPORTANTE É:
 
---------------------------------------------------
-1. TOM E RELAÇÃO COM O CONSULENTE
---------------------------------------------------
+A QUEDA MANDA.
+A INTERPRETAÇÃO NÃO PODE CONTRADIZER A CAÍDA PARA AGRADAR O CONSULENTE.
 
-Responda em português do Brasil.
 
-O texto deve parecer uma conversa humana, acolhedora e inteligente.
+==================================================
+1. COMO LER A PERGUNTA
+==================================================
 
-Antes de interpretar o Odù, reconheça brevemente o contexto humano da pergunta.
+Antes de falar do Odù, compreenda o que a pessoa realmente quer saber.
 
-Exemplo de lógica:
+Não responda apenas às palavras utilizadas.
 
-"Você parece estar tentando entender se ainda vale insistir nessa situação..."
+Entenda:
 
-ou:
+- qual é a dúvida central
+- qual decisão está envolvida
+- qual expectativa está presente
+- qual aspecto da vida precisa de orientação
 
-"Sua pergunta mostra que existe uma expectativa importante em torno dessa oportunidade..."
+Faça um reconhecimento humano breve e natural.
 
-Não copie esses exemplos literalmente.
+Isso NÃO significa fazer terapia.
 
-Não faça diagnóstico psicológico.
+Não diagnostique sentimentos ou condições psicológicas.
 
-Não se apresente como psicólogo.
+Não diga:
 
-Não se apresente como sacerdote.
+"eu sinto que você..."
 
-Não diga que está sentindo, vendo ou recebendo mensagens sobrenaturais.
+"percebo espiritualmente que..."
 
-O acolhimento deve vir da compreensão da pergunta, e não de afirmações inventadas sobre o estado emocional da pessoa.
+"os Orixás me disseram..."
 
---------------------------------------------------
-2. PERSONALIZAÇÃO
---------------------------------------------------
+Você pode dizer, por exemplo:
 
-Use o nome do consulente de forma natural quando isso melhorar a leitura.
+"Sua pergunta busca entender..."
 
-Não repita o nome o tempo inteiro.
+"O ponto central aqui parece ser..."
 
-A resposta deve ser construída especificamente para a pergunta recebida.
+"Você está tentando compreender se..."
 
-Evite frases que poderiam ser reutilizadas para qualquer pessoa.
+Sempre adapte ao contexto real.
 
-Evite textos como:
+
+==================================================
+2. NÃO SEJA ROBÓTICO
+==================================================
+
+Não use sempre a mesma introdução.
+
+Não transforme a resposta em formulário.
+
+Não repita obrigatoriamente:
+
+"Interpretação"
+
+"Resposta objetiva"
+
+"Pontos de atenção"
+
+"Orientação"
+
+como títulos em todas as consultas.
+
+Você pode utilizar pequenos subtítulos quando eles realmente ajudarem.
+
+Prefira uma leitura fluida, organizada em parágrafos curtos.
+
+
+==================================================
+3. FIDELIDADE AO ODÙ
+==================================================
+
+Use:
+
+- a pergunta
+- o contexto identificado
+- o Odù
+- os búzios abertos e fechados
+- os Orixás relacionados
+- os arquétipos
+- as interpretações cadastradas
+- os provérbios
+- os demais dados culturais recebidos
+
+como fundamentos.
+
+Se a queda for desfavorável:
+
+DIGA QUE É DESFAVORÁVEL.
+
+Não transforme em:
+
+"talvez tudo dê certo"
+
+apenas para confortar.
+
+Explique:
+
+- qual dificuldade aparece
+- onde existe bloqueio
+- o que merece cautela
+- o que pode depender de mudança de postura
+
+Se a queda for favorável:
+
+DIGA QUE EXISTE ABERTURA.
+
+Mas não transforme abertura em promessa absoluta.
+
+
+==================================================
+4. POSITIVIDADE TÓXICA É PROIBIDA
+==================================================
+
+Evite frases genéricas como:
+
+"vai dar tudo certo"
 
 "confie no universo"
 
-"tudo acontece no tempo certo"
+"tudo acontece por uma razão"
 
 "coisas boas estão chegando"
 
-"mantenha pensamentos positivos"
+"basta pensar positivo"
 
-a menos que exista uma razão concreta na leitura para dizer algo semelhante.
+A menos que exista fundamento direto na leitura.
 
---------------------------------------------------
-3. FIDELIDADE À CAÍDA
---------------------------------------------------
+Acolher não significa maquiar a resposta.
 
-A interpretação deve respeitar:
 
-- o Odù apresentado
-- a quantidade de búzios abertos
-- a tendência/favorabilidade informada
-- os arquétipos disponíveis
-- as interpretações da base
-- os Orixás associados
-- o contexto da pergunta
+==================================================
+5. RESPONSABILIDADE SOBRE A PRÓPRIA VIDA
+==================================================
 
-Não transforme uma resposta desfavorável em um "sim" disfarçado.
+O Oráculo não decide a vida do consulente.
 
-Não transforme uma resposta favorável em medo ou fatalismo.
+Sempre que fizer sentido, mostre:
 
-Quando houver conflito entre uma frase genérica e os dados estruturados da base, priorize os dados estruturados.
+- o que depende da pessoa
+- o que ela precisa observar
+- qual postura pode ajudar
+- qual comportamento pode piorar a situação
+- onde é necessário paciência
+- onde é necessário movimento
 
-A porcentagem de favorabilidade é apenas um sinal auxiliar.
+O objetivo é orientar, não criar dependência do Oráculo.
 
-Ela NÃO substitui os fundamentos do Odù.
 
---------------------------------------------------
-4. RESPOSTA OBJETIVA
---------------------------------------------------
+==================================================
+6. PERGUNTAS SOBRE ORIXÁS
+==================================================
 
-Em algum momento do início da resposta, deixe claro o que a leitura indica.
+Quando PROTOCOLO = ORIXAS_DO_MOMENTO:
 
-Use linguagem natural, como:
+Esta é uma consulta especial com três quedas reais.
 
-"a tendência é favorável"
+A pessoa assistiu visualmente às três quedas.
 
-"a leitura pede cautela"
+Você deve respeitar exatamente a ordem.
 
-"neste momento a queda não favorece..."
+QUEDA 1:
+Força principal apresentada.
 
-"há abertura, mas existem condições importantes..."
+QUEDA 2:
+Força complementar apresentada.
 
-"o cenário depende principalmente de..."
+QUEDA 3:
+Força ancestral ou de apoio apresentada.
 
-Não é obrigatório usar essas frases literalmente.
+NÃO ESCONDA OS ORIXÁS ENCONTRADOS.
 
---------------------------------------------------
-5. RESPONSABILIDADE PESSOAL
---------------------------------------------------
+NÃO transforme toda a resposta em ressalva.
 
-O Oráculo orienta caminhos.
+Apresente de maneira clara, por exemplo:
 
-Ele não retira da pessoa a responsabilidade pelas próprias escolhas.
+"Nesta consulta, Oxum se apresenta como a força principal do seu momento."
+
+ou:
+
+"A primeira força apontada pela mesa foi Xangô."
+
+Não diga de forma absoluta:
+
+"Oxum é definitivamente seu Orixá de cabeça."
+
+Mas também não diga:
+
+"não podemos dizer nada sobre isso."
+
+A plataforma REALIZOU uma leitura e precisa entregar o resultado dessa leitura.
+
+
+==================================================
+7. COMO EXPLICAR CADA ORIXÁ
+==================================================
+
+Para cada uma das três forças:
+
+1. diga qual Orixá foi apresentado
+2. diga em qual queda apareceu
+3. explique a energia tradicionalmente associada a ele
+4. apresente características frequentemente relacionadas a essa força
+5. explique como essa energia pode aparecer no momento da pessoa
+
+Evite afirmar que todas as pessoas ligadas ao Orixá possuem exatamente as mesmas características.
+
+Prefira:
+
+"Entre as características tradicionalmente associadas a essa força estão..."
+
+"Essa energia costuma dialogar com..."
+
+"A presença dessa força pode apontar para..."
+
+Depois das três forças, explique A COMBINAÇÃO.
+
+Não interprete cada Orixá como se os outros não existissem.
 
 Mostre:
 
-- o que está nas mãos do consulente
-- o que merece atenção
-- que comportamento pode fortalecer ou enfraquecer o caminho
-- quais decisões precisam ser avaliadas com calma
+- onde se complementam
+- onde entram em tensão
+- como uma energia equilibra a outra
+- qual mensagem conjunta aparece
 
-Evite determinismo.
 
-Evite dizer que algo "vai acontecer" como certeza absoluta.
-
---------------------------------------------------
-6. QUANDO A LEITURA FOR DIFÍCIL
---------------------------------------------------
-
-Não assuste.
-
-Não use linguagem de condenação.
+==================================================
+8. NÃO INVENTAR INFORMAÇÃO RELIGIOSA
+==================================================
 
 Não invente:
 
-- morte
-- doença
-- maldição
-- obsessão
-- demanda espiritual
-- traição
-- feitiço
-- perseguição
+- qualidade de Orixá
+- assentamento
+- obrigação
+- iniciação
+- ebó
+- banho
+- oferenda
+- sacrifício
+- cargo religioso
+- prazo ritual
 
-se isso não estiver sustentado pelos dados fornecidos.
+se isso não estiver explicitamente sustentado pela base recebida.
 
-Se a queda for desfavorável, explique:
+Não ofereça instruções rituais.
 
-- onde está o bloqueio
-- por que a leitura pede cautela
-- o que a pessoa pode observar
-- o que ainda depende das escolhas dela
 
---------------------------------------------------
-7. QUESTÕES SOBRE ORIXÁS
---------------------------------------------------
+==================================================
+9. RESSALVA RELIGIOSA
+==================================================
 
-Quando o protocolo for ORIXAS_DO_MOMENTO:
+A ressalva é necessária, mas deve aparecer NO FINAL.
 
-NÃO declare definitivamente:
+Ela não deve dominar a leitura.
 
-"seu pai é..."
+Para consultas de Orixás, encerre com o sentido:
 
-"sua mãe é..."
+"Estas são as forças apresentadas pelas três quedas desta consulta digital. A confirmação ritual de Orixá de cabeça, Eledá, juntó, qualidades e obrigações pertence ao processo religioso e deve ser feita presencialmente com Babalorixá ou Ialorixá de confiança."
 
-"seu Orixá de cabeça é..."
+Não repita essa ressalva a cada parágrafo.
 
-"seu Eledá é..."
 
-como verdade religiosa confirmada.
+==================================================
+10. QUESTÕES SOBRE TERCEIROS
+==================================================
 
-Apresente as quedas como:
+Nunca invente fatos sobre outra pessoa.
 
-"Força principal apresentada nesta consulta"
+Não transforme símbolos em prova objetiva.
 
-"Força complementar apresentada nesta consulta"
+Exemplo:
 
-"Força ancestral ou de apoio apresentada nesta consulta"
+Uma queda de tensão em pergunta sobre traição não prova traição.
 
-Explique cada força separadamente.
+Uma queda favorável também não prova fidelidade.
 
-Depois explique como essas energias dialogam entre si dentro da pergunta da pessoa.
+Explique como tendência da consulta.
 
-Você pode explicar características culturais dos Orixás quando elas estiverem sustentadas pelos dados recebidos.
 
-Não invente qualidades específicas de Orixás, caminhos iniciáticos, assentamentos ou obrigações.
+==================================================
+11. TOM
+==================================================
 
-Se nem todas as quedas previstas pelo protocolo estiverem presentes, diga claramente que a leitura está incompleta e NÃO invente as posições ausentes.
+Use português brasileiro.
 
-No encerramento desse tipo de consulta, explique que a configuração representa a leitura digital apresentada naquele momento e não substitui a confirmação ritual de Orixá de cabeça, Eledá, juntó ou demais posições religiosas.
+Seja:
 
---------------------------------------------------
-8. BASE DE CONHECIMENTO
---------------------------------------------------
+- humano
+- acolhedor
+- claro
+- respeitoso
+- seguro
+- espiritualmente sensível
+- direto quando necessário
 
-Use prioritariamente a BASE CULTURAL enviada pelo sistema.
+Evite linguagem excessivamente acadêmica.
 
-A base pode conter:
+Evite jargões jurídicos.
 
-- dados gerais do Odù
-- arquétipos
-- interpretações por área
-- provérbios
-- mitos
-- associações com Orixás
+Evite frases místicas vazias.
 
-Não invente informações que não estejam na base apenas para deixar a resposta mais completa.
+Não fale como personagem teatral.
 
-Se a base de determinado Odù estiver incompleta, use somente os dados disponíveis da caída e seja mais prudente.
 
---------------------------------------------------
-9. FORMATO DA RESPOSTA
---------------------------------------------------
+==================================================
+12. NOME DA PESSOA
+==================================================
 
-A resposta NÃO deve parecer um formulário rígido.
+Use o nome somente quando houver um nome válido fornecido na sessão.
 
-Não é obrigatório repetir os mesmos títulos em todas as consultas.
+Use com moderação.
 
-Construa uma leitura fluida.
+Nunca invente um nome.
 
-Ainda assim, internamente sua resposta precisa contemplar:
+Se o campo vier vazio ou inválido, simplesmente não use nome algum.
 
-1. compreensão breve da pergunta
-2. explicação do que caiu
-3. resposta objetiva
-4. fundamento da resposta no Odù
-5. pontos de atenção
-6. orientação prática
-7. responsabilidade pessoal
+Não comece todos os parágrafos chamando a pessoa pelo nome.
 
-Use parágrafos curtos.
 
-Você pode usar pequenos subtítulos quando realmente ajudarem na leitura.
+==================================================
+13. ESTRUTURA INTERNA
+==================================================
 
-Evite uma lista excessiva de tópicos.
+Mesmo que você não mostre títulos fixos, a leitura deve contemplar:
 
---------------------------------------------------
-10. LIMITES
---------------------------------------------------
+- compreensão da pergunta
+- resultado da queda
+- resposta direta
+- fundamento no Odù
+- principais tensões ou aberturas
+- pontos de atenção
+- orientação prática
+- responsabilidade pessoal
+- ressalva adequada quando necessária
+
+
+==================================================
+14. LIMITES
+==================================================
 
 Não faça diagnóstico médico.
 
@@ -2168,41 +2715,54 @@ Não prometa cura.
 
 Não faça previsão de morte.
 
-Não indique números para apostas.
+Não forneça números de aposta.
 
-Não incentive decisões financeiras arriscadas.
+Não dê orientação para atividades perigosas.
 
-Não declare confirmação religiosa definitiva.
+Não declare culpa criminal.
 
-Não invente fatos sobre terceiros.
+Não invente ações de terceiros.
 
---------------------------------------------------
-11. AVISO FINAL
---------------------------------------------------
+Não prescreva tratamento religioso ou médico.
 
-Finalize de forma breve com este sentido:
 
-"Esta consulta é uma orientação digital baseada na interpretação dos Odùs e não substitui confirmações religiosas presenciais. Para rituais, obrigações ou confirmações de Orixá, procure um Babalorixá ou Ialorixá de sua confiança."
+==================================================
+15. REGRAS ESPECIAIS DESTA CONSULTA
+==================================================
 
-Você pode adaptar levemente a redação para não ficar robótica, preservando exatamente esse significado.
+${regrasSensibilidade}
 `;
 
 
     // =====================================================
-    // 14. PROMPT DO CONSULENTE
+    // 29. NOME SEGURO DA SESSÃO
+    // =====================================================
+
+    const nomeSessao =
+      typeof pedido.nome ===
+        'string' &&
+      pedido.nome.trim().length >= 2
+
+        ? pedido.nome.trim()
+
+        : null;
+
+
+    // =====================================================
+    // 30. PROMPT ESPECÍFICO DO CONSULENTE
     // =====================================================
 
     const userPrompt = `
-CONSULENTE
+DADOS DO CONSULENTE
 
 Nome:
-${pedido.nome || 'Consulente'}
+${nomeSessao || 'NÃO INFORMADO'}
 
 Pergunta:
-${perguntaLimpa}
+"${perguntaLimpa}"
 
 
-CLASSIFICAÇÃO DA PERGUNTA
+CLASSIFICAÇÃO
 
 Contexto:
 ${contexto}
@@ -2210,26 +2770,21 @@ ${contexto}
 Intenção:
 ${intencao}
 
+Sensibilidades identificadas:
+${sensibilidades.length > 0
+  ? sensibilidades.join(', ')
+  : 'Nenhuma'}
+
 
 PROTOCOLO
 
-Tipo:
 ${protocolo.protocolo}
 
-Descrição:
-${protocolo.descricao}
-
-Quantidade prevista de quedas:
-${protocolo.quedasNecessarias}
-
-Quantidade de quedas recebidas:
+Quantidade de quedas:
 ${quedasEnriquecidas.length}
 
-Protocolo completo:
-${protocoloCompleto ? 'SIM' : 'NÃO'}
 
-
-BASE CULTURAL E DADOS DAS QUEDAS
+BASE DAS QUEDAS
 
 ${JSON.stringify(
   baseParaPrompt,
@@ -2238,28 +2793,77 @@ ${JSON.stringify(
 )}
 
 
-INSTRUÇÃO PRINCIPAL
+ORIENTAÇÃO PARA ESTA RESPOSTA
 
-Responda especificamente à pergunta do consulente.
+Interprete exclusivamente essas quedas.
 
-Primeiro compreenda o sentido humano da pergunta.
+Não invente uma nova caída.
 
-Depois interprete o que efetivamente apareceu nas quedas.
+Não invente outro Odù.
 
-Não force positividade.
+Não invente outro Orixá.
 
-Não seja fatalista.
+Não altere a ordem das quedas.
 
-Não esconda uma indicação desfavorável.
+Não esconda um resultado desfavorável.
 
-Não transforme tendência em certeza.
+Não exagere um resultado favorável.
 
-Mostre de forma clara o que a leitura indica e quais atitudes continuam sob responsabilidade do consulente.
+Responda diretamente ao que foi perguntado.
+
+
+${protocolo.protocolo === 'ORIXAS_DO_MOMENTO'
+  ? `
+
+ESTA É UMA CONSULTA DE ORIXÁS.
+
+A pessoa viu três quedas reais.
+
+Apresente primeiro um resumo claro:
+
+1ª queda — força principal:
+[Orixá efetivamente apresentado]
+
+2ª queda — força complementar:
+[Orixá efetivamente apresentado]
+
+3ª queda — força ancestral ou de apoio:
+[Orixá efetivamente apresentado]
+
+Depois explique cada uma.
+
+Para cada força, traga características tradicionalmente associadas ao Orixá somente quando elas forem sustentadas pela base ou pelos dados culturais fornecidos.
+
+Em seguida, interprete a combinação das três forças.
+
+Não transforme a ressalva religiosa no assunto principal.
+
+A pessoa procurou uma leitura e deve receber uma leitura.
+
+Somente no final explique o limite entre leitura digital e confirmação ritual.
+`
+  : `
+
+ESTA É UMA CONSULTA PADRÃO.
+
+Comece compreendendo brevemente a pergunta.
+
+Em seguida, diga claramente o que a caída indica para essa questão.
+
+Se houver obstáculos, diga.
+
+Se houver abertura, diga.
+
+Explique por que o Odù leva a essa conclusão.
+
+Finalize mostrando o que continua sob responsabilidade da pessoa.
+`
+}
 `;
 
 
     // =====================================================
-    // 15. CHAMAR OPENAI
+    // 31. CHAMAR OPENAI
     // =====================================================
 
     const aiResponse =
@@ -2278,6 +2882,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
             Authorization:
               `Bearer ${openaiKey}`
+
           },
 
           body:
@@ -2303,13 +2908,18 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
                   content:
                     userPrompt
                 }
+
               ],
 
               temperature:
                 0.55,
 
               max_tokens:
-                1400
+                protocolo.protocolo ===
+                  'ORIXAS_DO_MOMENTO'
+                    ? 1800
+                    : 1300
+
             })
         }
       );
@@ -2329,12 +2939,14 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
         aiData
       );
 
+
       throw new Error(
 
         aiData?.error
           ?.message ||
 
-        'Erro ao gerar leitura com a IA.'
+        'Erro ao gerar a interpretação.'
+
       );
     }
 
@@ -2351,12 +2963,11 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
       !texto ||
       typeof texto !==
         'string' ||
-      texto.trim()
-        .length === 0
+      texto.trim().length === 0
     ) {
 
       throw new Error(
-        'A IA não retornou uma leitura válida.'
+        'A IA não retornou uma interpretação válida.'
       );
     }
 
@@ -2366,7 +2977,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
 
     // =====================================================
-    // 16. MARCAR PERGUNTA COMO CONCLUÍDA
+    // 32. SALVAR RESPOSTA COMO CONCLUÍDA
     // =====================================================
 
     if (
@@ -2376,7 +2987,8 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
       const conclusaoResponse =
         await fetch(
 
-          `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${encodeURIComponent(perguntaId)}`,
+          `${supabaseUrl}/rest/v1/perguntas_consulta` +
+          `?id=eq.${encodeURIComponent(perguntaId)}`,
 
           {
             method:
@@ -2403,6 +3015,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
                 concluido_em:
                   new Date()
                     .toISOString()
+
               })
           }
         );
@@ -2421,20 +3034,10 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
 
         console.error(
-          'Não foi possível marcar consulta como concluída:',
+          'Erro ao finalizar consulta:',
           erroConclusao
         );
 
-
-        /*
-          A leitura foi gerada e o crédito
-          já foi consumido.
-
-          Neste caso lançamos erro para
-          acionar o estorno e evitar que
-          o usuário perca crédito sem
-          persistência correta no banco.
-        */
 
         throw new Error(
           'Não foi possível finalizar o registro da consulta.'
@@ -2444,7 +3047,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
 
     // =====================================================
-    // 17. RETORNO PARA O FRONTEND
+    // 33. RETORNO OFICIAL AO FRONTEND
     // =====================================================
 
     return res
@@ -2464,6 +3067,8 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
         intencao,
 
+        sensibilidades,
+
         protocolo:
           protocolo.protocolo,
 
@@ -2480,6 +3085,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
         perguntasRestantes:
           novoSaldo
+
       });
 
 
@@ -2492,7 +3098,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
 
     // =====================================================
-    // 18. ESTORNAR CRÉDITO EM CASO DE ERRO
+    // 34. ESTORNO AUTOMÁTICO
     // =====================================================
 
     try {
@@ -2503,9 +3109,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
       if (
         creditoConsumido &&
-        pedidoIdErro &&
-        supabaseUrl &&
-        supabaseKey
+        pedidoIdErro
       ) {
 
         const estornoResponse =
@@ -2522,18 +3126,25 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
               body:
                 JSON.stringify({
+
                   p_pedido_id:
                     pedidoIdErro
+
                 })
             }
           );
 
 
         if (
-          !estornoResponse.ok
+          estornoResponse.ok
         ) {
 
-          const erroEstornoBody =
+          creditoConsumido =
+            false;
+
+        } else {
+
+          const erroEstorno =
             await estornoResponse
               .json()
               .catch(
@@ -2542,26 +3153,15 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
 
           console.error(
-            'Falha na RPC de estorno:',
-            erroEstornoBody
+            'Falha no estorno:',
+            erroEstorno
           );
-
-        } else {
-
-          /*
-            Impede que o bloco tente
-            considerar novamente esse
-            crédito como consumido.
-          */
-
-          creditoConsumido =
-            false;
         }
       }
 
 
       // ===================================================
-      // MARCAR PERGUNTA COMO ERRO
+      // 35. MARCAR REGISTRO COMO ERRO
       // ===================================================
 
       if (
@@ -2570,7 +3170,8 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
         await fetch(
 
-          `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${encodeURIComponent(perguntaId)}`,
+          `${supabaseUrl}/rest/v1/perguntas_consulta` +
+          `?id=eq.${encodeURIComponent(perguntaId)}`,
 
           {
             method:
@@ -2590,6 +3191,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
                 erro_tecnico:
                   'Falha durante o processamento da leitura.'
+
               })
           }
         );
@@ -2601,14 +3203,14 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
     ) {
 
       console.error(
-        'Erro ao estornar crédito:',
+        'Erro durante tentativa de estorno:',
         erroEstorno
       );
     }
 
 
     // =====================================================
-    // RESPOSTA SEGURA AO FRONTEND
+    // 36. RETORNO SEGURO EM CASO DE FALHA
     // =====================================================
 
     return res
@@ -2620,6 +3222,7 @@ Mostre de forma clara o que a leitura indica e quais atitudes continuam sob resp
 
         error:
           'Não foi possível concluir a leitura. Seu crédito foi preservado.'
+
       });
   }
 }
