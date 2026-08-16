@@ -1,1190 +1,592 @@
-/* ==========================================
-   ORÁCULO ODARA - LÓGICA E RITUAL DOS BÚZIOS
-   ========================================== */
+// api/consultar.js - Consulta Oráculo Odara
+// Vercel + Supabase + OpenAI
 
-let consultasContratadas = 0;
-let consultasRestantes = 0;
-let pacoteSelecionado = { quantidade: 5, valor: 25.99 };
-let isProcessing = false;
-let ultimaPerguntaProcessada = ""; // Controle da trava anti-spam
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-// ==========================================
-// SESSÃO REAL DA CONSULTA
-// ==========================================
-
-const params = new URLSearchParams(window.location.search);
-const pedidoId = params.get('pedidoId');
-
-async function carregarSessao() {
-  if (!pedidoId) {
-    console.log('Nenhum pedidoId informado na URL. Mantendo modo local.');
-    return;
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  try {
-    const resposta = await fetch(
-      `/api/sessao?pedidoId=${encodeURIComponent(pedidoId)}`
-    );
-
-    const dados = await resposta.json();
-
-    if (!resposta.ok || !dados.sucesso || !dados.sessao) {
-      console.error('Não foi possível carregar a sessão:', dados);
-      return;
-    }
-
-    consultasContratadas = dados.sessao.quantidadeContratada;
-    consultasRestantes = dados.sessao.perguntasRestantes;
-
-    atualizarContadores();
-
-    const secaoJogada = document.getElementById('secao-jogada');
-
-    if (secaoJogada && consultasRestantes > 0) {
-      secaoJogada.style.display = 'block';
-    }
-
-    console.log('Sessão carregada com sucesso:', dados.sessao);
-
-  } catch (erro) {
-    console.error('Erro ao carregar sessão:', erro);
-  }
-}
-
-const ODUS_MAP = {
-  0: { nome: "Opira", orixa: "Obaluaiê / Omolu", elemento: "Terra", caminho: "momento de recolhimento, cautela e preservação, evitando decisões precipitadas.", tendencia: "não tão favorável neste momento" },
-  1: { nome: "Okaran", orixa: "Exu", elemento: "Fogo", caminho: "caminhos de transformação rápida, dinamismo e necessidade de clareza.", tendencia: "parcialmente favorável e requer atenção" },
-  2: { nome: "Ejioko", orixa: "Ibejis / Ogum", elemento: "Terra", caminho: "dualidade, parcerias, união e busca por estabilidade solida.", tendencia: "positiva e bastante favorável" },
-  3: { nome: "Etaogundá", orixa: "Ogum", elemento: "Ferro / Fogo", caminho: "superação de obstáculos com coragem, firmeza e determinação.", tendencia: "positiva e favorável" },
-  4: { nome: "Irosun", orixa: "Iemanjá / Oxóssi", elemento: "Fogo / Água", caminho: "intuição afiada, proteção ancestral e atenção aos alertas sutis.", tendencia: "parcialmente favorável" },
-  5: { nome: "Oxé", orixa: "Oxum", elemento: "Água", caminho: "prosperidade, sensibilidade, beleza, renovação e caminhos abertos.", tendencia: "muito positiva e favorável" },
-  6: { nome: "Obará", orixa: "Xangô / Oxóssi", elemento: "Ar / Terra", caminho: "grande riqueza, fartura, expansão e sorte nos empreendimentos.", tendencia: "plenamente positiva e favorável" },
-  7: { nome: "Odi", orixa: "Obaluaiê / Oxóssi", elemento: "Terra", caminho: "resistência, persistência e quebra gradual de amarras antigas.", tendencia: "parcialmente favorável" },
-  8: { nome: "Ejiologbon", orixa: "Nanã / Oxalufã", elemento: "Terra / Água", caminho: "sabedoria da maturidade, reflexão profunda e calma estratégica.", tendencia: "parcialmente favorável com ressalvas" },
-  9: { nome: "Osa", orixa: "Oyá (Iansã)", elemento: "Ar", caminho: "ventos de mudança rápida, movimento, intuição e libertação.", tendencia: "positiva e dinamizadora" },
-  10: { nome: "Ofun", orixa: "Oxalá", elemento: "Ar / Espaço", caminho: "paz, pureza, bênçãos elevadas e respeito profundo ao sagrado.", tendencia: "positiva e abençoada" },
-  11: { nome: "Owonrin", orixa: "Exu / Oyá", elemento: "Fogo / Ar", caminho: "imprevistos produtivos, dinamismo e necessidade de flexibilidade.", tendencia: "parcialmente favorável" },
-  12: { nome: "Ejila Ebora", orixa: "Xangô", elemento: "Fogo", caminho: "justiça, liderança, vitória sobre demandas e firmeza moral.", tendencia: "positiva e favorável" },
-  13: { nome: "Ejiologbon (Okanran Meji)", orixa: "Nanã", elemento: "Terra", caminho: "transformação espiritual exigente e encerramento de ciclos antigos.", tendencia: "não tão favorável no presente" },
-  14: { nome: "Iká", orixa: "Oxumarê", elemento: "Água / Ar", caminho: "renovação contínua, sabedoria estratégica e capacidade de adaptação.", tendencia: "positiva e favorável" },
-  15: { nome: "Ibeji / Ogbè", orixa: "Obá / Ewá", elemento: "Ar", caminho: "conquistas pela perspicácia, proteção sutil e intuição refinada.", tendencia: "positiva e favorável" },
-  16: { nome: "Alafia", orixa: "Oxalá / Todos os Orixás", elemento: "Luz", caminho: "luz total, confirmação plena, paz e bênção máxima dos caminhos.", tendencia: "plenamente positiva e muito favorável" }
-};
-
-function atualizarContadores() {
-  const elContratadas = document.getElementById('qtd-contratadas');
-  const elRestantes = document.getElementById('qtd-perguntas');
-
-  if (elContratadas) {
-    elContratadas.textContent = consultasContratadas;
-  }
-
-  if (elRestantes) {
-    elRestantes.textContent = consultasRestantes;
-  }
-}
-
-function rolarParaPacotes() {
-  const secao = document.getElementById('secao-pacotes');
-
-  if (secao) {
-    secao.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-// ==========================================
-// 1. CÁLCULO GRATUITO DO ODÙ DE NASCIMENTO
-// ==========================================
-
-document
-  .getElementById('form-odu')
-  ?.addEventListener('submit', function (e) {
-
-    e.preventDefault();
-
-    const nome =
-      document.getElementById('nome').value.trim();
-
-    const data =
-      document.getElementById('dataNasc').value;
-
-    if (!data || !nome) {
-      return;
-    }
-
-    const numeros =
-      data.replace(/-/g, '');
-
-    let soma = 0;
-
-    for (let char of numeros) {
-      soma += parseInt(char);
-    }
-
-    let numOdu = soma;
-
-    while (numOdu > 16) {
-
-      let str =
-        numOdu.toString();
-
-      numOdu = 0;
-
-      for (let c of str) {
-        numOdu += parseInt(c);
-      }
-    }
-
-    if (numOdu === 0) {
-      numOdu = 16;
-    }
-
-    const infoOdu =
-      ODUS_MAP[numOdu] || ODUS_MAP[16];
-
-    const painelOdu =
-      document.getElementById('resultado-odu');
-
-    painelOdu.innerHTML = `
-      <div class="card-resultado-dark">
-
-        <div style="
-          border-bottom: 1px solid var(--card-border);
-          padding-bottom: 12px;
-          margin-bottom: 16px;
-        ">
-
-          <span style="
-            color: var(--gold-accent);
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-          ">
-            Resultado do Odù de Nascimento
-          </span>
-
-          <h3 style="
-            font-size: 1.4rem;
-            color: var(--gold-light);
-            margin-top: 4px;
-          ">
-            Olá, ${nome}! Seus Caminhos sob a Luz de Odù ${infoOdu.nome}
-          </h3>
-
-        </div>
-
-        <div style="
-          display: flex;
-          gap: 12px;
-          margin-bottom: 18px;
-          flex-wrap: wrap;
-        ">
-
-          <span class="badge"
-            style="background: rgba(212,175,55,0.15);">
-            Identificação: Odù #${numOdu} — ${infoOdu.nome}
-          </span>
-
-          <span class="badge"
-            style="background: rgba(139,92,246,0.15);">
-            Regência: ${infoOdu.orixa}
-          </span>
-
-          <span class="badge"
-            style="background: rgba(212,175,55,0.15);">
-            Elemento: ${infoOdu.elemento}
-          </span>
-
-        </div>
-
-        <div class="box-destaque-dark">
-
-          <h4 style="
-            color: var(--gold-accent);
-            margin-bottom: 10px;
-          ">
-            📜 Interpretação Completa dos Seus Caminhos
-          </h4>
-
-          <p style="margin-bottom: 12px;">
-            <strong>Características Principais:</strong>
-            O Odù ${infoOdu.nome} traz a regência de
-            ${infoOdu.orixa}, conferindo uma conexão
-            especial com o elemento ${infoOdu.elemento}.
-            Quem nasce sob este Odù possui uma presença
-            marcante e capacidade natural para buscar o
-            discernimento.
-          </p>
-
-          <p style="margin-bottom: 12px;">
-            <strong>Potencial Espiritual:</strong>
-            Sua vibração nativa favorece
-            ${infoOdu.caminho}
-            Esta influência confere resiliência e amparo
-            em momentos de decisão.
-          </p>
-
-          <p style="margin-bottom: 4px;">
-            <strong>Desafios e Aprendizados:</strong>
-            O principal desafio deste Odù é manter o
-            equilíbrio emocional e a paciência nas fases
-            de transição, agindo sempre com reflexão antes
-            de tomar atitudes definitivas.
-          </p>
-
-        </div>
-
-        <div class="odu-pontos-grid">
-
-          <div class="box-pontos-fortes">
-
-            <h4>✨ Pontos Fortes</h4>
-
-            <ul>
-              <li>
-                ✦ Intuição e percepção espiritual aguçadas
-              </li>
-
-              <li>
-                ✦ Proteção ancestral de ${infoOdu.orixa}
-              </li>
-            </ul>
-
-          </div>
-
-          <div class="box-pontos-atencao">
-
-            <h4>⚠️ Pontos de Atenção</h4>
-
-            <ul>
-              <li>
-                ✦ Evitar precipitações e ansiedade
-              </li>
-
-              <li>
-                ✦ Cuidado com desgastes na energia pessoal
-              </li>
-            </ul>
-
-          </div>
-
-        </div>
-
-        <div style="
-          margin-top: 24px;
-          padding: 20px;
-          background: rgba(139, 92, 246, 0.12);
-          border: 1px solid var(--purple-accent);
-          border-radius: 12px;
-          text-align: center;
-        ">
-
-          <p style="
-            font-size: 0.98rem;
-            color: var(--gold-light);
-            line-height: 1.6;
-            margin-bottom: 16px;
-          ">
-            ✨ Quer se aprofundar e entender o que os
-            búzios mostram sobre seus caminhos atuais,
-            amor e carreira? Clique abaixo, escolha um dos
-            nossos pacotes e faça sua consulta agora!
-          </p>
-
-          <button
-            type="button"
-            class="btn-primary"
-            onclick="rolarParaPacotes()"
-          >
-            🔮 Ver Pacotes e Consultar os Búzios
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    painelOdu.style.display = 'block';
-
-    painelOdu.scrollIntoView({
-      behavior: 'smooth'
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      error: 'Método não permitido.'
     });
+  }
 
-  });
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY;
 
-function selecionarPacote(qtd, valor) {
+  if (!supabaseUrl || !supabaseKey) {
+    return res.status(500).json({
+      error: 'Configuração do Supabase não encontrada.'
+    });
+  }
 
-  pacoteSelecionado = {
-    quantidade: qtd,
-    valor: valor
+  if (!openaiKey) {
+    return res.status(500).json({
+      error: 'Configuração da OpenAI não encontrada.'
+    });
+  }
+
+  const supabaseHeaders = {
+    apikey: supabaseKey,
+    Authorization: `Bearer ${supabaseKey}`,
+    'Content-Type': 'application/json'
   };
 
-  document
-    .querySelectorAll('.pacote-card, .package-card')
-    .forEach(card =>
-      card.classList.remove('active')
-    );
+  let creditoConsumido = false;
+  let perguntaId = null;
 
-  const el =
-    document.getElementById(`pacote-${qtd}`);
+  try {
+    const {
+      pedidoId,
+      pergunta,
+      oduNumero,
+      oduNome,
+      orixa,
+      elemento,
+      favorabilidade,
+      numAbertos
+    } = req.body;
 
-  if (el) {
-    el.classList.add('active');
-  }
-}
+    // =========================================================
+    // 1. VALIDAÇÕES INICIAIS
+    // =========================================================
 
-function gerarPix() {
+    if (!pedidoId) {
+      return res.status(400).json({
+        error: 'Sessão de consulta não informada.'
+      });
+    }
 
-  consultasContratadas +=
-    pacoteSelecionado.quantidade;
+    if (
+      !pergunta ||
+      typeof pergunta !== 'string' ||
+      pergunta.trim().length < 3
+    ) {
+      return res.status(400).json({
+        error: 'Pergunta inválida.'
+      });
+    }
 
-  consultasRestantes +=
-    pacoteSelecionado.quantidade;
+    const perguntaLimpa = pergunta.trim();
+    const perguntaLower = perguntaLimpa.toLowerCase();
 
-  atualizarContadores();
+    const perguntaNormalizada = perguntaLower
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-  alert(
-    `✨ Pagamento simulado com sucesso!\n\n` +
-    `Foram adicionadas ${pacoteSelecionado.quantidade} consultas ao seu saldo.`
-  );
+    // =========================================================
+    // 2. SEGURANÇA
+    // =========================================================
 
-  const secaoJogada =
-    document.getElementById('secao-jogada');
-
-  secaoJogada.style.display =
-    'block';
-
-  secaoJogada.scrollIntoView({
-    behavior: 'smooth'
-  });
-}
-
-function reiniciarConsulta() {
-
-  const campoPergunta =
-    document.getElementById('pergunta');
-
-  if (campoPergunta) {
-    campoPergunta.value = '';
-  }
-
-  const painelResultado =
-    document.getElementById('resultado-leitura');
-
-  if (painelResultado) {
-    painelResultado.style.display = 'none';
-  }
-
-  const mesa =
-    document.getElementById('mesa-buzios');
-
-  if (mesa) {
-    mesa.style.display = 'none';
-  }
-
-  document
-    .getElementById('form-consulta')
-    ?.scrollIntoView({
-      behavior: 'smooth'
-    });
-}
-
-// ==========================================
-// CLASSIFICAÇÃO SEMÂNTICA LOCAL
-// ==========================================
-
-function classificarPergunta(texto) {
-
-  const t =
-    texto.toLowerCase();
-
-  if (
-    [
-      'me matar',
-      'quer morrer',
-      'quero morrer',
-      'desaparecer',
-      'nao aguento mais',
-      'não aguento mais',
+    const TERMOS_RISCO_EMOCIONAL = [
       'suicidio',
-      'suicídio'
-    ].some(g => t.includes(g))
-  ) {
+      'suicídio',
+      'me matar',
+      'tirar minha vida',
+      'automutilacao',
+      'automutilação',
+      'quero morrer',
+      'não quero mais viver',
+      'nao quero mais viver'
+    ];
 
-    return {
-      bloqueado: true,
-      tipo: 'RISCO_EMOCIONAL',
-      msg:
-        "Percebo que você está passando por um momento de dor intensa. " +
-        "O jogo de búzios não é o recurso adequado para este momento. " +
-        "Busque apoio de alguém de confiança e atendimento profissional. " +
-        "Sua consulta não será realizada e seu saldo será preservado."
-    };
-  }
+    if (
+      TERMOS_RISCO_EMOCIONAL.some(
+        termo => perguntaLower.includes(termo)
+      )
+    ) {
+      return res.status(200).json({
+        sucesso: true,
+        bloqueado: true,
+        tipoBloqueio: 'RISCO_EMOCIONAL',
+        consumirCredito: false,
+        mensagem:
+          'Essa pergunta precisa de acolhimento e apoio humano, e não de uma leitura oracular. A consulta não será realizada e nenhum crédito será consumido.'
+      });
+    }
 
-  if (
-    [
-      'mega-sena',
+    const TERMOS_MORTE = [
+      'quando vou morrer',
+      'data da morte',
+      'dia da minha morte',
+      'como vou morrer'
+    ];
+
+    if (
+      TERMOS_MORTE.some(
+        termo => perguntaLower.includes(termo)
+      )
+    ) {
+      return res.status(200).json({
+        sucesso: true,
+        bloqueado: true,
+        tipoBloqueio: 'PREVISAO_MORTE',
+        consumirCredito: false,
+        mensagem:
+          'O Oráculo não realiza previsões sobre data ou circunstâncias de morte. A consulta não foi realizada e seu saldo foi preservado.'
+      });
+    }
+
+    const TERMOS_APOSTAS = [
+      'mega sena',
       'megasena',
-      'jogo do bicho',
+      'numeros da mega',
+      'números da mega',
       'quina',
       'lotofacil',
       'lotofácil',
-      'numeros da sorte',
-      'números da sorte',
+      'jogo do bicho',
+      'aposta',
+      'apostas',
       'loteria',
-      'aposta'
-    ].some(g => t.includes(g))
-  ) {
-
-    return {
-      bloqueado: true,
-      tipo: 'LOTERIA',
-      msg:
-        "A plataforma se destina estritamente à orientação espiritual " +
-        "e reflexão pessoal, não fornecendo números ou palpites para " +
-        "apostas e jogos de azar."
-    };
-  }
-
-  if (
-    [
-      'estou doente',
-      'qual minha doença',
-      'vencer o cancer',
-      'vencer o câncer',
-      'vou me curar',
-      'diagnostico medico',
-      'cura de'
-    ].some(g => t.includes(g))
-  ) {
-
-    return {
-      bloqueado: true,
-      tipo: 'SAUDE',
-      msg:
-        "O oráculo oferece orientação espiritual, mas não realiza " +
-        "diagnósticos médicos nem promete curas físicas. Consulte " +
-        "médicos e profissionais de saúde qualificados."
-    };
-  }
-
-  if (
-    [
-      'quando vou morrer',
-      'vai morrer',
-      'dia da minha morte',
-      'morte de'
-    ].some(g => t.includes(g))
-  ) {
-
-    return {
-      bloqueado: true,
-      tipo: 'PREVISAO_MORTE',
-      msg:
-        "O Oráculo não realiza previsões sobre a data ou circunstâncias " +
-        "de morte. Nossos caminhos são focados no fortalecimento da vida " +
-        "e nas escolhas do presente."
-    };
-  }
-
-  let contexto =
-    "Orientação Geral e Caminhos";
-
-  if (
-    /amor|namorada|namorado|casamento|traicao|traição|voltar|relacionamento|ex|parceiro/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Amor e Relacionamentos";
-
-  } else if (
-    /trabalho|emprego|vaga|carreira|profissional|profissionais|profissão|profissao|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Trabalho e Tomada de Decisão";
-
-  } else if (
-    /dinheiro|financas|finanças|divida|dívida|investimento|comprar|vender/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Prosperidade Financeira";
-
-  } else if (
-    /familia|família|mae|mãe|pai|filho|filha|irmao|irmão/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Harmonia Familiar";
-
-  } else if (
-    /orixa|orixá|cabeca|cabeça|frente|junto|juntó|adjunto|santo/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Identificação de Orixá de Cabeça";
-
-  } else if (
-    /espiritual|protecao|proteção|inveja|demanda/i
-      .test(t)
-  ) {
-
-    contexto =
-      "Espiritualidade e Proteção Ancestral";
-  }
-
-  return {
-    bloqueado: false,
-    contexto
-  };
-}
-
-// ==========================================
-// 2. RITUAL DE JOGADA DOS BÚZIOS
-// ==========================================
-
-document
-  .getElementById('form-consulta')
-  ?.addEventListener('submit', function (e) {
-
-    e.preventDefault();
-
-    if (isProcessing) {
-      return;
-    }
-
-    if (consultasRestantes <= 0) {
-
-      alert(
-        "Você precisa adquirir um pacote de consultas para realizar a jogada."
-      );
-
-      document
-        .getElementById('secao-pacotes')
-        .scrollIntoView({
-          behavior: 'smooth'
-        });
-
-      return;
-    }
-
-    const pergunta =
-      document
-        .getElementById('pergunta')
-        .value
-        .trim();
-
-    if (!pergunta) {
-      return;
-    }
-
-    const perguntaNormalizada =
-      pergunta
-        .toLowerCase()
-        .replace(/[^\w\s]/gi, '')
-        .trim();
+      'tiger',
+      'tigrinho',
+      'bet',
+      'roleta'
+    ];
 
     if (
-      perguntaNormalizada ===
-      ultimaPerguntaProcessada
+      TERMOS_APOSTAS.some(
+        termo => perguntaLower.includes(termo)
+      )
     ) {
-
-      const painelResultado =
-        document.getElementById(
-          'resultado-leitura'
-        );
-
-      painelResultado.className =
-        "card card-resultado-dark";
-
-      painelResultado.innerHTML = `
-        <div style="
-          border-bottom: 1px solid rgba(212, 175, 55, 0.4);
-          padding-bottom: 12px;
-          margin-bottom: 16px;
-        ">
-
-          <span style="
-            color: var(--gold-accent);
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-          ">
-            ⚠️ Atenção do Oráculo
-          </span>
-
-          <h3 style="
-            font-size: 1.3rem;
-            color: var(--gold-light);
-            margin-top: 4px;
-          ">
-            Pergunta Repetida Detectada
-          </h3>
-
-        </div>
-
-        <div
-          class="box-destaque-dark"
-          style="
-            border-left-color: var(--gold-accent) !important;
-          "
-        >
-
-          <p style="
-            font-size: 0.95rem;
-            line-height: 1.6;
-          ">
-            Você já fez essa pergunta recentemente.
-            Para obter uma boa orientação, reflita
-            sobre a resposta recebida antes de consultar
-            os búzios novamente sobre o mesmo tema.
-          </p>
-
-        </div>
-
-        <p style="
-          font-size: 0.82rem;
-          color: var(--text-muted);
-          margin-top: 10px;
-        ">
-          ℹ️ Seu saldo de consultas foi totalmente preservado.
-        </p>
-      `;
-
-      painelResultado.style.display =
-        'block';
-
-      painelResultado.scrollIntoView({
-        behavior: 'smooth'
+      return res.status(200).json({
+        sucesso: true,
+        bloqueado: true,
+        tipoBloqueio: 'APOSTAS',
+        consumirCredito: false,
+        mensagem:
+          'O Oráculo não fornece números, combinações, garantias ou palpites para apostas e jogos de azar. Reformule sua pergunta para uma orientação sobre seus caminhos financeiros ou decisões pessoais. Seu saldo foi preservado.'
       });
-
-      return;
     }
 
-    const analise =
-      classificarPergunta(pergunta);
+    // =========================================================
+    // 3. BUSCAR SESSÃO NO SUPABASE
+    // =========================================================
 
-    if (analise.bloqueado) {
-
-      const painelResultado =
-        document.getElementById(
-          'resultado-leitura'
-        );
-
-      painelResultado.className =
-        "card card-resultado-dark";
-
-      painelResultado.innerHTML = `
-        <div style="
-          border-bottom: 1px solid rgba(239, 68, 68, 0.4);
-          padding-bottom: 12px;
-          margin-bottom: 16px;
-        ">
-
-          <span style="
-            color: #F87171;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-          ">
-            ⚠️ Orientação do Sistema
-          </span>
-
-          <h3 style="
-            font-size: 1.3rem;
-            color: #FCA5A5;
-            margin-top: 4px;
-          ">
-            Consulta Não Realizada
-          </h3>
-
-        </div>
-
-        <div
-          class="box-destaque-dark"
-          style="
-            border-left-color: #EF4444 !important;
-            background: rgba(45, 20, 20, 0.5) !important;
-          "
-        >
-
-          <p style="
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #FEE2E2;
-          ">
-            ${analise.msg}
-          </p>
-
-        </div>
-
-        <p style="
-          font-size: 0.82rem;
-          color: var(--text-muted);
-          margin-top: 10px;
-        ">
-          ℹ️ Seu saldo de consultas não foi consumido.
-        </p>
-      `;
-
-      painelResultado.style.display =
-        'block';
-
-      painelResultado.scrollIntoView({
-        behavior: 'smooth'
-      });
-
-      return;
-    }
-
-    isProcessing = true;
-
-    const mesa =
-      document.getElementById(
-        'mesa-buzios'
-      );
-
-    const peneira =
-      document.getElementById(
-        'peneira'
-      );
-
-    const painelResultado =
-      document.getElementById(
-        'resultado-leitura'
-      );
-
-    const btnJogar =
-      document.getElementById(
-        'btn-jogar'
-      );
-
-    btnJogar.disabled = true;
-
-    painelResultado.style.display =
-      'none';
-
-    peneira.innerHTML =
-      '';
-
-    mesa.style.display =
-      'block';
-
-    mesa.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    });
-
-    mesa.classList.add(
-      'mesa-chacoalhando'
+    const pedidoResponse = await fetch(
+      `${supabaseUrl}/rest/v1/pedidos_consultas?id=eq.${encodeURIComponent(pedidoId)}&select=id,nome,quantidade_contratada,perguntas_restantes,status_pagamento,status_consulta,origem_liberacao&limit=1`,
+      {
+        headers: supabaseHeaders
+      }
     );
 
-    let statusTexto =
-      document.getElementById(
-        'status-jogo'
+    const pedidos = await pedidoResponse.json();
+
+    if (!pedidoResponse.ok) {
+      return res.status(500).json({
+        error: 'Não foi possível consultar a sessão.'
+      });
+    }
+
+    if (!pedidos || pedidos.length === 0) {
+      return res.status(404).json({
+        error: 'Sessão de consulta não encontrada.'
+      });
+    }
+
+    const pedido = pedidos[0];
+
+    // Nesta fase só permitimos sessão PAGA ou TESTE.
+    if (
+      !['PAGO', 'TESTE'].includes(pedido.status_pagamento)
+    ) {
+      return res.status(403).json({
+        error: 'Esta consulta ainda não está liberada para uso.'
+      });
+    }
+
+    if (pedido.perguntas_restantes <= 0) {
+      return res.status(403).json({
+        saldoEsgotado: true,
+        error: 'Seu saldo de perguntas terminou.',
+        perguntasRestantes: 0
+      });
+    }
+
+    // =========================================================
+    // 4. IMPEDIR PERGUNTA REPETIDA
+    // =========================================================
+
+    const repetidaResponse = await fetch(
+      `${supabaseUrl}/rest/v1/perguntas_consulta?pedido_id=eq.${encodeURIComponent(pedidoId)}&pergunta_normalizada=eq.${encodeURIComponent(perguntaNormalizada)}&status=eq.CONCLUIDA&select=id&limit=1`,
+      {
+        headers: supabaseHeaders
+      }
+    );
+
+    const repetidas = await repetidaResponse.json();
+
+    if (
+      repetidaResponse.ok &&
+      repetidas &&
+      repetidas.length > 0
+    ) {
+      return res.status(200).json({
+        sucesso: true,
+        bloqueado: true,
+        tipoBloqueio: 'PERGUNTA_REPETIDA',
+        consumirCredito: false,
+        mensagem:
+          'Você já realizou essa pergunta nesta consulta. Reformule a questão ou faça uma nova pergunta. Seu saldo foi preservado.',
+        perguntasRestantes: pedido.perguntas_restantes
+      });
+    }
+
+    // =========================================================
+    // 5. CLASSIFICAÇÃO DE CONTEXTO
+    // =========================================================
+
+    let contexto = 'Geral';
+
+    if (
+      /amor|relacionamento|namoro|namorada|namorado|casamento|ex|voltar|traição|traicao/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Amor e Relacionamentos';
+    } else if (
+      /trabalho|emprego|vaga|carreira|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Trabalho e Carreira';
+    } else if (
+      /dinheiro|financeiro|finanças|financas|dívida|divida|investimento|comprar|vender/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Finanças';
+    } else if (
+      /orixá|orixa|pai de cabeça|mãe de cabeça|eledá|eleda|juntó|junto/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Orixás';
+    } else if (
+      /espiritual|proteção|protecao|inveja|demanda|energia|axé|axe/i.test(
+        perguntaLimpa
+      )
+    ) {
+      contexto = 'Espiritualidade';
+    }
+
+    // =========================================================
+    // 6. REGISTRAR PERGUNTA COMO PROCESSANDO
+    // =========================================================
+
+    const registroResponse = await fetch(
+      `${supabaseUrl}/rest/v1/perguntas_consulta`,
+      {
+        method: 'POST',
+        headers: {
+          ...supabaseHeaders,
+          Prefer: 'return=representation'
+        },
+        body: JSON.stringify({
+          pedido_id: pedidoId,
+          pergunta: perguntaLimpa,
+          pergunta_normalizada: perguntaNormalizada,
+          contexto,
+          tipo_classificacao: 'CONSULTA_VALIDA',
+          bloqueada: false,
+          consumiu_credito: false,
+          status: 'PROCESSANDO',
+          numero_buzios_abertos:
+            Number.isInteger(Number(numAbertos))
+              ? Number(numAbertos)
+              : null,
+          numero_buzios_fechados:
+            Number.isInteger(Number(numAbertos))
+              ? 16 - Number(numAbertos)
+              : null
+        })
+      }
+    );
+
+    const registro = await registroResponse.json();
+
+    if (!registroResponse.ok) {
+      console.error(
+        'Erro ao registrar pergunta:',
+        registro
       );
 
-    if (!statusTexto) {
+      return res.status(500).json({
+        error: 'Não foi possível registrar a consulta.'
+      });
+    }
 
-      statusTexto =
-        document.createElement('p');
+    perguntaId = registro?.[0]?.id;
 
-      statusTexto.id =
-        'status-jogo';
+    // =========================================================
+    // 7. RESERVAR / CONSUMIR 1 CRÉDITO
+    // =========================================================
 
-      statusTexto.style.cssText =
-        "text-align: center;" +
-        "color: var(--gold-light);" +
-        "font-weight: 600;" +
-        "margin-top: 15px;" +
-        "font-family: 'Cinzel', serif;";
+    const creditoResponse = await fetch(
+      `${supabaseUrl}/rest/v1/rpc/consumir_credito`,
+      {
+        method: 'POST',
+        headers: supabaseHeaders,
+        body: JSON.stringify({
+          p_pedido_id: pedidoId
+        })
+      }
+    );
 
-      mesa.parentNode.insertBefore(
-        statusTexto,
-        mesa.nextSibling
+    const novoSaldo = await creditoResponse.json();
+
+    if (!creditoResponse.ok) {
+      if (perguntaId) {
+        await fetch(
+          `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${perguntaId}`,
+          {
+            method: 'PATCH',
+            headers: supabaseHeaders,
+            body: JSON.stringify({
+              status: 'ERRO',
+              erro_tecnico:
+                'Não foi possível reservar crédito.'
+            })
+          }
+        );
+      }
+
+      return res.status(403).json({
+        error:
+          'Não foi possível utilizar uma pergunta desta sessão.'
+      });
+    }
+
+    creditoConsumido = true;
+
+    // =========================================================
+    // 8. PROMPT OPENAI
+    // =========================================================
+
+    const systemPrompt = `
+Você é o intérprete digital do Oráculo Odara.
+
+Seu papel é interpretar uma pergunta considerando a caída dos búzios e o Odù informado pelo sistema.
+
+REGRAS:
+
+- Responda em português do Brasil.
+- Seja acolhedor, humano, direto e acessível.
+- Não fale como psicólogo, médico ou sacerdote.
+- Não invente fatos que não estejam nos dados recebidos.
+- Não declare certezas absolutas sobre o futuro.
+- Não faça diagnóstico médico.
+- Não forneça números ou estratégias para apostas.
+- Não determine Orixá de cabeça como verdade definitiva.
+- Diferencie orientação simbólica de confirmação religiosa.
+- Não use linguagem assustadora ou fatalista.
+- Responda especificamente à pergunta apresentada.
+
+ESTRUTURA:
+
+✦ Interpretação da sua pergunta
+
+Reconheça brevemente o contexto humano apresentado.
+
+✦ O que a caída dos búzios apresenta
+
+Explique o Odù sorteado e relacione-o diretamente ao assunto perguntado.
+
+✦ Resposta objetiva
+
+Diga claramente se o cenário parece favorável, desfavorável, cauteloso ou dependente de determinadas atitudes.
+
+✦ Pontos de atenção
+
+Explique o que merece cuidado.
+
+✦ Orientação prática
+
+Apresente uma orientação simples e aplicável.
+
+Ao final, inclua:
+
+⚠️ Aviso Importante: Esta consulta é uma orientação digital baseada em inteligência artificial e referências culturais sobre os Odùs. Para confirmações religiosas, rituais ou aprofundamentos, procure um Babalorixá ou Ialorixá de sua confiança.
+`;
+
+    const userPrompt = `
+Nome do consulente:
+${pedido.nome}
+
+Pergunta:
+${perguntaLimpa}
+
+Contexto identificado:
+${contexto}
+
+Dados da caída:
+
+Odù número:
+${oduNumero}
+
+Nome do Odù:
+${oduNome}
+
+Orixá associado:
+${orixa}
+
+Elemento:
+${elemento}
+
+Favorabilidade calculada:
+${favorabilidade}%
+
+Búzios abertos:
+${numAbertos} de 16
+
+Interprete esses dados exclusivamente dentro da pergunta apresentada.
+`;
+
+    // =========================================================
+    // 9. CHAMAR OPENAI
+    // =========================================================
+
+    const aiResponse = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${openaiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt
+            },
+            {
+              role: 'user',
+              content: userPrompt
+            }
+          ],
+          temperature: 0.5,
+          max_tokens: 900
+        })
+      }
+    );
+
+    const aiData = await aiResponse.json();
+
+    if (!aiResponse.ok) {
+      throw new Error(
+        aiData?.error?.message ||
+        'Erro ao gerar leitura com a IA.'
       );
     }
 
-    const ehOrixaCabeca =
-      analise.contexto ===
-      "Identificação de Orixá de Cabeça";
+    const texto =
+      aiData?.choices?.[0]?.message?.content;
 
-    statusTexto.textContent =
-      "🔮 Concentrando nas energias da sua pergunta...";
-
-    setTimeout(() => {
-
-      statusTexto.textContent =
-        ehOrixaCabeca
-          ? "✨ Preparando dupla queda para Orixá de Frente e Juntó..."
-          : "✨ Evocando os Orixás e ouvindo a voz dos Odùs...";
-
-    }, 1200);
-
-    setTimeout(() => {
-
-      statusTexto.textContent =
-        "🍃 Lançando os 16 búzios sagrados sobre a mesa...";
-
-    }, 2400);
-
-    setTimeout(() => {
-
-      mesa.classList.remove(
-        'mesa-chacoalhando'
+    if (!texto) {
+      throw new Error(
+        'A IA não retornou uma leitura válida.'
       );
+    }
 
-      statusTexto.textContent =
-        "";
+    // =========================================================
+    // 10. MARCAR PERGUNTA COMO CONCLUÍDA
+    // =========================================================
 
-      const buziosAbertos1 =
-        Math.floor(
-          Math.random() * 17
-        );
+    if (perguntaId) {
+      await fetch(
+        `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${perguntaId}`,
+        {
+          method: 'PATCH',
+          headers: supabaseHeaders,
+          body: JSON.stringify({
+            resposta: texto,
+            consumiu_credito: true,
+            status: 'CONCLUIDA',
+            modelo_ia: 'gpt-4o-mini',
+            concluido_em:
+              new Date().toISOString()
+          })
+        }
+      );
+    }
 
-      const buziosFechados1 =
-        16 - buziosAbertos1;
+    return res.status(200).json({
+      sucesso: true,
+      bloqueado: false,
+      contexto,
+      consumirCredito: true,
+      resposta: texto,
+      perguntasRestantes: novoSaldo
+    });
 
-      const oduSorteado1 =
-        ODUS_MAP[buziosAbertos1] ||
-        ODUS_MAP[16];
+  } catch (error) {
+    console.error(
+      'Erro consultar.js:',
+      error
+    );
 
-      let buziosAbertos2 =
-        Math.floor(
-          Math.random() * 17
-        );
+    // =========================================================
+    // 11. ESTORNAR CRÉDITO EM CASO DE ERRO
+    // =========================================================
 
-      let oduSorteado2 =
-        ODUS_MAP[buziosAbertos2] ||
-        ODUS_MAP[16];
+    try {
+      const pedidoId = req.body?.pedidoId;
 
-      for (
-        let i = 0;
-        i < 16;
-        i++
+      if (
+        creditoConsumido &&
+        pedidoId &&
+        supabaseUrl &&
+        supabaseKey
       ) {
-
-        const buzio =
-          document.createElement(
-            'div'
-          );
-
-        buzio.className =
-          'buzio-item';
-
-        const isOpen =
-          i < buziosAbertos1;
-
-        buzio.innerHTML =
-          isOpen
-            ? `
-              <svg viewBox="0 0 40 60">
-                <ellipse
-                  cx="20"
-                  cy="30"
-                  rx="16"
-                  ry="26"
-                  fill="#F8F5F0"
-                  stroke="#D4AF37"
-                  stroke-width="2"
-                />
-
-                <ellipse
-                  cx="20"
-                  cy="30"
-                  rx="8"
-                  ry="16"
-                  fill="#120A1F"
-                  stroke="#8B5CF6"
-                  stroke-width="1.5"
-                />
-
-                <line
-                  x1="20"
-                  y1="10"
-                  x2="20"
-                  y2="50"
-                  stroke="#D4AF37"
-                  stroke-width="1.5"
-                />
-              </svg>
-            `
-            : `
-              <svg viewBox="0 0 40 60">
-                <ellipse
-                  cx="20"
-                  cy="30"
-                  rx="16"
-                  ry="26"
-                  fill="#EAD9C9"
-                  stroke="#8B5CF6"
-                  stroke-width="2"
-                />
-
-                <line
-                  x1="20"
-                  y1="8"
-                  x2="20"
-                  y2="52"
-                  stroke="#5A3A7E"
-                  stroke-width="2"
-                />
-              </svg>
-            `;
-
-        const angle =
-          Math.random() *
-          Math.PI *
-          2;
-
-        const radius =
-          Math.random() *
-          110;
-
-        const x =
-          160 +
-          radius *
-          Math.cos(angle);
-
-        const y =
-          120 +
-          radius *
-          Math.sin(angle);
-
-        const rot =
-          Math.floor(
-            Math.random() *
-            360
-          );
-
-        buzio.style.left =
-          `${x}px`;
-
-        buzio.style.top =
-          `${y}px`;
-
-        buzio.style.transform =
-          `rotate(${rot}deg) scale(0.1)`;
-
-        buzio.style.opacity =
-          '0';
-
-        peneira.appendChild(
-          buzio
+        await fetch(
+          `${supabaseUrl}/rest/v1/rpc/estornar_credito`,
+          {
+            method: 'POST',
+            headers: supabaseHeaders,
+            body: JSON.stringify({
+              p_pedido_id: pedidoId
+            })
+          }
         );
-
-        setTimeout(() => {
-
-          buzio.style.opacity =
-            '1';
-
-          buzio.style.transform =
-            `rotate(${rot}deg) scale(1)`;
-
-        }, i * 40);
       }
 
-      setTimeout(() => {
+      if (perguntaId) {
+        await fetch(
+          `${supabaseUrl}/rest/v1/perguntas_consulta?id=eq.${perguntaId}`,
+          {
+            method: 'PATCH',
+            headers: supabaseHeaders,
+            body: JSON.stringify({
+              status: 'ERRO',
+              consumiu_credito: false,
+              erro_tecnico:
+                'Falha durante o processamento da leitura.'
+            })
+          }
+        );
+      }
+    } catch (erroEstorno) {
+      console.error(
+        'Erro ao estornar crédito:',
+        erroEstorno
+      );
+    }
 
-        consultasRestantes--;
-
-        atualizarContadores();
-
-        ultimaPerguntaProcessada =
-          perguntaNormalizada;
-
-        let paragrafo1 =
-          "";
-
-        let paragrafo2 =
-          "";
-
-        if (ehOrixaCabeca) {
-
-          paragrafo1 =
-            `Em relação à sua busca sincera sobre "<strong>${pergunta}</strong>", ` +
-            `os búzios se moveram na mesa em uma dupla queda reveladora. ` +
-            `A primeira queda manifestou a regência de ` +
-            `<strong>${oduSorteado1.orixa}</strong> através de Odù ` +
-            `${oduSorteado1.nome}, mostrando que a tendência para a sua ` +
-            `liderança e presença no mundo é ${oduSorteado1.tendencia}. ` +
-            `Esta primeira vibração direciona como você enfrenta os desafios ` +
-            `diários, indicando que sua força interior se renova quando você ` +
-            `atua com coragem, ética e alinhamento com a energia ancestral ` +
-            `que o protege.`;
-
-          paragrafo2 =
-            `Na segunda queda da mesa sagrada, a energia do seu Orixá ` +
-            `Adjunto (Juntó) revelou a força de ` +
-            `<strong>${oduSorteado2.orixa}</strong> sob o Odù ` +
-            `${oduSorteado2.nome}. Esta combinação mostra que o seu suporte ` +
-            `emocional e sustentação espiritual atuam em perfeita ` +
-            `complementaridade com seu Orixá de Frente. Para manter seus ` +
-            `caminhos abertos e prósperos diante do que foi perguntado, ` +
-            `é fundamental cultivar a paciência e manter atitudes ponderadas ` +
-            `no cotidiano, lembrando sempre que a confirmação definitiva ` +
-            `dessa regência é um ato sagrado presencial.`;
-
-        } else {
-
-          paragrafo1 =
-            `Diante da sua questão específica — "<strong>${pergunta}</strong>" —, ` +
-            `a mesa sagrada de búzios manifestou a vibração de ` +
-            `<strong>Odù ${oduSorteado1.nome}</strong>, sob a regência direta ` +
-            `de <strong>${oduSorteado1.orixa}</strong>. Ao analisar o momento ` +
-            `que você atravessa na área de ${analise.contexto}, a queda ` +
-            `oracular indica que a tendência para a sua pergunta é ` +
-            `<strong>${oduSorteado1.tendencia}</strong>. Essa manifestação ` +
-            `revela que o momento exige que você observe com atenção os ` +
-            `sinais ao seu redor, pois a energia presente favorece que você ` +
-            `${oduSorteado1.caminho}`;
-
-          paragrafo2 =
-            `Para que você consiga caminhar com firmeza e sabedoria em direção ` +
-            `ao que busca, o oráculo orienta que você mantenha o discernimento ` +
-            `e evite tomar decisões motivadas pela ansiedade ou por impulsos ` +
-            `do momento. Lembre-se de que a leitura dos búzios ilumina as ` +
-            `tendências do seu presente, mas o resultado final é moldado pelas ` +
-            `suas atitudes e pela sua fé. Cultive pensamentos elevados, busque ` +
-            `equilibrar sua energia e confie na proteção dos Orixás para guiar ` +
-            `cada um dos seus passos com prosperidade e paz.`;
-        }
-
-        painelResultado.className =
-          "card card-resultado-dark";
-
-        painelResultado.innerHTML = `
-          <div style="
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-          ">
-
-            <span style="
-              color: var(--gold-accent);
-              font-size: 0.8rem;
-              font-weight: bold;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-            ">
-              Revelação da Consulta Sagrada
-            </span>
-
-            <h3 style="
-              font-size: 1.4rem;
-              color: var(--gold-light);
-              margin-top: 4px;
-            ">
-              Odù ${oduSorteado1.nome}
-              (${buziosAbertos1} Abertos /
-              ${buziosFechados1} Fechados)
-            </h3>
-
-            <p style="
-              font-size: 0.88rem;
-              color: var(--text-muted);
-              margin-top: 4px;
-            ">
-              Regência Principal:
-              <strong>
-                ${oduSorteado1.orixa}
-              </strong>
-            </p>
-
-          </div>
-
-          <div
-            class="box-destaque-dark"
-            style="
-              line-height: 1.8;
-              font-size: 0.95rem;
-            "
-          >
-
-            <p style="
-              margin-bottom: 16px;
-              text-indent: 12px;
-            ">
-              ${paragrafo1}
-            </p>
-
-            <p style="
-              text-indent: 12px;
-            ">
-              ${paragrafo2}
-            </p>
-
-          </div>
-
-          <div class="disclaimer-callout">
-
-            ⚠️
-            <strong>
-              Aviso Importante:
-            </strong>
-
-            Esta é uma consulta orientativa realizada por
-            uma inteligência artificial digital. Para
-            aprofundamentos, trabalhos espirituais,
-            rituais, confirmações de Odù e assentamentos,
-            procure uma casa de Candomblé ou um
-            Babalorixá / Ialorixá de sua extrema confiança.
-
-          </div>
-
-          <div style="
-            margin-top: 20px;
-            text-align: center;
-          ">
-
-            <button
-              type="button"
-              class="btn-primary"
-              onclick="reiniciarConsulta()"
-            >
-              ✨ Nova Pergunta
-            </button>
-
-          </div>
-        `;
-
-        painelResultado.style.display =
-          'block';
-
-        painelResultado.scrollIntoView({
-          behavior: 'smooth'
-        });
-
-        btnJogar.disabled =
-          false;
-
-        isProcessing =
-          false;
-
-      }, 1000);
-
-    }, 3600);
-
-  });
-
-// ==========================================
-// INICIALIZAÇÃO
-// ==========================================
-
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-
-    atualizarContadores();
-
-    carregarSessao();
-
+    return res.status(500).json({
+      error:
+        'Não foi possível concluir a leitura. Seu crédito foi preservado.'
+    });
   }
-);
+}
