@@ -1543,7 +1543,7 @@ document
               : "✨ Reunindo os 16 búzios para o lançamento...";
 
         },
-        850
+        1200
       );
 
       // ======================================
@@ -1568,11 +1568,6 @@ document
 
           const centroX =
             larguraMesa / 2;
-
-          /*
-            O ponto inicial fica próximo ao
-            centro superior da mesa.
-          */
 
           const origemX =
             centroX - 16;
@@ -1599,10 +1594,6 @@ document
 
             const aberto =
               i < buziosAbertos1;
-
-            // --------------------------------
-            // DESENHO ATUAL DOS BÚZIOS
-            // --------------------------------
 
             buzio.innerHTML =
               aberto
@@ -1665,10 +1656,6 @@ document
                   </svg>
                 `;
 
-            // --------------------------------
-            // POSIÇÃO FINAL ALEATÓRIA
-            // --------------------------------
-
             const anguloBase =
               (
                 Math.PI *
@@ -1709,10 +1696,6 @@ document
               raio *
               0.62;
 
-            // --------------------------------
-            // IMPEDE QUE SAIAM DA MESA
-            // --------------------------------
-
             finalX =
               Math.max(
                 12,
@@ -1730,12 +1713,6 @@ document
                   finalY
                 )
               );
-
-            /*
-              O elemento já fica no destino,
-              enquanto a animação usa translate
-              para simular sua trajetória.
-            */
 
             buzio.style.left =
               `${finalX}px`;
@@ -1771,9 +1748,9 @@ document
               );
 
             const alturaSalto =
-              -55 -
+              -65 -
               Math.random() *
-              55;
+              70;
 
             buzio.style.transform =
               `rotate(${rotacaoFinal}deg)`;
@@ -1789,24 +1766,16 @@ document
               buzio
             );
 
-            // =================================
-            // ANIMAÇÃO PRINCIPAL DO BÚZIO
-            // =================================
-
             const atraso =
-              i * 28 +
+              i * 42 +
               Math.random() *
-              90;
+              120;
 
             setTimeout(
               () => {
 
                 buzio.animate(
                   [
-
-                    // -------------------------
-                    // COMEÇA REUNIDO
-                    // -------------------------
 
                     {
                       transform:
@@ -1817,10 +1786,6 @@ document
                       opacity:
                         0.15
                     },
-
-                    // -------------------------
-                    // SOBE / É LANÇADO
-                    // -------------------------
 
                     {
                       offset:
@@ -1838,10 +1803,6 @@ document
                         1
                     },
 
-                    // -------------------------
-                    // CRUZA A MESA NO AR
-                    // -------------------------
-
                     {
                       offset:
                         0.52,
@@ -1854,10 +1815,6 @@ document
                         rotate(${rotacaoInicial + 370}deg)
                         scale(1.12)`
                     },
-
-                    // -------------------------
-                    // PRIMEIRO IMPACTO
-                    // -------------------------
 
                     {
                       offset:
@@ -1872,10 +1829,6 @@ document
                         scale(0.92)`
                     },
 
-                    // -------------------------
-                    // PEQUENO QUIQUE
-                    // -------------------------
-
                     {
                       offset:
                         0.88,
@@ -1888,10 +1841,6 @@ document
                         rotate(${rotacaoFinal - 25}deg)
                         scale(1.03)`
                     },
-
-                    // -------------------------
-                    // POSIÇÃO FINAL
-                    // -------------------------
 
                     {
                       transform:
@@ -1907,9 +1856,9 @@ document
 
                   {
                     duration:
-                      1150 +
+                      2100 +
                       Math.random() *
-                      230,
+                      350,
 
                     easing:
                       'cubic-bezier(0.18,0.72,0.28,1)',
@@ -1957,7 +1906,7 @@ document
                 "✨ Os búzios tocaram a mesa e estão se assentando...";
 
             },
-            1120
+            2200
           );
 
           // ==================================
@@ -1989,18 +1938,32 @@ document
               );
 
               statusTexto.textContent =
-                "🔮 A caída foi formada. Interpretando o Odù...";
+                "🔮 A caída foi formada. Observando a mesa...";
 
             },
-            1650
+            3000
           );
 
         },
-        1850
+        2600
       );
 
       // ======================================
-      // ETAPA 3 - APRESENTAÇÃO DA LEITURA
+      // ETAPA 3 - PAUSA DE OBSERVAÇÃO
+      // ======================================
+
+      setTimeout(
+        () => {
+
+          statusTexto.textContent =
+            "✨ Interpretando o Odù revelado pela caída...";
+
+        },
+        5900
+      );
+
+      // ======================================
+      // ETAPA 4 - APRESENTAÇÃO DA LEITURA
       // ======================================
 
       setTimeout(
@@ -2012,10 +1975,6 @@ document
 
           statusTexto.textContent =
             '';
-
-          // ----------------------------------
-          // DESCONTA 1 CRÉDITO LOCAL
-          // ----------------------------------
 
           consultasRestantes--;
 
@@ -2037,10 +1996,6 @@ document
 
           let paragrafo2 =
             '';
-
-          // ==================================
-          // PERGUNTAS SOBRE ORIXÁS
-          // ==================================
 
           if (
             ehOrixaCabeca
@@ -2065,13 +2020,7 @@ document
               `devem ser realizadas presencialmente com um sacerdote ` +
               `ou sacerdotisa de confiança.`;
 
-          }
-
-          // ==================================
-          // DEMAIS PERGUNTAS
-          // ==================================
-
-          else {
+          } else {
 
             paragrafo1 =
               `Diante da sua questão específica — "<strong>${pergunta}</strong>" —, ` +
@@ -2090,10 +2039,6 @@ document
               `momento, enquanto suas escolhas continuam tendo papel importante ` +
               `no caminho que será construído.`;
           }
-
-          // ==================================
-          // MONTA O CARD DO RESULTADO
-          // ==================================
 
           painelResultado.className =
             "card card-resultado-dark";
@@ -2252,7 +2197,7 @@ document
             false;
 
         },
-        4300
+        7200
       );
 
     }
