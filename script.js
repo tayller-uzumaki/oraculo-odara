@@ -1,8 +1,16 @@
 /* ==========================================
    ORÁCULO ODARA
-   FRONTEND OFICIAL
-   Sessão + Odù + Pagamento + Segurança
-   + Ritual dos Búzios + Backend
+   SCRIPT.JS OFICIAL
+
+   FRONTEND:
+   - Sessão
+   - Odù gratuito
+   - Pacotes
+   - Créditos de teste
+   - Segurança local
+   - Búzios
+   - Múltiplas quedas
+   - Backend / OpenAI
    ========================================== */
 
 
@@ -35,88 +43,8 @@ const pedidoId =
   params.get('pedidoId');
 
 
-async function carregarSessao() {
-
-  if (!pedidoId) {
-
-    console.log(
-      'Nenhum pedidoId informado. Mantendo modo local.'
-    );
-
-    atualizarContadores();
-
-    return;
-  }
-
-  try {
-
-    const resposta =
-      await fetch(
-        `/api/sessao?pedidoId=${encodeURIComponent(pedidoId)}`
-      );
-
-    const dados =
-      await resposta.json();
-
-    if (
-      !resposta.ok ||
-      !dados.sucesso ||
-      !dados.sessao
-    ) {
-
-      console.error(
-        'Não foi possível carregar a sessão:',
-        dados
-      );
-
-      return;
-    }
-
-    consultasContratadas =
-      Number(
-        dados.sessao
-          .quantidadeContratada || 0
-      );
-
-    consultasRestantes =
-      Number(
-        dados.sessao
-          .perguntasRestantes || 0
-      );
-
-    atualizarContadores();
-
-    const secaoJogada =
-      document.getElementById(
-        'secao-jogada'
-      );
-
-    if (
-      secaoJogada &&
-      consultasRestantes > 0
-    ) {
-
-      secaoJogada.style.display =
-        'block';
-    }
-
-    console.log(
-      'Sessão carregada com sucesso:',
-      dados.sessao
-    );
-
-  } catch (erro) {
-
-    console.error(
-      'Erro ao carregar sessão:',
-      erro
-    );
-  }
-}
-
-
 // ==========================================
-// 3. MAPA DOS 16 ODÙS
+// 3. MAPA DOS ODÙS
 // ==========================================
 
 const ODUS_MAP = {
@@ -182,7 +110,7 @@ const ODUS_MAP = {
     orixa: "Oxum",
     elemento: "Água",
     caminho:
-      "prosperidade, sensibilidade, beleza, renovação e caminhos abertos.",
+      "prosperidade, sensibilidade, renovação e caminhos abertos.",
     tendencia:
       "muito positiva e favorável"
   },
@@ -314,41 +242,15 @@ const ODUS_MAP = {
 // 4. FUNÇÕES GERAIS
 // ==========================================
 
-function atualizarContadores() {
+function esperar(ms) {
 
-  const elContratadas =
-    document.getElementById(
-      'qtd-contratadas'
-    );
-
-  const elRestantes =
-    document.getElementById(
-      'qtd-perguntas'
-    );
-
-  if (elContratadas) {
-
-    elContratadas.textContent =
-      consultasContratadas;
-  }
-
-  if (elRestantes) {
-
-    elRestantes.textContent =
-      consultasRestantes;
-  }
-}
-
-
-function rolarParaPacotes() {
-
-  document
-    .getElementById(
-      'secao-pacotes'
-    )
-    ?.scrollIntoView({
-      behavior: 'smooth'
-    });
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
 }
 
 
@@ -373,20 +275,142 @@ function normalizarTexto(texto) {
 }
 
 
-function esperar(ms) {
+function atualizarContadores() {
 
-  return new Promise(
-    resolve =>
-      setTimeout(
-        resolve,
-        ms
-      )
-  );
+  const elContratadas =
+    document.getElementById(
+      'qtd-contratadas'
+    );
+
+  const elRestantes =
+    document.getElementById(
+      'qtd-perguntas'
+    );
+
+
+  if (elContratadas) {
+
+    elContratadas.textContent =
+      consultasContratadas;
+  }
+
+
+  if (elRestantes) {
+
+    elRestantes.textContent =
+      consultasRestantes;
+  }
+}
+
+
+function rolarParaPacotes() {
+
+  document
+    .getElementById(
+      'secao-pacotes'
+    )
+    ?.scrollIntoView({
+      behavior: 'smooth'
+    });
 }
 
 
 // ==========================================
-// 5. RESPOSTA DA IA
+// 5. CARREGAR SESSÃO REAL
+// ==========================================
+
+async function carregarSessao() {
+
+  if (!pedidoId) {
+
+    console.log(
+      'Nenhum pedidoId informado na URL.'
+    );
+
+    atualizarContadores();
+
+    return;
+  }
+
+
+  try {
+
+    const resposta =
+      await fetch(
+        `/api/sessao?pedidoId=${encodeURIComponent(pedidoId)}`
+      );
+
+
+    const dados =
+      await resposta.json();
+
+
+    if (
+      !resposta.ok ||
+      !dados.sucesso ||
+      !dados.sessao
+    ) {
+
+      console.error(
+        'Não foi possível carregar a sessão:',
+        dados
+      );
+
+      return;
+    }
+
+
+    consultasContratadas =
+      Number(
+        dados.sessao
+          .quantidadeContratada || 0
+      );
+
+
+    consultasRestantes =
+      Number(
+        dados.sessao
+          .perguntasRestantes || 0
+      );
+
+
+    atualizarContadores();
+
+
+    const secaoJogada =
+      document.getElementById(
+        'secao-jogada'
+      );
+
+
+    if (
+      secaoJogada &&
+      consultasContratadas > 0
+    ) {
+
+      secaoJogada.style.display =
+        'block';
+    }
+
+
+    console.log(
+      'Sessão carregada com sucesso:',
+      dados.sessao
+    );
+
+
+  } catch (erro) {
+
+    console.error(
+      'Erro ao carregar sessão:',
+      erro
+    );
+  }
+}
+
+
+// ==========================================
+// 6. FORMATAR RESPOSTA DA IA
 // ==========================================
 
 function escaparHTML(texto) {
@@ -410,11 +434,13 @@ function formatarRespostaIA(texto) {
       texto
     );
 
+
   seguro =
     seguro.replace(
       /\*\*(.*?)\*\*/g,
       '<strong>$1</strong>'
     );
+
 
   seguro =
     seguro.replace(
@@ -422,11 +448,13 @@ function formatarRespostaIA(texto) {
       '<h4>$1</h4>'
     );
 
+
   seguro =
     seguro.replace(
       /^##\s+(.*)$/gm,
       '<h4>$1</h4>'
     );
+
 
   seguro =
     seguro.replace(
@@ -434,17 +462,20 @@ function formatarRespostaIA(texto) {
       '<h4>$1</h4>'
     );
 
+
   seguro =
     seguro.replace(
       /\n{2,}/g,
       '</p><p>'
     );
 
+
   seguro =
     seguro.replace(
       /\n/g,
       '<br>'
     );
+
 
   return `
     <p>
@@ -455,7 +486,7 @@ function formatarRespostaIA(texto) {
 
 
 // ==========================================
-// 6. CÁLCULO GRATUITO DO ODÙ
+// 7. CÁLCULO GRATUITO DO ODÙ
 // ==========================================
 
 document
@@ -468,6 +499,7 @@ document
 
       e.preventDefault();
 
+
       const nome =
         document
           .getElementById(
@@ -476,12 +508,14 @@ document
           ?.value
           ?.trim();
 
+
       const data =
         document
           .getElementById(
             'dataNasc'
           )
           ?.value;
+
 
       if (
         !data ||
@@ -491,13 +525,16 @@ document
         return;
       }
 
+
       const numeros =
         data.replace(
           /-/g,
           ''
         );
 
+
       let soma = 0;
+
 
       for (
         const char of numeros
@@ -509,8 +546,10 @@ document
           );
       }
 
+
       let numOdu =
         soma;
+
 
       while (
         numOdu > 16
@@ -519,7 +558,9 @@ document
         const str =
           numOdu.toString();
 
+
         numOdu = 0;
+
 
         for (
           const c of str
@@ -532,6 +573,7 @@ document
         }
       }
 
+
       if (
         numOdu === 0
       ) {
@@ -539,20 +581,25 @@ document
         numOdu = 16;
       }
 
+
       const infoOdu =
         ODUS_MAP[numOdu] ||
         ODUS_MAP[16];
+
 
       const painelOdu =
         document.getElementById(
           'resultado-odu'
         );
 
+
       if (!painelOdu) {
         return;
       }
 
+
       painelOdu.innerHTML = `
+
         <div class="card-resultado-dark">
 
           <div style="
@@ -580,6 +627,7 @@ document
 
           </div>
 
+
           <div style="
             display: flex;
             gap: 12px;
@@ -588,22 +636,31 @@ document
           ">
 
             <span class="badge">
+
               Identificação:
               Odù #${numOdu} —
               ${infoOdu.nome}
+
             </span>
 
+
             <span class="badge">
+
               Regência:
               ${infoOdu.orixa}
+
             </span>
 
+
             <span class="badge">
+
               Elemento:
               ${infoOdu.elemento}
+
             </span>
 
           </div>
+
 
           <div class="box-destaque-dark">
 
@@ -611,15 +668,16 @@ document
               color: var(--gold-accent);
               margin-bottom: 10px;
             ">
-              📜 Interpretação Completa dos Seus Caminhos
+              📜 Interpretação dos Seus Caminhos
             </h4>
+
 
             <p style="
               margin-bottom: 12px;
             ">
 
               <strong>
-                Características Principais:
+                Características principais:
               </strong>
 
               O Odù ${infoOdu.nome}
@@ -630,18 +688,19 @@ document
 
             </p>
 
+
             <p style="
               margin-bottom: 12px;
             ">
 
               <strong>
-                Potencial:
+                Caminho simbólico:
               </strong>
 
-              A leitura simbólica aponta para
               ${infoOdu.caminho}
 
             </p>
+
 
             <p>
 
@@ -654,6 +713,7 @@ document
             </p>
 
           </div>
+
 
           <div style="
             margin-top: 24px;
@@ -668,16 +728,21 @@ document
               color: var(--gold-light);
               margin-bottom: 16px;
             ">
+
               ✨ Quer aprofundar seus caminhos atuais?
               Consulte a Mesa Sagrada dos Búzios.
+
             </p>
+
 
             <button
               type="button"
               class="btn-primary"
               onclick="rolarParaPacotes()"
             >
+
               🔮 Ver Pacotes e Consultar os Búzios
+
             </button>
 
           </div>
@@ -685,8 +750,10 @@ document
         </div>
       `;
 
+
       painelOdu.style.display =
         'block';
+
 
       painelOdu.scrollIntoView({
         behavior: 'smooth'
@@ -696,7 +763,7 @@ document
 
 
 // ==========================================
-// 7. PACOTES
+// 8. PACOTES
 // ==========================================
 
 function selecionarPacote(
@@ -709,6 +776,7 @@ function selecionarPacote(
     valor
   };
 
+
   document
     .querySelectorAll(
       '.pacote-card, .package-card'
@@ -719,6 +787,7 @@ function selecionarPacote(
           'active'
         )
     );
+
 
   document
     .getElementById(
@@ -731,43 +800,165 @@ function selecionarPacote(
 
 
 // ==========================================
-// 8. PIX / LIBERAÇÃO LOCAL ATUAL
+// 9. ADICIONAR CRÉDITOS DE TESTE
+//
+// NÃO EXISTE MAIS SOMA SOMENTE LOCAL.
+// O SUPABASE É A FONTE DO SALDO.
 // ==========================================
 
-function gerarPix() {
+async function gerarPix() {
 
-  consultasContratadas +=
-    pacoteSelecionado.quantidade;
+  if (isProcessing) {
+    return;
+  }
 
-  consultasRestantes +=
-    pacoteSelecionado.quantidade;
 
-  atualizarContadores();
+  if (!pedidoId) {
 
-  alert(
-    `✨ Pagamento simulado com sucesso!\n\n` +
-    `Foram adicionadas ${pacoteSelecionado.quantidade} consultas ao seu saldo.`
-  );
-
-  const secaoJogada =
-    document.getElementById(
-      'secao-jogada'
+    alert(
+      'Não foi possível identificar sua sessão de consulta.'
     );
 
-  if (secaoJogada) {
+    return;
+  }
 
-    secaoJogada.style.display =
-      'block';
 
-    secaoJogada.scrollIntoView({
-      behavior: 'smooth'
-    });
+  isProcessing =
+    true;
+
+
+  try {
+
+    const resposta =
+      await fetch(
+        '/api/adicionar-creditos-teste',
+        {
+          method:
+            'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify({
+
+              pedidoId,
+
+              quantidade:
+                pacoteSelecionado.quantidade
+
+            })
+        }
+      );
+
+
+    const dados =
+      await resposta.json();
+
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        dados?.error ||
+        'Não foi possível adicionar as consultas.'
+      );
+    }
+
+
+    /*
+      O navegador não calcula saldo.
+
+      O backend modifica o Supabase
+      e devolve os números oficiais.
+    */
+
+    consultasContratadas =
+      Number(
+        dados.quantidadeContratada || 0
+      );
+
+
+    consultasRestantes =
+      Number(
+        dados.perguntasRestantes || 0
+      );
+
+
+    atualizarContadores();
+
+
+    alert(
+      `✨ Pacote de teste liberado!\n\n` +
+      `${dados.quantidadeAdicionada} consultas foram adicionadas.\n` +
+      `Saldo disponível: ${consultasRestantes}.`
+    );
+
+
+    const secaoJogada =
+      document.getElementById(
+        'secao-jogada'
+      );
+
+
+    if (secaoJogada) {
+
+      secaoJogada.style.display =
+        'block';
+
+
+      secaoJogada.scrollIntoView({
+
+        behavior:
+          'smooth',
+
+        block:
+          'start'
+
+      });
+    }
+
+
+  } catch (erro) {
+
+    console.error(
+      'Erro ao adicionar pacote:',
+      erro
+    );
+
+
+    alert(
+      erro?.message ||
+      'Não foi possível liberar o pacote.'
+    );
+
+
+    try {
+
+      await carregarSessao();
+
+    } catch (
+      erroSessao
+    ) {
+
+      console.error(
+        'Falha ao recarregar sessão:',
+        erroSessao
+      );
+    }
+
+
+  } finally {
+
+    isProcessing =
+      false;
   }
 }
 
 
 // ==========================================
-// 9. NOVA PERGUNTA
+// 10. NOVA PERGUNTA
 // ==========================================
 
 function reiniciarConsulta() {
@@ -777,16 +968,19 @@ function reiniciarConsulta() {
       'pergunta'
     );
 
+
   if (campoPergunta) {
 
     campoPergunta.value =
       '';
   }
 
+
   const painel =
     document.getElementById(
       'resultado-leitura'
     );
+
 
   if (painel) {
 
@@ -794,44 +988,9 @@ function reiniciarConsulta() {
       'none';
   }
 
-  const mesa =
-    document.getElementById(
-      'mesa-buzios'
-    );
 
-  if (mesa) {
+  limparMesa();
 
-    mesa.style.display =
-      'none';
-
-    mesa.classList.remove(
-      'mesa-chacoalhando',
-      'mesa-impacto',
-      'mesa-revelando'
-    );
-  }
-
-  const peneira =
-    document.getElementById(
-      'peneira'
-    );
-
-  if (peneira) {
-
-    peneira.innerHTML =
-      '';
-  }
-
-  const status =
-    document.getElementById(
-      'status-jogo'
-    );
-
-  if (status) {
-
-    status.textContent =
-      '';
-  }
 
   document
     .getElementById(
@@ -844,7 +1003,63 @@ function reiniciarConsulta() {
 
 
 // ==========================================
-// 10. SEGURANÇA LOCAL
+// 11. LIMPAR MESA
+// ==========================================
+
+function limparMesa() {
+
+  const mesa =
+    document.getElementById(
+      'mesa-buzios'
+    );
+
+
+  const peneira =
+    document.getElementById(
+      'peneira'
+    );
+
+
+  const status =
+    document.getElementById(
+      'status-jogo'
+    );
+
+
+  if (mesa) {
+
+    mesa.style.display =
+      'none';
+
+
+    mesa.classList.remove(
+      'mesa-chacoalhando',
+      'mesa-impacto',
+      'mesa-revelando'
+    );
+  }
+
+
+  if (peneira) {
+
+    peneira.innerHTML =
+      '';
+  }
+
+
+  if (status) {
+
+    status.textContent =
+      '';
+  }
+}
+
+
+// ==========================================
+// 12. SEGURANÇA LOCAL
+//
+// É UMA PRIMEIRA BARREIRA.
+// O BACKEND SEMPRE CONFERE NOVAMENTE.
 // ==========================================
 
 function detectarRiscoEmocional(
@@ -855,6 +1070,7 @@ function detectarRiscoEmocional(
     normalizarTexto(
       texto
     );
+
 
   const padroes = [
 
@@ -878,13 +1094,10 @@ function detectarRiscoEmocional(
 
     /\btirar minha vida\b/,
 
-    /\bacabar com minha vida\b/,
-
-    /\bme machucar\b/,
-
-    /\bme ferir\b/
+    /\bacabar com minha vida\b/
 
   ];
+
 
   return padroes.some(
     padrao =>
@@ -902,6 +1115,7 @@ function classificarPerguntaLocal(
       texto
     );
 
+
   if (
     detectarRiscoEmocional(
       texto
@@ -910,50 +1124,14 @@ function classificarPerguntaLocal(
 
     return {
 
-      bloqueado: true,
+      bloqueado:
+        true,
 
       tipo:
         'RISCO_EMOCIONAL',
 
       mensagem:
-        'Essa pergunta indica uma situação que precisa de apoio humano, e não de uma leitura oracular. A consulta não será realizada e seu saldo será preservado. Procure uma pessoa de confiança e apoio profissional adequado.'
-    };
-  }
-
-
-  const previsaoMorte = [
-
-    'quando vou morrer',
-
-    'quando eu vou morrer',
-
-    'como vou morrer',
-
-    'como eu vou morrer',
-
-    'data da minha morte',
-
-    'dia da minha morte'
-
-  ];
-
-
-  if (
-    previsaoMorte.some(
-      termo =>
-        t.includes(termo)
-    )
-  ) {
-
-    return {
-
-      bloqueado: true,
-
-      tipo:
-        'PREVISAO_MORTE',
-
-      mensagem:
-        'O Oráculo não realiza previsões sobre data ou circunstâncias de morte. Seu saldo será preservado.'
+        'Essa pergunta precisa de apoio humano e não será direcionada para uma leitura dos búzios. Nenhum crédito será consumido. Procure uma pessoa de confiança e apoio profissional adequado.'
     };
   }
 
@@ -961,21 +1139,12 @@ function classificarPerguntaLocal(
   const apostas = [
 
     'mega sena',
-
     'megasena',
-
     'jogo do bicho',
-
     'lotofacil',
-
     'quina',
-
     'tigrinho',
-
     'loteria',
-
-    'aposta',
-
     'numeros da sorte'
 
   ];
@@ -990,7 +1159,8 @@ function classificarPerguntaLocal(
 
     return {
 
-      bloqueado: true,
+      bloqueado:
+        true,
 
       tipo:
         'APOSTAS',
@@ -1001,6 +1171,17 @@ function classificarPerguntaLocal(
   }
 
 
+  /*
+    Diagnóstico médico fica preferencialmente
+    no backend porque há regras mais completas.
+
+    Isso é intencional:
+    mesmo com saldo ZERO a pergunta chegará
+    ao PREPARAR e poderá ser bloqueada antes
+    da checagem de crédito.
+  */
+
+
   return {
     bloqueado: false
   };
@@ -1008,7 +1189,9 @@ function classificarPerguntaLocal(
 
 
 // ==========================================
-// 11. EXIBIR BLOQUEIO
+// 13. MOSTRAR BLOQUEIO
+//
+// SEMPRE ESCONDE QUALQUER QUEDA ANTERIOR.
 // ==========================================
 
 function mostrarBloqueio(
@@ -1016,19 +1199,26 @@ function mostrarBloqueio(
   mensagem
 ) {
 
+  limparMesa();
+
+
   const painel =
     document.getElementById(
       'resultado-leitura'
     );
 
+
   if (!painel) {
     return;
   }
 
+
   painel.className =
     'card card-resultado-dark';
 
+
   painel.innerHTML = `
+
     <div style="
       border-bottom: 1px solid rgba(239,68,68,0.4);
       padding-bottom: 12px;
@@ -1041,18 +1231,24 @@ function mostrarBloqueio(
         font-weight: bold;
         text-transform: uppercase;
       ">
+
         ⚠️ Orientação do Sistema
+
       </span>
+
 
       <h3 style="
         font-size: 1.3rem;
         color: #FCA5A5;
         margin-top: 4px;
       ">
+
         ${titulo}
+
       </h3>
 
     </div>
+
 
     <div
       class="box-destaque-dark"
@@ -1066,31 +1262,39 @@ function mostrarBloqueio(
         line-height: 1.7;
         color: #FEE2E2;
       ">
+
         ${mensagem}
+
       </p>
 
     </div>
+
 
     <p style="
       font-size: 0.82rem;
       color: var(--text-muted);
       margin-top: 10px;
     ">
+
       ℹ️ Seu saldo de consultas foi preservado.
+
     </p>
   `;
+
 
   painel.style.display =
     'block';
 
+
   painel.scrollIntoView({
-    behavior: 'smooth'
+    behavior: 'smooth',
+    block: 'start'
   });
 }
 
 
 // ==========================================
-// 12. DESENHO DOS BÚZIOS
+// 14. DESENHO DOS BÚZIOS
 // ==========================================
 
 function criarDesenhoBuzio(
@@ -1100,6 +1304,7 @@ function criarDesenhoBuzio(
   if (aberto) {
 
     return `
+
       <svg viewBox="0 0 40 60">
 
         <ellipse
@@ -1135,7 +1340,9 @@ function criarDesenhoBuzio(
     `;
   }
 
+
   return `
+
     <svg viewBox="0 0 40 60">
 
       <ellipse
@@ -1163,7 +1370,7 @@ function criarDesenhoBuzio(
 
 
 // ==========================================
-// 13. GERAR UMA QUEDA
+// 15. SORTEAR QUEDA
 // ==========================================
 
 function sortearQueda() {
@@ -1173,9 +1380,11 @@ function sortearQueda() {
       Math.random() * 17
     );
 
+
   const info =
     ODUS_MAP[numAbertos] ||
     ODUS_MAP[16];
+
 
   return {
 
@@ -1201,12 +1410,13 @@ function sortearQueda() {
 
     numFechados:
       16 - numAbertos
+
   };
 }
 
 
 // ==========================================
-// 14. STATUS DA MESA
+// 16. STATUS DA MESA
 // ==========================================
 
 function obterStatusJogo(
@@ -1218,6 +1428,7 @@ function obterStatusJogo(
       'status-jogo'
     );
 
+
   if (!status) {
 
     status =
@@ -1225,8 +1436,10 @@ function obterStatusJogo(
         'p'
       );
 
+
     status.id =
       'status-jogo';
+
 
     mesa.parentNode.insertBefore(
       status,
@@ -1234,18 +1447,15 @@ function obterStatusJogo(
     );
   }
 
+
   return status;
 }
 
 
 // ==========================================
-// 15. ANIMAR UMA QUEDA
+// 17. ANIMAÇÃO DE UMA QUEDA
 //
-// NÃO HÁ MAIS VÁRIOS SEGUNDOS
-// DE MESA VAZIA.
-//
-// Após apenas 500ms,
-// os búzios começam a aparecer.
+// SEM CHACOALHAR MESA VAZIA.
 // ==========================================
 
 async function animarQueda({
@@ -1260,10 +1470,12 @@ async function animarQueda({
       'mesa-buzios'
     );
 
+
   const peneira =
     document.getElementById(
       'peneira'
     );
+
 
   if (
     !mesa ||
@@ -1317,7 +1529,10 @@ async function animarQueda({
   }
 
 
-  // Suspense curto.
+  /*
+    Apenas meio segundo de preparação.
+  */
+
   await esperar(
     500
   );
@@ -1629,6 +1844,7 @@ async function animarQueda({
         'buzio-lancando'
       );
 
+
       buzio.classList.add(
         'buzio-impacto'
       );
@@ -1662,6 +1878,7 @@ async function animarQueda({
         'buzio-impacto'
       );
 
+
       buzio.classList.add(
         'buzio-assentado'
       );
@@ -1673,7 +1890,6 @@ async function animarQueda({
     `🔮 Odù ${queda.nome}: ${queda.numAbertos} abertos e ${queda.numFechados} fechados.`;
 
 
-  // Tempo para observar a caída.
   await esperar(
     1300
   );
@@ -1689,7 +1905,10 @@ async function animarQueda({
 
 
 // ==========================================
-// 16. PREPARAR CONSULTA NO BACKEND
+// FIM DA PARTE 1/2
+// ==========================================
+// ==========================================
+// 18. PREPARAR CONSULTA NO BACKEND
 // ==========================================
 
 async function prepararConsultaBackend(
@@ -1725,6 +1944,7 @@ async function prepararConsultaBackend(
             pedidoId,
 
             pergunta
+
           })
       }
     );
@@ -1748,7 +1968,7 @@ async function prepararConsultaBackend(
 
 
 // ==========================================
-// 17. ENVIAR QUEDAS AO BACKEND
+// 19. INTERPRETAR CONSULTA NO BACKEND
 // ==========================================
 
 async function interpretarConsultaBackend({
@@ -1794,10 +2014,15 @@ async function interpretarConsultaBackend({
                   elemento:
                     queda.elemento,
 
+                  tendencia:
+                    queda.tendencia,
+
                   numAbertos:
                     queda.numAbertos
+
                 })
               )
+
           })
       }
     );
@@ -1821,16 +2046,7 @@ async function interpretarConsultaBackend({
 
 
 // ==========================================
-// FIM DA PARTE 1/2
-//
-// NÃO COLE NADA ENTRE ESTA LINHA
-// E A PARTE 2.
-// ==========================================
-// ==========================================
-// 18. FLUXO ÚNICO DA CONSULTA
-//
-// ESTE É O ÚNICO LISTENER DO
-// form-consulta NESTE ARQUIVO.
+// 20. FLUXO ÚNICO DA CONSULTA
 // ==========================================
 
 document
@@ -1844,9 +2060,9 @@ document
       e.preventDefault();
 
 
-      // ======================================
-      // EVITAR DUPLO CLIQUE
-      // ======================================
+      // --------------------------------------
+      // BLOQUEIO DE DUPLO CLIQUE
+      // --------------------------------------
 
       if (isProcessing) {
         return;
@@ -1900,10 +2116,11 @@ document
 
 
       // ======================================
-      // 19. SEGURANÇA LOCAL
+      // 21. SEGURANÇA LOCAL PRIMEIRO
       //
-      // PRIMEIRO FILTRO.
-      // O BACKEND FARÁ A VALIDAÇÃO DE NOVO.
+      // IMPORTANTE:
+      // NÃO EXISTE MAIS CHECAGEM DE SALDO
+      // ANTES DA SEGURANÇA.
       // ======================================
 
       const segurancaLocal =
@@ -1926,7 +2143,7 @@ document
 
 
       // ======================================
-      // 20. REPETIÇÃO LOCAL
+      // 22. TRAVA LOCAL DE REPETIÇÃO
       // ======================================
 
       const perguntaNormalizada =
@@ -1950,31 +2167,7 @@ document
 
 
       // ======================================
-      // 21. SALDO VISUAL
-      // ======================================
-
-      if (
-        consultasRestantes <= 0
-      ) {
-
-        alert(
-          'Seu saldo de perguntas terminou.'
-        );
-
-        document
-          .getElementById(
-            'secao-pacotes'
-          )
-          ?.scrollIntoView({
-            behavior: 'smooth'
-          });
-
-        return;
-      }
-
-
-      // ======================================
-      // 22. INICIAR PROCESSAMENTO
+      // 23. PROCESSAMENTO
       // ======================================
 
       isProcessing =
@@ -1992,45 +2185,27 @@ document
         'none';
 
 
-      const mesa =
-        document.getElementById(
-          'mesa-buzios'
-        );
+      /*
+        Limpamos a mesa anterior antes
+        de começar uma nova consulta.
+      */
 
-
-      if (mesa) {
-
-        mesa.style.display =
-          'none';
-      }
-
-
-      const peneira =
-        document.getElementById(
-          'peneira'
-        );
-
-
-      if (peneira) {
-
-        peneira.innerHTML =
-          '';
-      }
+      limparMesa();
 
 
       try {
 
         // ====================================
-        // 23. ETAPA PREPARAR
+        // 24. PREPARAR NO BACKEND
         //
-        // AQUI O BACKEND DESCOBRE:
+        // O BACKEND DECIDE:
         //
+        // - segurança
+        // - saldo
+        // - repetição
         // - contexto
-        // - intenção
         // - protocolo
-        // - quantas quedas serão necessárias
-        //
-        // NÃO CONSOME CRÉDITO.
+        // - número de quedas
         // ====================================
 
         const preparacao =
@@ -2039,27 +2214,26 @@ document
           );
 
 
-        // ====================================
-        // BACKEND BLOQUEOU A CONSULTA
-        // ====================================
+        // ------------------------------------
+        // BLOQUEIO DO BACKEND
+        // ------------------------------------
 
         if (
           preparacao.bloqueado
         ) {
 
-          const titulo =
+          mostrarBloqueio(
+
             preparacao.tipoBloqueio ===
-            'PERGUNTA_REPETIDA'
+              'PERGUNTA_REPETIDA'
 
               ? 'Pergunta Repetida Detectada'
 
-              : 'Consulta Não Realizada';
+              : 'Consulta Não Realizada',
 
-
-          mostrarBloqueio(
-            titulo,
             preparacao.mensagem ||
               'Esta consulta não pode ser realizada.'
+
           );
 
 
@@ -2088,7 +2262,32 @@ document
 
 
         // ====================================
-        // 24. NÚMERO DE QUEDAS
+        // 25. GARANTIR SALDO REAL
+        //
+        // Se o backend disser que o saldo
+        // terminou, a consulta não avança.
+        // ====================================
+
+        if (
+          preparacao.saldoEsgotado
+        ) {
+
+          await carregarSessao();
+
+
+          mostrarBloqueio(
+            'Saldo de Consultas Esgotado',
+            preparacao.error ||
+            'Seu saldo de perguntas terminou. Escolha um novo pacote para continuar.'
+          );
+
+
+          return;
+        }
+
+
+        // ====================================
+        // 26. NÚMERO DE QUEDAS
         // ====================================
 
         let totalQuedas =
@@ -2110,15 +2309,13 @@ document
 
 
         /*
-          Proteção adicional.
+          Proteção do frontend.
 
-          Atualmente:
+          Hoje os protocolos válidos são:
 
-          consulta normal = 1 queda
-          Orixás = 3 quedas
-
-          Não deixamos um retorno inesperado
-          produzir dezenas de animações.
+          1 queda
+          ou
+          3 quedas
         */
 
         totalQuedas =
@@ -2147,15 +2344,18 @@ document
 
 
         console.log(
-          'Protocolo identificado:',
-          protocolo,
-          '| Quedas:',
-          totalQuedas
+          'Consulta preparada:',
+          {
+            protocolo,
+            totalQuedas,
+            contexto:
+              preparacao.contexto
+          }
         );
 
 
         // ====================================
-        // 25. EXECUTAR AS QUEDAS
+        // 27. EXECUTAR QUEDAS VISUAIS
         // ====================================
 
         const quedas =
@@ -2181,33 +2381,24 @@ document
             posicao.titulo ||
             (
               totalQuedas === 1
+
                 ? 'Queda principal'
+
                 : `Queda ${numeroQueda}`
             );
 
 
           /*
-            A CAÍDA É DEFINIDA UMA ÚNICA VEZ.
+            O resultado sorteado aqui
+            é exatamente o mesmo:
 
-            O mesmo resultado é:
-
-            - desenhado visualmente
+            - exibido na mesa
             - enviado ao backend
             - interpretado pela IA
-
-            Assim não existe diferença
-            entre o que o usuário viu
-            e o que a IA recebeu.
           */
 
           const queda =
             sortearQueda();
-
-
-          console.log(
-            `Queda ${numeroQueda}:`,
-            queda
-          );
 
 
           await animarQueda({
@@ -2219,6 +2410,7 @@ document
             totalQuedas,
 
             tituloPosicao
+
           });
 
 
@@ -2227,9 +2419,9 @@ document
           );
 
 
-          // ==================================
+          // ----------------------------------
           // TRANSIÇÃO ENTRE QUEDAS
-          // ==================================
+          // ----------------------------------
 
           if (
             numeroQueda <
@@ -2242,7 +2434,7 @@ document
               );
 
 
-            const status =
+            const statusAtual =
               mesaAtual
                 ? obterStatusJogo(
                     mesaAtual
@@ -2250,29 +2442,12 @@ document
                 : null;
 
 
-            if (status) {
+            if (statusAtual) {
 
-              if (
-                ehConsultaOrixas
-              ) {
-
-                status.textContent =
-                  `✨ ${tituloPosicao} identificada. Preparando a próxima queda...`;
-
-              } else {
-
-                status.textContent =
-                  '✨ A queda foi registrada. Preparando a próxima leitura...';
-              }
+              statusAtual.textContent =
+                `✨ ${tituloPosicao} registrada. Preparando a próxima queda...`;
             }
 
-
-            /*
-              Tempo curto o suficiente
-              para não cansar,
-              mas permite perceber que
-              são jogadas diferentes.
-            */
 
             await esperar(
               900
@@ -2282,7 +2457,7 @@ document
 
 
         // ====================================
-        // 26. TODAS AS QUEDAS CONCLUÍDAS
+        // 28. INTERPRETAÇÃO
         // ====================================
 
         const mesaFinal =
@@ -2304,23 +2479,11 @@ document
           statusFinal.textContent =
             ehConsultaOrixas
 
-              ? '🔮 As três quedas foram concluídas. Interpretando as forças apresentadas...'
+              ? '🔮 As três quedas foram concluídas. Integrando as forças apresentadas...'
 
-              : '🔮 A caída foi concluída. Interpretando o Odù apresentado...';
+              : '🔮 Interpretando a caída apresentada...';
         }
 
-
-        // ====================================
-        // 27. ENVIAR AO BACKEND
-        //
-        // SOMENTE AGORA O BACKEND:
-        //
-        // - registra
-        // - consome 1 crédito
-        // - consulta a base
-        // - chama OpenAI
-        // - salva a resposta
-        // ====================================
 
         const resultado =
           await interpretarConsultaBackend({
@@ -2328,30 +2491,30 @@ document
             pergunta,
 
             quedas
+
           });
 
 
         // ====================================
-        // 28. BLOQUEIO NA ETAPA FINAL
+        // 29. BLOQUEIO NA ETAPA FINAL
         // ====================================
 
         if (
           resultado.bloqueado
         ) {
 
-          const titulo =
+          mostrarBloqueio(
+
             resultado.tipoBloqueio ===
-            'PERGUNTA_REPETIDA'
+              'PERGUNTA_REPETIDA'
 
               ? 'Pergunta Repetida Detectada'
 
-              : 'Consulta Não Realizada';
+              : 'Consulta Não Realizada',
 
-
-          mostrarBloqueio(
-            titulo,
             resultado.mensagem ||
               'Esta consulta não pode ser realizada.'
+
           );
 
 
@@ -2380,7 +2543,7 @@ document
 
 
         // ====================================
-        // 29. VALIDAR RESPOSTA
+        // 30. VALIDAR RESPOSTA
         // ====================================
 
         if (
@@ -2396,7 +2559,7 @@ document
 
 
         // ====================================
-        // 30. SALDO REAL DO SUPABASE
+        // 31. SALDO REAL DEVOLVIDO
         // ====================================
 
         if (
@@ -2420,7 +2583,7 @@ document
 
 
         // ====================================
-        // 31. TRAVA LOCAL DE REPETIÇÃO
+        // 32. MARCAR PERGUNTA COMO PROCESSADA
         // ====================================
 
         ultimaPerguntaProcessada =
@@ -2428,7 +2591,7 @@ document
 
 
         // ====================================
-        // 32. RESUMO VISUAL DAS QUEDAS
+        // 33. RESUMO DAS QUEDAS
         // ====================================
 
         let resumoQuedas =
@@ -2461,6 +2624,7 @@ document
 
 
               resumoQuedas += `
+
                 <div style="
                   padding: 14px 16px;
                   background: rgba(18,10,31,0.58);
@@ -2476,7 +2640,9 @@ document
                     letter-spacing: 0.4px;
                     margin-bottom: 5px;
                   ">
+
                     ${titulo}
+
                   </div>
 
 
@@ -2486,7 +2652,9 @@ document
                     font-size: 1rem;
                     font-weight: 600;
                   ">
+
                     Odù ${queda.nome}
+
                   </div>
 
 
@@ -2516,7 +2684,9 @@ document
                     <strong style="
                       color: var(--gold-light);
                     ">
+
                       ${queda.orixa}
+
                     </strong>
 
                   </div>
@@ -2534,45 +2704,31 @@ document
 
 
         // ====================================
-        // 33. TÍTULO DO RESULTADO
+        // 34. TÍTULO DA LEITURA
         // ====================================
 
         const primeiraQueda =
           quedas[0];
 
 
-        let tituloResultado =
-          '';
-
-
-        let subtituloResultado =
-          '';
-
-
-        if (
+        const tituloResultado =
           ehConsultaOrixas
-        ) {
 
-          tituloResultado =
-            'Leitura das Forças Apresentadas';
+            ? 'Leitura das Forças Apresentadas'
 
-
-          subtituloResultado =
-            `${totalQuedas} quedas realizadas nesta consulta`;
-
-        } else {
-
-          tituloResultado =
-            `Odù ${primeiraQueda.nome}`;
+            : `Odù ${primeiraQueda.nome}`;
 
 
-          subtituloResultado =
-            `${primeiraQueda.numAbertos} abertos / ${primeiraQueda.numFechados} fechados`;
-        }
+        const subtituloResultado =
+          ehConsultaOrixas
+
+            ? `${totalQuedas} quedas realizadas nesta consulta`
+
+            : `${primeiraQueda.numAbertos} abertos / ${primeiraQueda.numFechados} fechados`;
 
 
         // ====================================
-        // 34. EXIBIR A LEITURA DA IA
+        // 35. EXIBIR LEITURA
         // ====================================
 
         painel.className =
@@ -2594,7 +2750,9 @@ document
               text-transform: uppercase;
               letter-spacing: 1px;
             ">
+
               Revelação da Consulta Sagrada
+
             </span>
 
 
@@ -2603,7 +2761,9 @@ document
               color: var(--gold-light);
               margin-top: 5px;
             ">
+
               ${tituloResultado}
+
             </h3>
 
 
@@ -2612,7 +2772,9 @@ document
               font-size: 0.84rem;
               margin-top: 4px;
             ">
+
               ${subtituloResultado}
+
             </p>
 
 
@@ -2693,7 +2855,9 @@ document
               color: var(--gold-light);
               font-size: 1rem;
             ">
+
               ${consultasRestantes}
+
             </strong>
 
           </div>
@@ -2709,7 +2873,9 @@ document
               class="btn-primary"
               onclick="reiniciarConsulta()"
             >
+
               ✨ Nova Pergunta
+
             </button>
 
           </div>
@@ -2728,15 +2894,20 @@ document
 
 
         painel.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
+
+          behavior:
+            'smooth',
+
+          block:
+            'start'
+
         });
 
 
       } catch (erro) {
 
         // ====================================
-        // 35. TRATAMENTO DE ERRO
+        // 36. TRATAMENTO DE ERRO
         // ====================================
 
         console.error(
@@ -2745,21 +2916,8 @@ document
         );
 
 
-        mostrarBloqueio(
-          'Não foi possível concluir a consulta',
-          erro?.message ||
-            'Ocorreu um erro durante a leitura. Tente novamente em alguns instantes.'
-        );
-
-
         /*
-          Se houve falha depois da tentativa
-          de consumo, o backend possui
-          mecanismo de estorno.
-
-          Recarregamos a sessão para o
-          contador da tela voltar a refletir
-          exatamente o Supabase.
+          Primeiro recarregamos o saldo real.
         */
 
         try {
@@ -2771,16 +2929,45 @@ document
         ) {
 
           console.error(
-            'Não foi possível atualizar o saldo:',
+            'Não foi possível atualizar a sessão:',
             erroSessao
           );
         }
 
 
+        /*
+          Se o erro for falta de saldo,
+          mostramos mensagem específica.
+        */
+
+        const mensagemErro =
+          erro?.message ||
+          'Ocorreu um erro durante a leitura.';
+
+
+        const ehSaldo =
+          mensagemErro
+            .toLowerCase()
+            .includes(
+              'saldo'
+            );
+
+
+        mostrarBloqueio(
+
+          ehSaldo
+            ? 'Saldo de Consultas Esgotado'
+            : 'Não foi possível concluir a consulta',
+
+          mensagemErro
+
+        );
+
+
       } finally {
 
         // ====================================
-        // 36. LIBERAR O BOTÃO
+        // 37. LIBERAR NOVA INTERAÇÃO
         // ====================================
 
         isProcessing =
@@ -2798,7 +2985,7 @@ document
 
 
 // ==========================================
-// 37. INICIALIZAÇÃO ÚNICA
+// 38. INICIALIZAÇÃO
 // ==========================================
 
 document.addEventListener(
