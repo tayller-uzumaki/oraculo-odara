@@ -7,32 +7,49 @@
 
 :root {
   /* Fundo Principal - Roxo Profundo */
-  --bg-gradient: linear-gradient(135deg, #120A1F 0%, #1A1028 50%, #1F1433 100%);
-  
-  /* Cards e Elementos - Roxo Elegante com Transparência */
+  --bg-gradient: linear-gradient(
+    135deg,
+    #120A1F 0%,
+    #1A1028 50%,
+    #1F1433 100%
+  );
+
+  /* Cards e Elementos */
   --card-bg: rgba(36, 21, 61, 0.75);
   --card-bg-inner: rgba(26, 16, 40, 0.6);
   --card-border: rgba(212, 175, 55, 0.2);
   --card-border-active: rgba(168, 85, 247, 0.5);
 
-  /* Acentos - Dourado Suave & Lilás Sofisticado */
+  /* Acentos */
   --gold-accent: #D4AF37;
   --gold-light: #F3E5AB;
   --purple-glow: #8B5CF6;
   --purple-accent: #A855F7;
-  
-  /* Gradiente dos Botões */
-  --btn-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
-  --btn-gradient-hover: linear-gradient(135deg, #6D28D9 0%, #9333EA 100%);
 
-  /* Textos Legíveis */
+  /* Botões */
+  --btn-gradient: linear-gradient(
+    135deg,
+    #7C3AED 0%,
+    #A855F7 100%
+  );
+
+  --btn-gradient-hover: linear-gradient(
+    135deg,
+    #6D28D9 0%,
+    #9333EA 100%
+  );
+
+  /* Textos */
   --text-main: #F8F5F0;
   --text-muted: #C9C4D6;
 
-  /* Geometria e Sombras */
+  /* Geometria */
   --radius-lg: 16px;
   --radius-md: 10px;
-  --shadow-premium: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.08);
+
+  --shadow-premium:
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(124, 58, 237, 0.08);
 }
 
 * {
@@ -56,8 +73,14 @@ body {
   margin: 0 auto;
 }
 
-/* 2. CABEÇALHOS E HIERARQUIA TIPOGRÁFICA */
-h1, h2, h3, h4 {
+/* ==========================================
+   2. CABEÇALHOS
+   ========================================== */
+
+h1,
+h2,
+h3,
+h4 {
   font-family: 'Cinzel', serif;
   color: var(--gold-accent);
   letter-spacing: 0.5px;
@@ -69,7 +92,8 @@ h1 {
   margin-top: 10px;
   margin-bottom: 6px;
   font-weight: 700;
-  text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  text-shadow:
+    0 0 15px rgba(212, 175, 55, 0.25);
 }
 
 .header {
@@ -102,7 +126,10 @@ h2 {
   color: var(--gold-accent);
 }
 
-/* 3. CARDS E PAINÉIS PREMIUM */
+/* ==========================================
+   3. CARDS
+   ========================================== */
+
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -116,10 +143,14 @@ h2 {
 }
 
 .card:hover {
-  border-color: rgba(212, 175, 55, 0.35);
+  border-color:
+    rgba(212, 175, 55, 0.35);
 }
 
-/* 4. FORMULÁRIOS E INPUTS REFINADOS */
+/* ==========================================
+   4. FORMULÁRIOS
+   ========================================== */
+
 .input-group {
   margin-bottom: 16px;
 }
@@ -132,15 +163,16 @@ label {
   font-weight: 500;
 }
 
-input[type="text"], 
-input[type="date"], 
-input[type="email"], 
-select, 
+input[type="text"],
+input[type="date"],
+input[type="email"],
+select,
 textarea {
   width: 100%;
   padding: 13px 16px;
   background: rgba(18, 10, 31, 0.7);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border:
+    1px solid rgba(212, 175, 55, 0.2);
   border-radius: var(--radius-md);
   color: var(--text-main);
   font-size: 0.95rem;
@@ -149,18 +181,28 @@ textarea {
   outline: none;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: var(--purple-accent);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
-  background: rgba(18, 10, 31, 0.9);
+
+  box-shadow:
+    0 0 12px rgba(168, 85, 247, 0.3);
+
+  background:
+    rgba(18, 10, 31, 0.9);
 }
 
 textarea {
   resize: vertical;
 }
 
-/* 5. BOTÕES ROXO -> LILÁS COM EFEITO PREMIUM */
-button, .btn-primary {
+/* ==========================================
+   5. BOTÕES
+   ========================================== */
+
+button,
+.btn-primary {
   background: var(--btn-gradient);
   color: #FFFFFF;
   border: none;
@@ -169,34 +211,55 @@ button, .btn-primary {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transition:
+    all 0.3s cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+
+  box-shadow:
+    0 4px 20px rgba(124, 58, 237, 0.35);
 }
 
-button:hover, .btn-primary:hover {
+button:hover,
+.btn-primary:hover {
   background: var(--btn-gradient-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.5);
+
+  box-shadow:
+    0 6px 25px rgba(168, 85, 247, 0.5);
 }
 
-button:disabled, .btn-primary:disabled {
+button:disabled,
+.btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
 }
 
-button:active, .btn-primary:active {
+button:active,
+.btn-primary:active {
   transform: translateY(0);
 }
 
-/* 6. LISTAS E BENEFÍCIOS */
+/* ==========================================
+   6. LISTAS E BENEFÍCIOS
+   ========================================== */
+
 .premium-benefits {
   background: var(--card-bg-inner);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+
+  border:
+    1px solid rgba(139, 92, 246, 0.2);
+
   border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 20px;
@@ -212,15 +275,21 @@ button:active, .btn-primary:active {
   padding: 8px 0;
   color: var(--text-main);
   font-size: 0.9rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+
+  border-bottom:
+    1px dashed rgba(255, 255, 255, 0.08);
 }
 
 .premium-benefits li:last-child {
   border-bottom: none;
 }
 
-/* 7. CARDS DE PACOTES DE CONSULTA */
-.pacote-card, .package-card {
+/* ==========================================
+   7. PACOTES
+   ========================================== */
+
+.pacote-card,
+.package-card {
   background: var(--card-bg-inner);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-md);
@@ -229,11 +298,17 @@ button:active, .btn-primary:active {
   position: relative;
 }
 
-.pacote-card.active, .package-card.active,
-.pacote-card:hover, .package-card:hover {
+.pacote-card.active,
+.package-card.active,
+.pacote-card:hover,
+.package-card:hover {
   border-color: var(--purple-accent);
-  background: rgba(42, 25, 70, 0.85);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+
+  background:
+    rgba(42, 25, 70, 0.85);
+
+  box-shadow:
+    0 0 15px rgba(168, 85, 247, 0.2);
 }
 
 .badge-pop {
@@ -250,18 +325,28 @@ button:active, .btn-primary:active {
   letter-spacing: 0.5px;
 }
 
-/* 8. CONTADOR PERMANENTE DE PERGUNTAS */
+/* ==========================================
+   8. CONTADOR
+   ========================================== */
+
 .contador-perguntas-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: rgba(18, 10, 31, 0.8);
-  border: 1px solid var(--gold-accent);
+
+  background:
+    rgba(18, 10, 31, 0.8);
+
+  border:
+    1px solid var(--gold-accent);
+
   border-radius: 30px;
   padding: 10px 20px;
   margin-bottom: 18px;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+
+  box-shadow:
+    0 0 10px rgba(212, 175, 55, 0.15);
 }
 
 .contador-item {
@@ -279,89 +364,382 @@ button:active, .btn-primary:active {
   color: var(--card-border);
 }
 
-/* 9. MESA SAGRADA DE BÚZIOS (ESTILO RITUALÍSTICO) */
+/* ==========================================
+   9. MESA SAGRADA DOS BÚZIOS
+   ========================================== */
+
 #mesa-buzios {
   position: relative;
+
   width: 100%;
   max-width: 380px;
   height: 300px;
+
   margin: 25px auto;
-  background: radial-gradient(circle, #2A1642 0%, #120A20 100%);
-  border: 2px solid var(--gold-accent);
+
+  background:
+    radial-gradient(
+      circle,
+      #2A1642 0%,
+      #120A20 100%
+    );
+
+  border:
+    2px solid var(--gold-accent);
+
   border-radius: 50%;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.25);
+
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(139, 92, 246, 0.25);
+
   overflow: hidden;
+
   scroll-margin-top: 30px;
+
+  transform-origin: center center;
+
+  will-change:
+    transform,
+    box-shadow;
 }
 
 #peneira {
   position: relative;
+
   width: 100%;
   height: 100%;
+
+  perspective: 700px;
+  transform-style: preserve-3d;
+
+  overflow: hidden;
 }
+
+/* ==========================================
+   BÚZIO INDIVIDUAL
+   ========================================== */
 
 .buzio-item {
   position: absolute;
+
   width: 32px !important;
   height: 46px !important;
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+
+  left: 0;
+  top: 0;
+
+  opacity: 1;
+
+  transform-origin:
+    center center;
+
+  transform-style:
+    preserve-3d;
+
+  will-change:
+    left,
+    top,
+    transform,
+    opacity;
+
+  /*
+    A animação principal será controlada
+    pelo JavaScript com Web Animations API.
+    Isso evita conflito entre várias
+    transitions simultâneas.
+  */
+  transition: none;
 }
 
 .buzio-item svg {
+  display: block;
+
   width: 100% !important;
   height: 100% !important;
-  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.7));
+
+  pointer-events: none;
+
+  filter:
+    drop-shadow(
+      2px
+      5px
+      7px
+      rgba(0, 0, 0, 0.75)
+    );
 }
 
+/* ==========================================
+   ESTADO DE LANÇAMENTO
+   ========================================== */
+
+.buzio-lancando {
+  z-index: 30;
+
+  filter:
+    drop-shadow(
+      0
+      12px
+      7px
+      rgba(0, 0, 0, 0.45)
+    );
+}
+
+/* ==========================================
+   ESTADO DE IMPACTO
+   ========================================== */
+
+.buzio-impacto svg {
+  filter:
+    drop-shadow(
+      1px
+      2px
+      3px
+      rgba(0, 0, 0, 0.85)
+    );
+}
+
+/* ==========================================
+   ESTADO FINAL
+   ========================================== */
+
+.buzio-assentado {
+  z-index: 10;
+}
+
+/* ==========================================
+   MOVIMENTO DA MESA
+   ========================================== */
+
 @keyframes chacoalhar {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-3px, 3px) rotate(-1deg); }
-  50% { transform: translate(3px, -3px) rotate(1deg); }
-  75% { transform: translate(-2px, -1px) rotate(-0.5deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
+  0% {
+    transform:
+      translate(0, 0)
+      rotate(0deg);
+  }
+
+  20% {
+    transform:
+      translate(-3px, 2px)
+      rotate(-0.6deg);
+  }
+
+  40% {
+    transform:
+      translate(3px, -2px)
+      rotate(0.7deg);
+  }
+
+  60% {
+    transform:
+      translate(-2px, -1px)
+      rotate(-0.4deg);
+  }
+
+  80% {
+    transform:
+      translate(2px, 2px)
+      rotate(0.4deg);
+  }
+
+  100% {
+    transform:
+      translate(0, 0)
+      rotate(0deg);
+  }
 }
 
 .mesa-chacoalhando {
-  animation: chacoalhar 0.15s infinite;
+  animation:
+    chacoalhar
+    0.12s
+    linear
+    infinite;
 }
 
-/* 10. CARDS DE RESULTADOS E DESTAQUES */
+/* ==========================================
+   IMPACTO DOS BÚZIOS NA MESA
+   ========================================== */
+
+@keyframes impactoMesa {
+  0% {
+    transform:
+      scale(1);
+  }
+
+  30% {
+    transform:
+      scale(0.985);
+  }
+
+  60% {
+    transform:
+      scale(1.012);
+  }
+
+  100% {
+    transform:
+      scale(1);
+  }
+}
+
+.mesa-impacto {
+  animation:
+    impactoMesa
+    0.28s
+    ease-out;
+}
+
+/* ==========================================
+   BRILHO MOMENTÂNEO DA QUEDA
+   ========================================== */
+
+@keyframes brilhoQueda {
+  0% {
+    box-shadow:
+      inset 0 0 40px rgba(0, 0, 0, 0.8),
+      0 0 25px rgba(139, 92, 246, 0.25);
+  }
+
+  45% {
+    box-shadow:
+      inset 0 0 35px rgba(0, 0, 0, 0.7),
+      0 0 38px rgba(212, 175, 55, 0.35);
+  }
+
+  100% {
+    box-shadow:
+      inset 0 0 40px rgba(0, 0, 0, 0.8),
+      0 0 25px rgba(139, 92, 246, 0.25);
+  }
+}
+
+.mesa-revelando {
+  animation:
+    brilhoQueda
+    0.8s
+    ease-out;
+}
+
+/* ==========================================
+   TEXTO DE STATUS DA JOGADA
+   ========================================== */
+
+#status-jogo {
+  min-height: 24px;
+
+  text-align: center;
+
+  color: var(--gold-light);
+
+  font-family:
+    'Cinzel',
+    serif;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  letter-spacing:
+    0.25px;
+
+  margin:
+    12px auto 18px;
+
+  animation:
+    statusRespirando
+    1.4s
+    ease-in-out
+    infinite alternate;
+}
+
+@keyframes statusRespirando {
+  from {
+    opacity: 0.7;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   10. RESULTADOS
+   ========================================== */
+
 .card-resultado-dark {
-  background: rgba(30, 18, 52, 0.95) !important;
-  border: 1px solid rgba(212, 175, 55, 0.3) !important;
-  border-radius: var(--radius-lg);
+  background:
+    rgba(30, 18, 52, 0.95) !important;
+
+  border:
+    1px solid rgba(212, 175, 55, 0.3) !important;
+
+  border-radius:
+    var(--radius-lg);
+
   padding: 24px;
-  color: var(--text-main) !important;
+
+  color:
+    var(--text-main) !important;
 }
 
 .box-destaque-dark {
-  background: rgba(18, 10, 31, 0.6) !important;
-  border-left: 3px solid var(--gold-accent) !important;
+  background:
+    rgba(18, 10, 31, 0.6) !important;
+
+  border-left:
+    3px solid var(--gold-accent) !important;
+
   padding: 16px;
+
   border-radius: 6px;
+
   margin: 14px 0;
-  color: var(--text-main) !important;
+
+  color:
+    var(--text-main) !important;
 }
 
-/* Listas de Pontos Fortes e Atenção */
+/* ==========================================
+   PONTOS FORTES E ATENÇÃO
+   ========================================== */
+
 .odu-pontos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(240px, 1fr)
+    );
+
   gap: 16px;
+
   margin-top: 16px;
 }
 
 .box-pontos-fortes {
-  background: rgba(16, 42, 26, 0.6);
-  border: 1px solid #10B981;
-  border-radius: var(--radius-md);
+  background:
+    rgba(16, 42, 26, 0.6);
+
+  border:
+    1px solid #10B981;
+
+  border-radius:
+    var(--radius-md);
+
   padding: 16px;
 }
 
 .box-pontos-atencao {
-  background: rgba(45, 20, 20, 0.6);
-  border: 1px solid #EF4444;
-  border-radius: var(--radius-md);
+  background:
+    rgba(45, 20, 20, 0.6);
+
+  border:
+    1px solid #EF4444;
+
+  border-radius:
+    var(--radius-md);
+
   padding: 16px;
 }
 
@@ -375,31 +753,107 @@ button:active, .btn-primary:active {
   margin-bottom: 8px;
 }
 
-.box-pontos-fortes ul, .box-pontos-atencao ul {
+.box-pontos-fortes ul,
+.box-pontos-atencao ul {
   list-style: none;
   padding-left: 0;
 }
 
-.box-pontos-fortes li, .box-pontos-atencao li {
+.box-pontos-fortes li,
+.box-pontos-atencao li {
   font-size: 0.88rem;
   margin-bottom: 6px;
+
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 /* ==========================================
-   DISCLAIMER OBRIGATÓRIO (CALLOUT)
+   DISCLAIMER
    ========================================== */
+
 .disclaimer-callout {
   margin-top: 20px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid var(--gold-accent);
-  border-left: 4px solid var(--gold-accent);
-  border-radius: var(--radius-md);
-  padding: 14px 18px;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--gold-light);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  background:
+    rgba(212, 175, 55, 0.08);
+
+  border:
+    1px solid var(--gold-accent);
+
+  border-left:
+    4px solid var(--gold-accent);
+
+  border-radius:
+    var(--radius-md);
+
+  padding:
+    14px 18px;
+
+  font-size:
+    0.85rem;
+
+  line-height:
+    1.5;
+
+  color:
+    var(--gold-light);
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   RESPONSIVIDADE DA MESA
+   ========================================== */
+
+@media (max-width: 520px) {
+
+  #mesa-buzios {
+    max-width: 330px;
+    height: 260px;
+  }
+
+  .buzio-item {
+    width: 29px !important;
+    height: 42px !important;
+  }
+
+  .contador-perguntas-container {
+    gap: 10px;
+    padding: 9px 14px;
+  }
+
+  .contador-item {
+    font-size: 0.8rem;
+  }
+
+  .contador-item strong {
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE:
+   REDUZ ANIMAÇÃO SE O SISTEMA PEDIR
+   ========================================== */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    scroll-behavior:
+      auto !important;
+  }
 }
