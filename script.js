@@ -166,7 +166,7 @@ function classificarPergunta(texto) {
 
   let contexto = "Orientação Geral e Caminhos";
   if (/amor|namorada|namorado|casamento|traicao|traição|voltar|relacionamento|ex|parceiro/i.test(t)) contexto = "Amor e Relacionamentos";
-  else if (/trabalho|emprego|vaga|carreira|empresa|promocao|promoção|chefe|negocio|negócio|projeto/i.test(t)) contexto = "Trabalho e Tomada de Decisão";
+  else if (/trabalho|emprego|vaga|carreira|profissional|profissionais|profissão|profissao|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i.test(t)) contexto = "Trabalho e Tomada de Decisão";
   else if (/dinheiro|financas|finanças|divida|dívida|investimento|comprar|vender/i.test(t)) contexto = "Prosperidade Financeira";
   else if (/familia|família|mae|mãe|pai|filho|filha|irmao|irmão/i.test(t)) contexto = "Harmonia Familiar";
   else if (/orixa|orixá|cabeca|cabeça|frente|junto|juntó|adjunto|santo/i.test(t)) contexto = "Identificação de Orixá de Cabeça";
