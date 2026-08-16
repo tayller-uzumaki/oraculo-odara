@@ -2217,3 +2217,661 @@ document.addEventListener(
 
   }
 );
+// ==========================================
+// FLUXO PRINCIPAL DA CONSULTA
+// ==========================================
+
+document
+  .getElementById(
+    'form-consulta'
+  )
+  ?.addEventListener(
+    'submit',
+    async function (e) {
+
+      e.preventDefault();
+
+      if (isProcessing) {
+        return;
+      }
+
+      const campoPergunta =
+        document.getElementById(
+          'pergunta'
+        );
+
+      const painel =
+        document.getElementById(
+          'resultado-leitura'
+        );
+
+      const btnJogar =
+        document.getElementById(
+          'btn-jogar'
+        );
+
+      if (
+        !campoPergunta ||
+        !painel
+      ) {
+        return;
+      }
+
+      const pergunta =
+        campoPergunta
+          .value
+          .trim();
+
+      if (!pergunta) {
+        return;
+      }
+
+      // ======================================
+      // SEGURANÇA LOCAL
+      // ======================================
+
+      const segurancaLocal =
+        classificarPerguntaLocal(
+          pergunta
+        );
+
+      if (
+        segurancaLocal.bloqueado
+      ) {
+
+        mostrarBloqueio(
+          'Consulta Não Realizada',
+          segurancaLocal.mensagem
+        );
+
+        return;
+      }
+
+      // ======================================
+      // TRAVA LOCAL DE REPETIÇÃO
+      // ======================================
+
+      const perguntaNormalizada =
+        normalizarTexto(
+          pergunta
+        );
+
+      if (
+        perguntaNormalizada ===
+        ultimaPerguntaProcessada
+      ) {
+
+        mostrarBloqueio(
+          'Pergunta Repetida Detectada',
+          'Você já realizou essa pergunta recentemente. Reformule a questão ou faça uma nova pergunta antes de consultar novamente.'
+        );
+
+        return;
+      }
+
+      // ======================================
+      // VERIFICA SALDO VISUAL
+      // ======================================
+
+      if (
+        consultasRestantes <= 0
+      ) {
+
+        alert(
+          'Seu saldo de perguntas terminou.'
+        );
+
+        document
+          .getElementById(
+            'secao-pacotes'
+          )
+          ?.scrollIntoView({
+            behavior: 'smooth'
+          });
+
+        return;
+      }
+
+      isProcessing =
+        true;
+
+      if (btnJogar) {
+
+        btnJogar.disabled =
+          true;
+      }
+
+      painel.style.display =
+        'none';
+
+      try {
+
+        // ====================================
+        // 1. PREPARAR NO BACKEND
+        // ====================================
+
+        const preparacao =
+          await prepararConsultaBackend(
+            pergunta
+          );
+
+        // ------------------------------------
+        // BACKEND BLOQUEOU
+        // ------------------------------------
+
+        if (
+          preparacao.bloqueado
+        ) {
+
+          mostrarBloqueio(
+            preparacao.tipoBloqueio ===
+              'PERGUNTA_REPETIDA'
+              ? 'Pergunta Repetida Detectada'
+              : 'Consulta Não Realizada',
+
+            preparacao.mensagem ||
+              'Esta consulta não pode ser realizada.'
+          );
+
+          if (
+            Number.isFinite(
+              Number(
+                preparacao.perguntasRestantes
+              )
+            )
+          ) {
+
+            consultasRestantes =
+              Number(
+                preparacao.perguntasRestantes
+              );
+
+            atualizarContadores();
+          }
+
+          return;
+        }
+
+        // ====================================
+        // 2. DESCOBRIR QUANTAS QUEDAS
+        // ====================================
+
+        const totalQuedas =
+          Math.max(
+            1,
+            Number(
+              preparacao
+                .quedasNecessarias || 1
+            )
+          );
+
+        const posicoes =
+          Array.isArray(
+            preparacao.posicoes
+          )
+            ? preparacao.posicoes
+            : [];
+
+        const quedas =
+          [];
+
+        // ====================================
+        // 3. EXECUTAR QUEDAS VISUAIS
+        // ====================================
+
+        for (
+          let i = 0;
+          i < totalQuedas;
+          i++
+        ) {
+
+          const posicao =
+            posicoes[i];
+
+          const tituloPosicao =
+            posicao?.titulo ||
+            `Queda ${i + 1}`;
+
+          const queda =
+            sortearQueda();
+
+          await animarQueda({
+            queda,
+            numeroQueda:
+              i + 1,
+            totalQuedas,
+            tituloPosicao
+          });
+
+          quedas.push(
+            queda
+          );
+
+          // ----------------------------------
+          // PAUSA ENTRE QUEDAS
+          // ----------------------------------
+
+          if (
+            i <
+            totalQuedas - 1
+          ) {
+
+            const mesa =
+              document.getElementById(
+                'mesa-buzios'
+              );
+
+            const status =
+              mesa
+                ? obterStatusJogo(
+                    mesa
+                  )
+                : null;
+
+            if (status) {
+
+              status.textContent =
+                `✨ ${tituloPosicao} registrada. Preparando a próxima queda...`;
+            }
+
+            await esperar(
+              1100
+            );
+          }
+        }
+
+        // ====================================
+        // 4. ENVIAR QUEDAS AO BACKEND
+        // ====================================
+
+        const mesa =
+          document.getElementById(
+            'mesa-buzios'
+          );
+
+        const status =
+          mesa
+            ? obterStatusJogo(
+                mesa
+              )
+            : null;
+
+        if (status) {
+
+          status.textContent =
+            totalQuedas > 1
+              ? '🔮 As quedas foram concluídas. Integrando as forças apresentadas...'
+              : '🔮 Interpretando a caída dos búzios...';
+        }
+
+        const resultado =
+          await interpretarConsultaBackend({
+            pergunta,
+            quedas
+          });
+
+        // ------------------------------------
+        // BACKEND BLOQUEOU NA SEGUNDA ETAPA
+        // ------------------------------------
+
+        if (
+          resultado.bloqueado
+        ) {
+
+          mostrarBloqueio(
+            resultado.tipoBloqueio ===
+              'PERGUNTA_REPETIDA'
+              ? 'Pergunta Repetida Detectada'
+              : 'Consulta Não Realizada',
+
+            resultado.mensagem ||
+              'Esta consulta não pode ser realizada.'
+          );
+
+          if (
+            Number.isFinite(
+              Number(
+                resultado.perguntasRestantes
+              )
+            )
+          ) {
+
+            consultasRestantes =
+              Number(
+                resultado.perguntasRestantes
+              );
+
+            atualizarContadores();
+          }
+
+          return;
+        }
+
+        // ====================================
+        // 5. ATUALIZAR SALDO REAL
+        // ====================================
+
+        if (
+          Number.isFinite(
+            Number(
+              resultado.perguntasRestantes
+            )
+          )
+        ) {
+
+          consultasRestantes =
+            Number(
+              resultado.perguntasRestantes
+            );
+
+          atualizarContadores();
+        }
+
+        // ====================================
+        // 6. MARCAR PERGUNTA COMO PROCESSADA
+        // ====================================
+
+        ultimaPerguntaProcessada =
+          perguntaNormalizada;
+
+        // ====================================
+        // 7. PREPARAR RESUMO VISUAL DAS QUEDAS
+        // ====================================
+
+        let resumoQuedas =
+          '';
+
+        if (
+          totalQuedas > 1
+        ) {
+
+          resumoQuedas = `
+            <div style="
+              margin-bottom: 18px;
+              display: grid;
+              gap: 10px;
+            ">
+          `;
+
+          quedas.forEach(
+            (
+              queda,
+              index
+            ) => {
+
+              const titulo =
+                posicoes[index]
+                  ?.titulo ||
+                `Queda ${index + 1}`;
+
+              resumoQuedas += `
+                <div style="
+                  padding: 12px 14px;
+                  background: rgba(18,10,31,0.55);
+                  border: 1px solid rgba(212,175,55,0.22);
+                  border-radius: 10px;
+                ">
+
+                  <div style="
+                    color: var(--gold-accent);
+                    font-size: 0.78rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    margin-bottom: 4px;
+                  ">
+                    ${titulo}
+                  </div>
+
+                  <div style="
+                    color: var(--text-main);
+                    font-size: 0.9rem;
+                  ">
+                    <strong>
+                      Odù ${queda.nome}
+                    </strong>
+                    ·
+                    ${queda.numAbertos}
+                    abertos /
+                    ${queda.numFechados}
+                    fechados
+                  </div>
+
+                  <div style="
+                    color: var(--text-muted);
+                    font-size: 0.82rem;
+                    margin-top: 3px;
+                  ">
+                    Referência:
+                    ${queda.orixa}
+                  </div>
+
+                </div>
+              `;
+            }
+          );
+
+          resumoQuedas += `
+            </div>
+          `;
+        }
+
+        // ====================================
+        // 8. MONTAR RESULTADO FINAL
+        // ====================================
+
+        const primeiraQueda =
+          quedas[0];
+
+        const ehConsultaOrixas =
+          resultado.protocolo ===
+          'ORIXAS_DO_MOMENTO';
+
+        const tituloResultado =
+          ehConsultaOrixas
+            ? 'Leitura das Forças Apresentadas'
+            : `Odù ${primeiraQueda.nome}`;
+
+        const subtituloResultado =
+          ehConsultaOrixas
+            ? `${totalQuedas} quedas realizadas nesta consulta`
+            : `${primeiraQueda.numAbertos} abertos / ${primeiraQueda.numFechados} fechados`;
+
+        painel.className =
+          'card card-resultado-dark';
+
+        painel.innerHTML = `
+          <div style="
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+          ">
+
+            <span style="
+              color: var(--gold-accent);
+              font-size: 0.8rem;
+              font-weight: bold;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            ">
+              Revelação da Consulta Sagrada
+            </span>
+
+            <h3 style="
+              font-size: 1.35rem;
+              color: var(--gold-light);
+              margin-top: 4px;
+            ">
+              ${tituloResultado}
+            </h3>
+
+            <p style="
+              color: var(--text-muted);
+              font-size: 0.85rem;
+              margin-top: 4px;
+            ">
+              ${subtituloResultado}
+            </p>
+
+            ${
+              resultado.contexto
+                ? `
+                  <p style="
+                    color: var(--text-muted);
+                    font-size: 0.82rem;
+                    margin-top: 4px;
+                  ">
+                    Área identificada:
+                    <strong>
+                      ${resultado.contexto}
+                    </strong>
+                  </p>
+                `
+                : ''
+            }
+
+          </div>
+
+          ${resumoQuedas}
+
+          <div
+            class="box-destaque-dark"
+            style="
+              line-height: 1.8;
+              font-size: 0.95rem;
+            "
+          >
+
+            ${formatarRespostaIA(
+              resultado.resposta ||
+              'Não foi possível gerar a leitura.'
+            )}
+
+          </div>
+
+          <div class="disclaimer-callout">
+
+            ⚠️
+            <strong>
+              Aviso Importante:
+            </strong>
+
+            Esta consulta é uma orientação digital
+            baseada na interpretação dos Odùs.
+
+            Para confirmações religiosas, rituais,
+            obrigações ou confirmações de Orixá,
+            procure um Babalorixá ou Ialorixá de
+            sua confiança.
+
+          </div>
+
+          <div style="
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+          ">
+
+            Perguntas restantes:
+
+            <strong style="
+              color: var(--gold-light);
+            ">
+              ${consultasRestantes}
+            </strong>
+
+          </div>
+
+          <div style="
+            margin-top: 20px;
+            text-align: center;
+          ">
+
+            <button
+              type="button"
+              class="btn-primary"
+              onclick="reiniciarConsulta()"
+            >
+              ✨ Nova Pergunta
+            </button>
+
+          </div>
+        `;
+
+        painel.style.display =
+          'block';
+
+        if (status) {
+
+          status.textContent =
+            '';
+        }
+
+        painel.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+      } catch (erro) {
+
+        console.error(
+          'Erro na consulta:',
+          erro
+        );
+
+        mostrarBloqueio(
+          'Não foi possível concluir a consulta',
+          erro?.message ||
+            'Ocorreu um erro durante a leitura. Tente novamente em alguns instantes.'
+        );
+
+        /*
+          Recarrega a sessão para garantir
+          que o contador visual corresponda
+          ao saldo real do Supabase caso o
+          backend tenha realizado estorno.
+        */
+
+        try {
+
+          await carregarSessao();
+
+        } catch (
+          erroSessao
+        ) {
+
+          console.error(
+            'Erro ao atualizar saldo após falha:',
+            erroSessao
+          );
+        }
+
+      } finally {
+
+        isProcessing =
+          false;
+
+        if (btnJogar) {
+
+          btnJogar.disabled =
+            false;
+        }
+      }
+    }
+  );
+
+
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    atualizarContadores();
+
+    carregarSessao();
+
+  }
+);
