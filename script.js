@@ -63,6 +63,10 @@ async function carregarSessao() {
   }
 }
 
+// ==========================================
+// MAPA DOS ODÙS
+// ==========================================
+
 const ODUS_MAP = {
   0: {
     nome: "Opira",
@@ -200,6 +204,10 @@ const ODUS_MAP = {
     tendencia: "plenamente positiva e muito favorável"
   }
 };
+
+// ==========================================
+// CONTADORES
+// ==========================================
 
 function atualizarContadores() {
   const elContratadas =
@@ -475,6 +483,10 @@ document
     }
   );
 
+// ==========================================
+// PACOTES
+// ==========================================
+
 function selecionarPacote(qtd, valor) {
 
   pacoteSelecionado = {
@@ -505,6 +517,10 @@ function selecionarPacote(qtd, valor) {
   }
 }
 
+// ==========================================
+// PIX SIMULADO
+// ==========================================
+
 function gerarPix() {
 
   consultasContratadas +=
@@ -525,13 +541,20 @@ function gerarPix() {
       'secao-jogada'
     );
 
-  secaoJogada.style.display =
-    'block';
+  if (secaoJogada) {
 
-  secaoJogada.scrollIntoView({
-    behavior: 'smooth'
-  });
+    secaoJogada.style.display =
+      'block';
+
+    secaoJogada.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
 }
+
+// ==========================================
+// NOVA PERGUNTA
+// ==========================================
 
 function reiniciarConsulta() {
 
@@ -601,9 +624,10 @@ function classificarPergunta(texto) {
       bloqueado: true,
       tipo: 'RISCO_EMOCIONAL',
       msg:
-        "Percebo que você está passando por um momento de dor intensa. " +
-        "O jogo de búzios não é o recurso adequado para este momento. " +
-        "Por favor, busque ajuda profissional e alguém de sua confiança."
+        "Essa pergunta indica um momento que precisa de apoio humano, " +
+        "e não de uma leitura oracular. Procure alguém de confiança e " +
+        "apoio profissional. Sua consulta não será realizada e seu saldo " +
+        "será preservado."
     };
   }
 
@@ -653,8 +677,8 @@ function classificarPergunta(texto) {
       tipo: 'SAUDE',
       msg:
         "O oráculo oferece orientação espiritual, mas não realiza " +
-        "diagnósticos médicos nem promete curas físicas. Por favor, " +
-        "consulte médicos e profissionais de saúde qualificados."
+        "diagnósticos médicos nem promete curas físicas. Procure " +
+        "profissionais de saúde qualificados."
     };
   }
 
@@ -674,8 +698,7 @@ function classificarPergunta(texto) {
       tipo: 'PREVISAO_MORTE',
       msg:
         "O Oráculo não realiza previsões sobre a data ou circunstâncias " +
-        "de morte. Nossos caminhos são focados no fortalecimento da vida " +
-        "e nas escolhas do presente."
+        "de morte. A consulta não será realizada e seu saldo será preservado."
     };
   }
 
@@ -686,46 +709,47 @@ function classificarPergunta(texto) {
     /amor|namorada|namorado|casamento|traicao|traição|voltar|relacionamento|ex|parceiro/i
       .test(t)
   ) {
+
     contexto =
       "Amor e Relacionamentos";
-  }
 
-  else if (
+  } else if (
     /trabalho|emprego|vaga|carreira|profissional|profissionais|profissão|profissao|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i
       .test(t)
   ) {
+
     contexto =
       "Trabalho e Tomada de Decisão";
-  }
 
-  else if (
+  } else if (
     /dinheiro|financas|finanças|divida|dívida|investimento|comprar|vender/i
       .test(t)
   ) {
+
     contexto =
       "Prosperidade Financeira";
-  }
 
-  else if (
+  } else if (
     /familia|família|mae|mãe|pai|filho|filha|irmao|irmão/i
       .test(t)
   ) {
+
     contexto =
       "Harmonia Familiar";
-  }
 
-  else if (
+  } else if (
     /orixa|orixá|cabeca|cabeça|frente|junto|juntó|adjunto|santo/i
       .test(t)
   ) {
+
     contexto =
       "Identificação de Orixá de Cabeça";
-  }
 
-  else if (
+  } else if (
     /espiritual|protecao|proteção|inveja|demanda/i
       .test(t)
   ) {
+
     contexto =
       "Espiritualidade e Proteção Ancestral";
   }
@@ -734,7 +758,7 @@ function classificarPergunta(texto) {
     bloqueado: false,
     contexto
   };
-}  
+}
 
 // ==========================================
 // 2. RITUAL DE JOGADA DOS BÚZIOS
@@ -777,26 +801,13 @@ document
         return;
       }
 
-      // ======================================
-      // TRAVA DE REPETIÇÃO LOCAL
-      // ======================================
-
       const perguntaNormalizada =
         pergunta
           .toLowerCase()
           .normalize('NFD')
-          .replace(
-            /[\u0300-\u036f]/g,
-            ''
-          )
-          .replace(
-            /[^\w\s]/g,
-            ''
-          )
-          .replace(
-            /\s+/g,
-            ' '
-          )
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^\w\s]/g, '')
+          .replace(/\s+/g, ' ')
           .trim();
 
       if (
@@ -876,10 +887,6 @@ document
         return;
       }
 
-      // ======================================
-      // SEGURANÇA HUMANA LOCAL
-      // ======================================
-
       const analise =
         classificarPergunta(
           pergunta
@@ -958,8 +965,7 @@ document
         return;
       }
 
-      isProcessing =
-        true;
+      isProcessing = true;
 
       const mesa =
         document.getElementById(
@@ -982,27 +988,19 @@ document
         );
 
       if (btnJogar) {
-        btnJogar.disabled =
-          true;
+        btnJogar.disabled = true;
       }
 
       painelResultado.style.display =
         'none';
 
-      peneira.innerHTML =
-        '';
-
-      mesa.style.display =
-        'block';
+      peneira.innerHTML = '';
+      mesa.style.display = 'block';
 
       mesa.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
       });
-
-      mesa.classList.add(
-        'mesa-chacoalhando'
-      );
 
       let statusTexto =
         document.getElementById(
@@ -1012,19 +1010,17 @@ document
       if (!statusTexto) {
 
         statusTexto =
-          document.createElement(
-            'p'
-          );
+          document.createElement('p');
 
         statusTexto.id =
           'status-jogo';
 
         statusTexto.style.cssText =
-          "text-align: center;" +
-          "color: var(--gold-light);" +
-          "font-weight: 600;" +
-          "margin-top: 15px;" +
-          "font-family: 'Cinzel', serif;";
+          "text-align:center;" +
+          "color:var(--gold-light);" +
+          "font-weight:600;" +
+          "margin-top:15px;" +
+          "font-family:'Cinzel',serif;";
 
         mesa.parentNode.insertBefore(
           statusTexto,
@@ -1039,394 +1035,555 @@ document
       statusTexto.textContent =
         "🔮 Concentrando nas energias da sua pergunta...";
 
-      setTimeout(
-        () => {
+      setTimeout(() => {
+        statusTexto.textContent =
+          ehOrixaCabeca
+            ? "✨ Preparando dupla queda para Orixá de Frente e Juntó..."
+            : "✨ Evocando os Orixás e ouvindo a voz dos Odùs...";
+      }, 1100);
+
+      setTimeout(() => {
+        statusTexto.textContent =
+          "🍃 Reunindo os búzios para o lançamento...";
+      }, 2100);
+
+      // ======================================
+      // NOVA ANIMAÇÃO: ENTRADA + SALTOS + QUEDA
+      // ======================================
+
+      setTimeout(() => {
+
+        const buziosAbertos1 =
+          Math.floor(
+            Math.random() * 17
+          );
+
+        const buziosFechados1 =
+          16 - buziosAbertos1;
+
+        const oduSorteado1 =
+          ODUS_MAP[buziosAbertos1] ||
+          ODUS_MAP[16];
+
+        const buziosAbertos2 =
+          Math.floor(
+            Math.random() * 17
+          );
+
+        const oduSorteado2 =
+          ODUS_MAP[buziosAbertos2] ||
+          ODUS_MAP[16];
+
+        const mesaRect =
+          peneira.getBoundingClientRect();
+
+        const centroX =
+          mesaRect.width / 2;
+
+        const centroY =
+          mesaRect.height / 2;
+
+        const buziosCriados = [];
+
+        statusTexto.textContent =
+          "✨ Os búzios estão sendo lançados sobre a mesa...";
+
+        for (
+          let i = 0;
+          i < 16;
+          i++
+        ) {
+
+          const buzio =
+            document.createElement('div');
+
+          buzio.className =
+            'buzio-item';
+
+          const isOpen =
+            i < buziosAbertos1;
+
+          buzio.innerHTML =
+            isOpen
+              ? `
+                <svg viewBox="0 0 40 60">
+                  <ellipse
+                    cx="20"
+                    cy="30"
+                    rx="16"
+                    ry="26"
+                    fill="#F8F5F0"
+                    stroke="#D4AF37"
+                    stroke-width="2"
+                  />
+
+                  <ellipse
+                    cx="20"
+                    cy="30"
+                    rx="8"
+                    ry="16"
+                    fill="#120A1F"
+                    stroke="#8B5CF6"
+                    stroke-width="1.5"
+                  />
+
+                  <line
+                    x1="20"
+                    y1="10"
+                    x2="20"
+                    y2="50"
+                    stroke="#D4AF37"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              `
+              : `
+                <svg viewBox="0 0 40 60">
+                  <ellipse
+                    cx="20"
+                    cy="30"
+                    rx="16"
+                    ry="26"
+                    fill="#EAD9C9"
+                    stroke="#8B5CF6"
+                    stroke-width="2"
+                  />
+
+                  <line
+                    x1="20"
+                    y1="8"
+                    x2="20"
+                    y2="52"
+                    stroke="#5A3A7E"
+                    stroke-width="2"
+                  />
+                </svg>
+              `;
+
+          const origemX =
+            centroX - 16 +
+            (Math.random() * 24 - 12);
+
+          const origemY =
+            Math.max(
+              8,
+              centroY - 95 +
+              (Math.random() * 20 - 10)
+            );
+
+          buzio.style.left =
+            `${origemX}px`;
+
+          buzio.style.top =
+            `${origemY}px`;
+
+          buzio.style.opacity = '0';
+
+          buzio.style.zIndex =
+            String(20 + i);
+
+          buzio.style.transition =
+            'left 0.42s cubic-bezier(.2,.9,.35,1),' +
+            'top 0.42s cubic-bezier(.2,.9,.35,1),' +
+            'transform 0.42s cubic-bezier(.2,.9,.35,1),' +
+            'opacity 0.18s ease';
+
+          const rotInicial =
+            Math.floor(
+              Math.random() * 360
+            );
+
+          buzio.style.transform =
+            `rotate(${rotInicial}deg) scale(0.55)`;
+
+          peneira.appendChild(buzio);
+
+          buziosCriados.push({
+            el: buzio,
+            rotInicial
+          });
+        }
+
+        // Entrada inicial
+        buziosCriados.forEach(
+          ({ el, rotInicial }, index) => {
+
+            setTimeout(() => {
+
+              el.style.opacity = '1';
+
+              el.style.transform =
+                `rotate(${rotInicial + 120}deg) scale(0.9)`;
+
+            }, index * 28);
+          }
+        );
+
+        // Primeiro salto
+        setTimeout(() => {
+
+          buziosCriados.forEach(
+            ({ el, rotInicial }, index) => {
+
+              const saltoX =
+                centroX - 16 +
+                (Math.random() * 100 - 50);
+
+              const saltoY =
+                centroY - 35 +
+                (Math.random() * 55 - 25);
+
+              el.style.left =
+                `${saltoX}px`;
+
+              el.style.top =
+                `${saltoY}px`;
+
+              el.style.transform =
+                `rotate(${rotInicial + 260 + index * 11}deg) ` +
+                `translateY(-18px) scale(1.08)`;
+            }
+          );
+
+          mesa.classList.add(
+            'mesa-chacoalhando'
+          );
 
           statusTexto.textContent =
-            ehOrixaCabeca
-              ? "✨ Preparando dupla queda para Orixá de Frente e Juntó..."
-              : "✨ Evocando os Orixás e ouvindo a voz dos Odùs...";
+            "🍃 Os búzios tocam a mesa e começam a se espalhar...";
 
-        },
-        1200
-      );
+        }, 520);
 
-      setTimeout(
-        () => {
+        // Segundo salto
+        setTimeout(() => {
 
-          statusTexto.textContent =
-            "🍃 Lançando os 16 búzios sagrados sobre a mesa...";
+          buziosCriados.forEach(
+            ({ el, rotInicial }, index) => {
 
-        },
-        2400
-      );
+              const angulo =
+                (Math.PI * 2 * index / 16) +
+                (Math.random() * 0.55 - 0.275);
 
-      setTimeout(
-        () => {
+              const raio =
+                48 + Math.random() * 62;
+
+              const x =
+                centroX - 16 +
+                Math.cos(angulo) * raio;
+
+              const y =
+                centroY - 23 +
+                Math.sin(angulo) *
+                (raio * 0.68);
+
+              el.style.left =
+                `${x}px`;
+
+              el.style.top =
+                `${y}px`;
+
+              el.style.transform =
+                `rotate(${rotInicial + 430 + index * 17}deg) ` +
+                `translateY(-8px) scale(1)`;
+            }
+          );
+
+        }, 960);
+
+        // Queda final
+        setTimeout(() => {
 
           mesa.classList.remove(
             'mesa-chacoalhando'
           );
 
           statusTexto.textContent =
-            "";
+            "🔮 Os búzios se assentaram. Revelando a caída...";
 
-          const buziosAbertos1 =
-            Math.floor(
-              Math.random() * 17
-            );
+          buziosCriados.forEach(
+            ({ el, rotInicial }, index) => {
 
-          const buziosFechados1 =
-            16 - buziosAbertos1;
+              const angulo =
+                (Math.PI * 2 * index / 16) +
+                (Math.random() * 0.7 - 0.35);
 
-          const oduSorteado1 =
-            ODUS_MAP[
-              buziosAbertos1
-            ] ||
-            ODUS_MAP[16];
+              const raio =
+                36 + Math.random() * 78;
 
-          const buziosAbertos2 =
-            Math.floor(
-              Math.random() * 17
-            );
+              const maxX =
+                Math.max(
+                  20,
+                  mesaRect.width - 52
+                );
 
-          const oduSorteado2 =
-            ODUS_MAP[
-              buziosAbertos2
-            ] ||
-            ODUS_MAP[16];
+              const maxY =
+                Math.max(
+                  20,
+                  mesaRect.height - 66
+                );
 
-          // ======================================
-          // ANIMAÇÃO DOS 16 BÚZIOS
-          // ======================================
+              let x =
+                centroX - 16 +
+                Math.cos(angulo) * raio;
 
-          for (
-            let i = 0;
-            i < 16;
-            i++
-          ) {
+              let y =
+                centroY - 23 +
+                Math.sin(angulo) *
+                (raio * 0.72);
 
-            const buzio =
-              document.createElement(
-                'div'
+              x = Math.min(
+                maxX,
+                Math.max(12, x)
               );
 
-            buzio.className =
-              'buzio-item';
-
-            const isOpen =
-              i < buziosAbertos1;
-
-            buzio.innerHTML =
-              isOpen
-                ? `
-                  <svg viewBox="0 0 40 60">
-                    <ellipse
-                      cx="20"
-                      cy="30"
-                      rx="16"
-                      ry="26"
-                      fill="#F8F5F0"
-                      stroke="#D4AF37"
-                      stroke-width="2"
-                    />
-
-                    <ellipse
-                      cx="20"
-                      cy="30"
-                      rx="8"
-                      ry="16"
-                      fill="#120A1F"
-                      stroke="#8B5CF6"
-                      stroke-width="1.5"
-                    />
-
-                    <line
-                      x1="20"
-                      y1="10"
-                      x2="20"
-                      y2="50"
-                      stroke="#D4AF37"
-                      stroke-width="1.5"
-                    />
-                  </svg>
-                `
-                : `
-                  <svg viewBox="0 0 40 60">
-                    <ellipse
-                      cx="20"
-                      cy="30"
-                      rx="16"
-                      ry="26"
-                      fill="#EAD9C9"
-                      stroke="#8B5CF6"
-                      stroke-width="2"
-                    />
-
-                    <line
-                      x1="20"
-                      y1="8"
-                      x2="20"
-                      y2="52"
-                      stroke="#5A3A7E"
-                      stroke-width="2"
-                    />
-                  </svg>
-                `;
-
-            const angle =
-              Math.random() *
-              Math.PI *
-              2;
-
-            const radius =
-              Math.random() *
-              110;
-
-            const x =
-              160 +
-              radius *
-              Math.cos(angle);
-
-            const y =
-              120 +
-              radius *
-              Math.sin(angle);
-
-            const rot =
-              Math.floor(
-                Math.random() *
-                360
+              y = Math.min(
+                maxY,
+                Math.max(10, y)
               );
 
-            buzio.style.left =
-              `${x}px`;
+              const rotFinal =
+                rotInicial +
+                560 +
+                Math.floor(
+                  Math.random() * 180
+                );
 
-            buzio.style.top =
-              `${y}px`;
+              el.style.transition =
+                'left 0.58s cubic-bezier(.22,.78,.28,1),' +
+                'top 0.58s cubic-bezier(.22,.78,.28,1),' +
+                'transform 0.58s cubic-bezier(.22,.78,.28,1)';
 
-            buzio.style.transform =
-              `rotate(${rot}deg) scale(0.1)`;
+              el.style.left =
+                `${x}px`;
 
-            buzio.style.opacity =
-              '0';
+              el.style.top =
+                `${y}px`;
 
-            peneira.appendChild(
-              buzio
-            );
-
-            setTimeout(
-              () => {
-
-                buzio.style.opacity =
-                  '1';
-
-                buzio.style.transform =
-                  `rotate(${rot}deg) scale(1)`;
-
-              },
-              i * 40
-            );
-          }
-
-          // ======================================
-          // RESULTADO LOCAL ESTÁVEL
-          // ======================================
-
-          setTimeout(
-            () => {
-
-              consultasRestantes--;
-
-              if (
-                consultasRestantes < 0
-              ) {
-                consultasRestantes = 0;
-              }
-
-              atualizarContadores();
-
-              ultimaPerguntaProcessada =
-                perguntaNormalizada;
-
-              let paragrafo1 =
-                "";
-
-              let paragrafo2 =
-                "";
-
-              if (
-                ehOrixaCabeca
-              ) {
-
-                paragrafo1 =
-                  `Em relação à sua busca sincera sobre "<strong>${pergunta}</strong>", ` +
-                  `os búzios se moveram na mesa em uma dupla queda reveladora. ` +
-                  `A primeira queda manifestou a regência de ` +
-                  `<strong>${oduSorteado1.orixa}</strong> através de Odù ` +
-                  `${oduSorteado1.nome}, mostrando que a tendência para a sua ` +
-                  `liderança e presença no mundo é ${oduSorteado1.tendencia}. ` +
-                  `Esta primeira vibração direciona como você enfrenta os desafios ` +
-                  `diários, indicando que sua força interior se renova quando você ` +
-                  `atua com coragem, ética e alinhamento com a energia ancestral ` +
-                  `que o protege.`;
-
-                paragrafo2 =
-                  `Na segunda queda da mesa sagrada, a energia do seu Orixá ` +
-                  `Adjunto (Juntó) revelou a força de ` +
-                  `<strong>${oduSorteado2.orixa}</strong> sob o Odù ` +
-                  `${oduSorteado2.nome}. Esta combinação mostra que o seu suporte ` +
-                  `emocional e sustentação espiritual atuam em complementaridade ` +
-                  `com seu Orixá de Frente. Para manter seus caminhos abertos e ` +
-                  `prósperos diante do que foi perguntado, é fundamental cultivar ` +
-                  `a paciência e manter atitudes ponderadas no cotidiano, lembrando ` +
-                  `sempre que a confirmação definitiva dessa regência é um ato ` +
-                  `sagrado presencial.`;
-
-              } else {
-
-                paragrafo1 =
-                  `Diante da sua questão específica — "<strong>${pergunta}</strong>" —, ` +
-                  `a mesa sagrada de búzios manifestou a vibração de ` +
-                  `<strong>Odù ${oduSorteado1.nome}</strong>, sob a regência direta ` +
-                  `de <strong>${oduSorteado1.orixa}</strong>. Ao analisar o momento ` +
-                  `que você atravessa na área de ${analise.contexto}, a queda ` +
-                  `oracular indica que a tendência para a sua pergunta é ` +
-                  `<strong>${oduSorteado1.tendencia}</strong>. Essa manifestação ` +
-                  `revela que o momento exige que você observe com atenção os ` +
-                  `sinais ao seu redor, pois a energia presente favorece que você ` +
-                  `${oduSorteado1.caminho}`;
-
-                paragrafo2 =
-                  `Para que você consiga caminhar com firmeza e sabedoria em direção ` +
-                  `ao que busca, o oráculo orienta que você mantenha o discernimento ` +
-                  `e evite tomar decisões motivadas pela ansiedade ou por impulsos ` +
-                  `do momento. Lembre-se de que a leitura dos búzios ilumina as ` +
-                  `tendências do presente, mas o resultado final também é moldado ` +
-                  `pelas suas atitudes e escolhas. Cultive equilíbrio, observe os ` +
-                  `sinais com serenidade e siga com responsabilidade diante do que ` +
-                  `a leitura apresentou.`;
-              }
-
-              painelResultado.className =
-                "card card-resultado-dark";
-
-              painelResultado.innerHTML = `
-                <div style="
-                  border-bottom: 1px solid var(--card-border);
-                  padding-bottom: 12px;
-                  margin-bottom: 16px;
-                ">
-
-                  <span style="
-                    color: var(--gold-accent);
-                    font-size: 0.8rem;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                  ">
-                    Revelação da Consulta Sagrada
-                  </span>
-
-                  <h3 style="
-                    font-size: 1.4rem;
-                    color: var(--gold-light);
-                    margin-top: 4px;
-                  ">
-                    Odù ${oduSorteado1.nome}
-                    (${buziosAbertos1} Abertos /
-                    ${buziosFechados1} Fechados)
-                  </h3>
-
-                  <p style="
-                    font-size: 0.88rem;
-                    color: var(--text-muted);
-                    margin-top: 4px;
-                  ">
-                    Regência Principal:
-                    <strong>
-                      ${oduSorteado1.orixa}
-                    </strong>
-                  </p>
-
-                </div>
-
-                <div
-                  class="box-destaque-dark"
-                  style="
-                    line-height: 1.8;
-                    font-size: 0.95rem;
-                  "
-                >
-
-                  <p style="
-                    margin-bottom: 16px;
-                    text-indent: 12px;
-                  ">
-                    ${paragrafo1}
-                  </p>
-
-                  <p style="
-                    text-indent: 12px;
-                  ">
-                    ${paragrafo2}
-                  </p>
-
-                </div>
-
-                <div class="disclaimer-callout">
-
-                  ⚠️
-                  <strong>
-                    Aviso Importante:
-                  </strong>
-
-                  Esta é uma consulta orientativa realizada por uma
-                  inteligência artificial digital. Para aprofundamentos,
-                  trabalhos espirituais, rituais, confirmações de Odù
-                  e assentamentos, procure uma casa de Candomblé ou um
-                  Babalorixá / Ialorixá de sua confiança.
-
-                </div>
-
-                <div style="
-                  margin-top: 20px;
-                  text-align: center;
-                ">
-
-                  <button
-                    type="button"
-                    class="btn-primary"
-                    onclick="reiniciarConsulta()"
-                  >
-                    ✨ Nova Pergunta
-                  </button>
-
-                </div>
-              `;
-
-              painelResultado.style.display =
-                'block';
-
-              painelResultado.scrollIntoView({
-                behavior: 'smooth'
-              });
-
-              if (btnJogar) {
-                btnJogar.disabled =
-                  false;
-              }
-
-              isProcessing =
-                false;
-
-            },
-            1000
+              el.style.transform =
+                `rotate(${rotFinal}deg) scale(1)`;
+            }
           );
 
-        },
-        3600
-      );
+        }, 1420);
+
+        // Pequeno quique final
+        setTimeout(() => {
+
+          buziosCriados.forEach(
+            ({ el }, index) => {
+
+              el.style.transition =
+                'transform 0.18s ease-out';
+
+              setTimeout(() => {
+
+                el.style.transform +=
+                  ' translateY(-3px)';
+
+              }, index * 16);
+
+              setTimeout(() => {
+
+                el.style.transform =
+                  el.style.transform.replace(
+                    ' translateY(-3px)',
+                    ''
+                  );
+
+              }, 150 + index * 16);
+            }
+          );
+
+        }, 2040);
+
+        // ======================================
+        // LEITURA APÓS A ANIMAÇÃO
+        // ======================================
+
+        setTimeout(() => {
+
+          statusTexto.textContent = '';
+
+          consultasRestantes--;
+
+          if (
+            consultasRestantes < 0
+          ) {
+            consultasRestantes = 0;
+          }
+
+          atualizarContadores();
+
+          ultimaPerguntaProcessada =
+            perguntaNormalizada;
+
+          let paragrafo1 = '';
+          let paragrafo2 = '';
+
+          if (ehOrixaCabeca) {
+
+            paragrafo1 =
+              `Em relação à sua busca sincera sobre "<strong>${pergunta}</strong>", ` +
+              `os búzios se moveram na mesa em uma dupla queda reveladora. ` +
+              `A primeira queda manifestou a regência de ` +
+              `<strong>${oduSorteado1.orixa}</strong> através de Odù ` +
+              `${oduSorteado1.nome}, mostrando que a tendência para a sua ` +
+              `liderança e presença no mundo é ${oduSorteado1.tendencia}. ` +
+              `Esta primeira vibração direciona como você enfrenta os desafios ` +
+              `diários, indicando que sua força interior se renova quando você ` +
+              `atua com coragem, ética e alinhamento com a energia ancestral ` +
+              `que o protege.`;
+
+            paragrafo2 =
+              `Na segunda queda da mesa sagrada, a energia do seu Orixá ` +
+              `Adjunto (Juntó) revelou a força de ` +
+              `<strong>${oduSorteado2.orixa}</strong> sob o Odù ` +
+              `${oduSorteado2.nome}. Esta combinação mostra que o seu suporte ` +
+              `emocional e sustentação espiritual atuam em complementaridade ` +
+              `com seu Orixá de Frente. Para manter seus caminhos abertos e ` +
+              `prósperos diante do que foi perguntado, é fundamental cultivar ` +
+              `a paciência e manter atitudes ponderadas no cotidiano, lembrando ` +
+              `sempre que a confirmação definitiva dessa regência é um ato ` +
+              `sagrado presencial.`;
+
+          } else {
+
+            paragrafo1 =
+              `Diante da sua questão específica — "<strong>${pergunta}</strong>" —, ` +
+              `a mesa sagrada de búzios manifestou a vibração de ` +
+              `<strong>Odù ${oduSorteado1.nome}</strong>, sob a regência direta ` +
+              `de <strong>${oduSorteado1.orixa}</strong>. Ao analisar o momento ` +
+              `que você atravessa na área de ${analise.contexto}, a queda ` +
+              `oracular indica que a tendência para a sua pergunta é ` +
+              `<strong>${oduSorteado1.tendencia}</strong>. Essa manifestação ` +
+              `revela que o momento exige que você observe com atenção os ` +
+              `sinais ao seu redor, pois a energia presente favorece que você ` +
+              `${oduSorteado1.caminho}`;
+
+            paragrafo2 =
+              `Para que você consiga caminhar com firmeza e sabedoria em direção ` +
+              `ao que busca, o oráculo orienta que você mantenha o discernimento ` +
+              `e evite tomar decisões motivadas pela ansiedade ou por impulsos ` +
+              `do momento. Lembre-se de que a leitura dos búzios ilumina as ` +
+              `tendências do presente, mas o resultado final também é moldado ` +
+              `pelas suas atitudes e escolhas. Cultive equilíbrio, observe os ` +
+              `sinais com serenidade e siga com responsabilidade diante do que ` +
+              `a leitura apresentou.`;
+          }
+
+          painelResultado.className =
+            "card card-resultado-dark";
+
+          painelResultado.innerHTML = `
+            <div style="
+              border-bottom: 1px solid var(--card-border);
+              padding-bottom: 12px;
+              margin-bottom: 16px;
+            ">
+
+              <span style="
+                color: var(--gold-accent);
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+              ">
+                Revelação da Consulta Sagrada
+              </span>
+
+              <h3 style="
+                font-size: 1.4rem;
+                color: var(--gold-light);
+                margin-top: 4px;
+              ">
+                Odù ${oduSorteado1.nome}
+                (${buziosAbertos1} Abertos /
+                ${buziosFechados1} Fechados)
+              </h3>
+
+              <p style="
+                font-size: 0.88rem;
+                color: var(--text-muted);
+                margin-top: 4px;
+              ">
+                Regência Principal:
+                <strong>
+                  ${oduSorteado1.orixa}
+                </strong>
+              </p>
+
+            </div>
+
+            <div
+              class="box-destaque-dark"
+              style="
+                line-height: 1.8;
+                font-size: 0.95rem;
+              "
+            >
+
+              <p style="
+                margin-bottom: 16px;
+                text-indent: 12px;
+              ">
+                ${paragrafo1}
+              </p>
+
+              <p style="
+                text-indent: 12px;
+              ">
+                ${paragrafo2}
+              </p>
+
+            </div>
+
+            <div class="disclaimer-callout">
+
+              ⚠️
+              <strong>
+                Aviso Importante:
+              </strong>
+
+              Esta é uma consulta orientativa realizada por uma
+              inteligência artificial digital. Para aprofundamentos,
+              trabalhos espirituais, rituais, confirmações de Odù
+              e assentamentos, procure uma casa de Candomblé ou um
+              Babalorixá / Ialorixá de sua confiança.
+
+            </div>
+
+            <div style="
+              margin-top: 20px;
+              text-align: center;
+            ">
+
+              <button
+                type="button"
+                class="btn-primary"
+                onclick="reiniciarConsulta()"
+              >
+                ✨ Nova Pergunta
+              </button>
+
+            </div>
+          `;
+
+          painelResultado.style.display =
+            'block';
+
+          painelResultado.scrollIntoView({
+            behavior: 'smooth'
+          });
+
+          if (btnJogar) {
+            btnJogar.disabled = false;
+          }
+
+          isProcessing = false;
+
+        }, 2700);
+
+      }, 3000);
     }
   );
 
@@ -1439,7 +1596,6 @@ document.addEventListener(
   () => {
 
     atualizarContadores();
-
     carregarSessao();
 
   }
