@@ -255,7 +255,7 @@ export default async function handler(req, res) {
     ) {
       contexto = 'Amor e Relacionamentos';
     } else if (
-      /trabalho|emprego|vaga|carreira|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i.test(
+      /trabalho|emprego|vaga|carreira|profissional|profissionais|profissão|profissao|empresa|chefe|promoção|promocao|entrevista|negócio|negocio/i.test(
         perguntaLimpa
       )
     ) {
