@@ -306,8 +306,8 @@ export default async function handler(req, res) {
       status_consulta:
         'EM_ANDAMENTO',
 
-      origem_liberacao:
-        'TESTE_MANUAL'
+     origem_liberacao:
+        'TESTE_ADMIN'
 
     };
 
