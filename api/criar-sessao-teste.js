@@ -6,18 +6,25 @@
 // REGRA:
 // CADA NOVO PACOTE = NOVO pedidoId
 //
-// Isso garante:
-// - novo saldo
-// - novo histórico de perguntas
-// - trava de repetição apenas dentro daquele pacote
-// - separação correta entre compras
-// - preparação para Mercado Pago
+// SUPORTA:
+// 1. primeira sessão de teste, sem pedidoId anterior
+// 2. novo pacote a partir de uma sessão de teste existente
+//
+// NÃO ALTERA:
+// - consultas pagas
+// - sessões comerciais
+// - consumo de créditos
 // =========================================================
 
-import { randomUUID } from 'node:crypto';
+import {
+  randomUUID
+} from 'node:crypto';
 
 
-export default async function handler(req, res) {
+export default async function handler(
+  req,
+  res
+) {
 
   // =======================================================
   // 1. CORS
@@ -39,7 +46,10 @@ export default async function handler(req, res) {
   );
 
 
-  if (req.method === 'OPTIONS') {
+  if (
+    req.method ===
+    'OPTIONS'
+  ) {
 
     return res
       .status(200)
@@ -47,13 +57,17 @@ export default async function handler(req, res) {
   }
 
 
-  if (req.method !== 'POST') {
+  if (
+    req.method !==
+    'POST'
+  ) {
 
     return res
       .status(405)
       .json({
 
-        sucesso: false,
+        sucesso:
+          false,
 
         error:
           'Método não permitido.'
@@ -69,11 +83,13 @@ export default async function handler(req, res) {
     // =====================================================
 
     const supabaseUrl =
-      process.env.SUPABASE_URL;
+      process.env
+        .SUPABASE_URL;
 
 
     const supabaseKey =
-      process.env.SUPABASE_SERVICE_ROLE_KEY;
+      process.env
+        .SUPABASE_SERVICE_ROLE_KEY;
 
 
     if (
@@ -85,7 +101,8 @@ export default async function handler(req, res) {
         .status(500)
         .json({
 
-          sucesso: false,
+          sucesso:
+            false,
 
           error:
             'Configuração do Supabase não encontrada.'
@@ -113,28 +130,14 @@ export default async function handler(req, res) {
     // =====================================================
 
     const pedidoIdAtual =
-      req.body?.pedidoIdAtual;
+      req.body?.pedidoIdAtual ||
+      null;
 
 
     const quantidade =
       Number(
         req.body?.quantidade
       );
-
-
-    if (!pedidoIdAtual) {
-
-      return res
-        .status(400)
-        .json({
-
-          sucesso: false,
-
-          error:
-            'Sessão atual não informada.'
-
-        });
-    }
 
 
     if (
@@ -147,7 +150,8 @@ export default async function handler(req, res) {
         .status(400)
         .json({
 
-          sucesso: false,
+          sucesso:
+            false,
 
           error:
             'Pacote inválido.'
@@ -157,105 +161,157 @@ export default async function handler(req, res) {
 
 
     // =====================================================
-    // 4. BUSCAR SESSÃO ATUAL
+    // 4. DADOS BASE DA NOVA SESSÃO
     // =====================================================
 
-    const sessaoResponse =
-      await fetch(
+    let dadosSessaoBase = {
 
-        `${supabaseUrl}/rest/v1/pedidos_consultas` +
-        `?id=eq.${encodeURIComponent(pedidoIdAtual)}` +
-        `&select=` +
-        `id,` +
-        `nome,` +
-        `email,` +
-        `data_nascimento,` +
-        `odu_nascimento_id,` +
-        `status_pagamento` +
-        `&limit=1`,
+      nome:
+        null,
 
-        {
-          headers
-        }
-      );
+      email:
+        null,
 
+      data_nascimento:
+        null,
 
-    const sessoes =
-      await sessaoResponse.json();
+      odu_nascimento_id:
+        null
 
-
-    if (!sessaoResponse.ok) {
-
-      console.error(
-        'Erro ao buscar sessão:',
-        sessoes
-      );
-
-
-      return res
-        .status(500)
-        .json({
-
-          sucesso: false,
-
-          error:
-            'Não foi possível consultar a sessão atual.'
-
-        });
-    }
-
-
-    if (
-      !Array.isArray(
-        sessoes
-      ) ||
-      sessoes.length === 0
-    ) {
-
-      return res
-        .status(404)
-        .json({
-
-          sucesso: false,
-
-          error:
-            'Sessão atual não encontrada.'
-
-        });
-    }
-
-
-    const sessaoAtual =
-      sessoes[0];
+    };
 
 
     // =====================================================
-    // 5. PROTEÇÃO
-    //
-    // ESTA ROTA NÃO PODE SER USADA
-    // PARA GERAR CRÉDITOS EM PEDIDOS PAGOS.
+    // 5. SE EXISTIR SESSÃO ANTERIOR,
+    //    VALIDAR E COPIAR OS DADOS DELA
     // =====================================================
 
     if (
-      sessaoAtual.status_pagamento !==
-      'TESTE'
+      pedidoIdAtual
     ) {
 
-      return res
-        .status(403)
-        .json({
+      const sessaoResponse =
+        await fetch(
 
-          sucesso: false,
+          `${supabaseUrl}/rest/v1/pedidos_consultas` +
+          `?id=eq.${encodeURIComponent(pedidoIdAtual)}` +
+          `&select=` +
+          `id,` +
+          `nome,` +
+          `email,` +
+          `data_nascimento,` +
+          `odu_nascimento_id,` +
+          `status_pagamento` +
+          `&limit=1`,
 
-          error:
-            'Esta função está disponível somente para sessões de teste.'
+          {
+            headers
+          }
+        );
 
-        });
+
+      const sessoes =
+        await sessaoResponse
+          .json();
+
+
+      if (
+        !sessaoResponse.ok
+      ) {
+
+        console.error(
+          'Erro ao buscar sessão:',
+          sessoes
+        );
+
+
+        return res
+          .status(500)
+          .json({
+
+            sucesso:
+              false,
+
+            error:
+              'Não foi possível consultar a sessão atual.'
+
+          });
+      }
+
+
+      if (
+        !Array.isArray(
+          sessoes
+        ) ||
+        sessoes.length === 0
+      ) {
+
+        return res
+          .status(404)
+          .json({
+
+            sucesso:
+              false,
+
+            error:
+              'Sessão atual não encontrada.'
+
+          });
+      }
+
+
+      const sessaoAtual =
+        sessoes[0];
+
+
+      // ---------------------------------------------------
+      // PROTEÇÃO:
+      // NÃO USAR ESTA ROTA PARA PEDIDOS PAGOS
+      // ---------------------------------------------------
+
+      if (
+        sessaoAtual.status_pagamento !==
+        'TESTE'
+      ) {
+
+        return res
+          .status(403)
+          .json({
+
+            sucesso:
+              false,
+
+            error:
+              'Esta função está disponível somente para sessões de teste.'
+
+          });
+      }
+
+
+      dadosSessaoBase = {
+
+        nome:
+          sessaoAtual.nome ||
+          null,
+
+        email:
+          sessaoAtual.email ||
+          null,
+
+        data_nascimento:
+          sessaoAtual.data_nascimento ||
+          null,
+
+        odu_nascimento_id:
+          sessaoAtual.odu_nascimento_id ||
+          null
+
+      };
     }
 
 
     // =====================================================
-    // 6. NOVO PEDIDO
+    // 6. CRIAR NOVO PEDIDO
     // =====================================================
 
     const novoPedidoId =
@@ -276,20 +332,16 @@ export default async function handler(req, res) {
         novoPedidoId,
 
       nome:
-        sessaoAtual.nome ||
-        null,
+        dadosSessaoBase.nome,
 
       email:
-        sessaoAtual.email ||
-        null,
+        dadosSessaoBase.email,
 
       data_nascimento:
-        sessaoAtual.data_nascimento ||
-        null,
+        dadosSessaoBase.data_nascimento,
 
       odu_nascimento_id:
-        sessaoAtual.odu_nascimento_id ||
-        null,
+        dadosSessaoBase.odu_nascimento_id,
 
       pacote_escolhido:
         pacoteEscolhido,
@@ -306,7 +358,7 @@ export default async function handler(req, res) {
       status_consulta:
         'EM_ANDAMENTO',
 
-     origem_liberacao:
+      origem_liberacao:
         'TESTE_ADMIN'
 
     };
@@ -343,10 +395,13 @@ export default async function handler(req, res) {
 
 
     const criado =
-      await criarResponse.json();
+      await criarResponse
+        .json();
 
 
-    if (!criarResponse.ok) {
+    if (
+      !criarResponse.ok
+    ) {
 
       console.error(
         'Erro ao criar nova sessão:',
@@ -358,7 +413,8 @@ export default async function handler(req, res) {
         .status(500)
         .json({
 
-          sucesso: false,
+          sucesso:
+            false,
 
           error:
             'Não foi possível criar a nova sessão de teste.'
@@ -381,6 +437,9 @@ export default async function handler(req, res) {
         modo:
           'TESTE',
 
+        primeiraSessao:
+          !pedidoIdAtual,
+
         pedidoId:
           novoPedidoId,
 
@@ -393,12 +452,18 @@ export default async function handler(req, res) {
           quantidade,
 
         mensagem:
-          'Nova sessão criada com sucesso.'
+          !pedidoIdAtual
+
+            ? 'Sessão inicial de teste criada com sucesso.'
+
+            : 'Nova sessão de teste criada com sucesso.'
 
       });
 
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
     console.error(
       'Erro criar-sessao-teste.js:',
@@ -410,7 +475,8 @@ export default async function handler(req, res) {
       .status(500)
       .json({
 
-        sucesso: false,
+        sucesso:
+          false,
 
         error:
           'Erro ao criar nova sessão de teste.'
