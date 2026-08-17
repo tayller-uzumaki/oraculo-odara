@@ -504,6 +504,18 @@ function classificarIntencao(pergunta) {
 
     /\bmae de cabeca\b/,
 
+    /\bpai e mae de cabeca\b/,
+
+    /\bmae e pai de cabeca\b/,
+
+    /\bquem e meu pai de cabeca\b/,
+
+    /\bquem e minha mae de cabeca\b/,
+
+    /\bquem sao meu pai e minha mae de cabeca\b/,
+
+    /\bquais sao meu pai e minha mae de cabeca\b/,
+
     /\borixa de cabeca\b/,
 
     /\borixas de cabeca\b/,
@@ -511,6 +523,8 @@ function classificarIntencao(pergunta) {
     /\bquem rege minha cabeca\b/,
 
     /\bquem rege meu caminho\b/,
+
+    /\bquem rege meus caminhos\b/,
 
     /\bqual meu eleda\b/,
 
@@ -520,7 +534,31 @@ function classificarIntencao(pergunta) {
 
     /\bmeu junto\b/,
 
-    /\bqual meu adjunto\b/
+    /\bqual meu adjunto\b/,
+
+    /\bquais orixas se apresentam\b/,
+
+    /\bquais sao os orixas que se apresentam\b/,
+
+    /\borixas que se apresentam\b/,
+
+    /\bforca principal complementar e ancestral\b/,
+
+    /\bforca principal\b.*\bcomplementar\b.*\bancestral\b/,
+
+    /\bprincipal\b.*\bcomplementar\b.*\bancestral\b.*\borixa\b/,
+
+    /\bquais forcas regem meu momento\b/,
+
+    /\bquais forcas regem meus caminhos\b/,
+
+    /\bquais orixas regem meu momento\b/,
+
+    /\bquais orixas regem meus caminhos\b/,
+
+    /\bregencias do meu momento\b/,
+
+    /\bregencias dos meus caminhos\b/
 
   ];
 
@@ -544,31 +582,11 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // B. AMOR
+  // B. TRABALHO
   // -------------------------------------------------------
 
   if (
-    /amor|relacionamento|namoro|namorada|namorado|casamento|marido|esposa|ex|parceiro|parceira|traicao|voltar|separacao|terminar/
-      .test(t)
-  ) {
-
-    return {
-
-      contexto:
-        'Amor e Relacionamentos',
-
-      intencao:
-        'RELACIONAMENTO'
-    };
-  }
-
-
-  // -------------------------------------------------------
-  // C. TRABALHO
-  // -------------------------------------------------------
-
-  if (
-    /trabalho|emprego|vaga|carreira|profissional|profissao|empresa|chefe|promocao|entrevista|negocio|contrato|demissao/
+    /\b(trabalho|emprego|vaga|carreira|profissional|profissao|empresa|chefe|promocao|entrevista|negocio|contrato|demissao)\b/
       .test(t)
   ) {
 
@@ -584,11 +602,11 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // D. FINANÇAS
+  // C. FINANÇAS
   // -------------------------------------------------------
 
   if (
-    /dinheiro|financeiro|financas|divida|investimento|comprar|vender|prosperidade|renda|salario/
+    /\b(dinheiro|financeiro|financas|divida|investimento|comprar|vender|prosperidade|renda|salario)\b/
       .test(t)
   ) {
 
@@ -604,11 +622,11 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // E. FAMÍLIA
+  // D. FAMÍLIA
   // -------------------------------------------------------
 
   if (
-    /familia|filho|filha|irmao|irma|parentes|avo|avó|tio|tia/
+    /\b(familia|filho|filha|irmao|irma|parentes|avo|tio|tia)\b/
       .test(t)
   ) {
 
@@ -624,11 +642,11 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // F. QUESTÕES JURÍDICAS
+  // E. QUESTÕES JURÍDICAS
   // -------------------------------------------------------
 
   if (
-    /processo|justica|advogado|advogada|indenizacao|audiencia|causa trabalhista/
+    /\b(processo|justica|advogado|advogada|indenizacao|audiencia|causa trabalhista)\b/
       .test(t)
   ) {
 
@@ -644,11 +662,11 @@ function classificarIntencao(pergunta) {
 
 
   // -------------------------------------------------------
-  // G. ESPIRITUALIDADE
+  // F. ESPIRITUALIDADE
   // -------------------------------------------------------
 
   if (
-    /espiritual|protecao|inveja|demanda|energia|axe|feitico|macumba|ancestral|terreiro/
+    /\b(espiritual|espiritualidade|protecao|inveja|demanda|energia|axe|feitico|macumba|ancestral|terreiro)\b/
       .test(t)
   ) {
 
@@ -663,6 +681,35 @@ function classificarIntencao(pergunta) {
   }
 
 
+  // -------------------------------------------------------
+  // G. AMOR
+  //
+  // IMPORTANTE:
+  // "ex" agora só é reconhecido como palavra isolada.
+  // Assim "existe", "exemplo" e "experiencia"
+  // não caem mais em Amor e Relacionamentos.
+  // -------------------------------------------------------
+
+  if (
+    /\b(amor|relacionamento|namoro|namorada|namorado|casamento|marido|esposa|ex|parceiro|parceira|traicao|voltar|separacao|terminar)\b/
+      .test(t)
+  ) {
+
+    return {
+
+      contexto:
+        'Amor e Relacionamentos',
+
+      intencao:
+        'RELACIONAMENTO'
+    };
+  }
+
+
+  // -------------------------------------------------------
+  // H. ORIENTAÇÃO GERAL
+  // -------------------------------------------------------
+
   return {
 
     contexto:
@@ -672,8 +719,6 @@ function classificarIntencao(pergunta) {
       'ORIENTACAO_GERAL'
   };
 }
-
-
 // =========================================================
 // 6. PROTOCOLO DA CONSULTA
 // =========================================================
