@@ -2164,9 +2164,10 @@ module.exports = async function handler(
     }
 
 
-    // =====================================================
-    // 26. PREPARAR CONHECIMENTO PARA A IA
-    // =====================================================
+// =====================================================
+// 26. PREPARAR CONHECIMENTO PARA A IA
+// =====================================================
+
 function separarOrixasDaQueda(
   valor
 ) {
@@ -2215,7 +2216,8 @@ function resolverOrixaDaQueda(
 
   };
 }
-// 27. REGRA EXTRA PARA TEMAS SENSÍVEIS
+
+
 const baseParaPrompt =
   quedasEnriquecidas.map(
     (
@@ -2402,14 +2404,12 @@ const resultadoOrixas =
 
       }
 
-    : null;        
-      );
+    : null;
 
 
-    // =====================================================
-    // 27. REGRA EXTRA PARA TEMAS SENSÍVEIS
-    // =====================================================
-
+// =====================================================
+// 27. REGRA EXTRA PARA TEMAS SENSÍVEIS
+// =====================================================
     let regrasSensibilidade =
       'Nenhuma regra adicional de sensibilidade foi identificada.';
 
