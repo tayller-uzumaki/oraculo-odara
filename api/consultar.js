@@ -1260,7 +1260,7 @@ function montarQuedasRecebidas(
 // 10. HANDLER PRINCIPAL
 // =========================================================
 
-export default async function handler(
+module.exports = async function handler(
   req,
   res
 ) {
