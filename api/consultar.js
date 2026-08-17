@@ -2402,7 +2402,7 @@ const resultadoOrixas =
 
       }
 
-    : null;        }
+    : null;        
       );
 
 
