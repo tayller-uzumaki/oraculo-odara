@@ -2167,128 +2167,242 @@ module.exports = async function handler(
     // =====================================================
     // 26. PREPARAR CONHECIMENTO PARA A IA
     // =====================================================
+function separarOrixasDaQueda(
+  valor
+) {
 
-    const baseParaPrompt =
-      quedasEnriquecidas.map(
-        (
-          queda,
-          index
-        ) => {
-
-          const conhecimento =
-            queda.conhecimento ||
-            {};
+  const texto =
+    String(
+      valor || ''
+    )
+      .trim();
 
 
-          const interpretacoes =
-            Array.isArray(
-              conhecimento.interpretacoes
-            )
-              ? conhecimento.interpretacoes
-                  .slice(
-                    0,
-                    8
-                  )
-              : [];
+  if (!texto) {
+
+    return [];
+  }
 
 
-          const arquetipos =
-            Array.isArray(
-              conhecimento.arquetipos
-            )
-              ? conhecimento.arquetipos
-                  .slice(
-                    0,
-                    4
-                  )
-              : [];
+  return texto
+    .split('/')
+    .map(
+      item =>
+        item.trim()
+    )
+    .filter(Boolean);
+}
 
 
-          const orixas =
-            Array.isArray(
-              conhecimento.orixas
-            )
-              ? conhecimento.orixas
-                  .slice(
-                    0,
-                    6
-                  )
-              : [];
+function resolverOrixaDaQueda(
+  valor
+) {
+
+  const lista =
+    separarOrixasDaQueda(
+      valor
+    );
 
 
-          const proverbios =
-            Array.isArray(
-              conhecimento.proverbios
-            )
-              ? conhecimento.proverbios
-                  .slice(
-                    0,
-                    3
-                  )
-              : [];
+  return {
+
+    principal:
+      lista[0] ||
+      null,
+
+    relacionados:
+      lista.slice(1)
+
+  };
+}
+// 27. REGRA EXTRA PARA TEMAS SENSÍVEIS
+const baseParaPrompt =
+  quedasEnriquecidas.map(
+    (
+      queda,
+      index
+    ) => {
+
+      const conhecimento =
+        queda.conhecimento ||
+        {};
 
 
-          const mitos =
-            Array.isArray(
-              conhecimento.mitos
-            )
-              ? conhecimento.mitos
-                  .slice(
-                    0,
-                    2
-                  )
-              : [];
+      const interpretacoes =
+        Array.isArray(
+          conhecimento.interpretacoes
+        )
+          ? conhecimento.interpretacoes
+              .slice(
+                0,
+                8
+              )
+          : [];
 
 
-          return {
+      const arquetipos =
+        Array.isArray(
+          conhecimento.arquetipos
+        )
+          ? conhecimento.arquetipos
+              .slice(
+                0,
+                4
+              )
+          : [];
 
-            ordem:
-              index + 1,
 
-            posicao:
-              queda.posicao,
+      const orixas =
+        Array.isArray(
+          conhecimento.orixas
+        )
+          ? conhecimento.orixas
+              .slice(
+                0,
+                6
+              )
+          : [];
 
-            queda: {
 
-              numero:
-                queda.numero,
+      const proverbios =
+        Array.isArray(
+          conhecimento.proverbios
+        )
+          ? conhecimento.proverbios
+              .slice(
+                0,
+                3
+              )
+          : [];
 
-              nome:
-                queda.nome,
 
-              orixa:
-                queda.orixa,
+      const mitos =
+        Array.isArray(
+          conhecimento.mitos
+        )
+          ? conhecimento.mitos
+              .slice(
+                0,
+                2
+              )
+          : [];
 
-              elemento:
-                queda.elemento,
 
-              favorabilidade:
-                queda.favorabilidade,
+      const resolucaoOrixa =
+        resolverOrixaDaQueda(
+          queda.orixa
+        );
 
-              buziosAbertos:
-                queda.numAbertos,
 
-              buziosFechados:
-                queda.numFechados
+      return {
 
-            },
+        ordem:
+          index + 1,
 
-            cadastroOdu:
-              conhecimento.odu,
+        posicao:
+          queda.posicao,
 
-            arquetipos,
+        queda: {
 
-            interpretacoes,
+          numero:
+            queda.numero,
 
-            orixasRelacionados:
-              orixas,
+          nome:
+            queda.nome,
 
-            proverbios,
+          orixa:
+            queda.orixa,
 
-            mitos
+          orixaPrincipal:
+            resolucaoOrixa.principal,
 
-          };
-        }
+          orixasSecundarios:
+            resolucaoOrixa.relacionados,
+
+          elemento:
+            queda.elemento,
+
+          favorabilidade:
+            queda.favorabilidade,
+
+          buziosAbertos:
+            queda.numAbertos,
+
+          buziosFechados:
+            queda.numFechados
+
+        },
+
+        cadastroOdu:
+          conhecimento.odu,
+
+        arquetipos,
+
+        interpretacoes,
+
+        orixasRelacionados:
+          orixas,
+
+        proverbios,
+
+        mitos
+
+      };
+    }
+  );
+
+
+const resultadoOrixas =
+  protocolo.protocolo ===
+    'ORIXAS_DO_MOMENTO'
+
+    ? {
+
+        primeiroOrixaCabeca:
+          baseParaPrompt
+            ?.[0]
+            ?.queda
+            ?.orixaPrincipal ||
+          null,
+
+        segundoOrixaCabeca:
+          baseParaPrompt
+            ?.[1]
+            ?.queda
+            ?.orixaPrincipal ||
+          null,
+
+        junto:
+          baseParaPrompt
+            ?.[2]
+            ?.queda
+            ?.orixaPrincipal ||
+          null,
+
+        primeiraQuedaSecundarios:
+          baseParaPrompt
+            ?.[0]
+            ?.queda
+            ?.orixasSecundarios ||
+          [],
+
+        segundaQuedaSecundarios:
+          baseParaPrompt
+            ?.[1]
+            ?.queda
+            ?.orixasSecundarios ||
+          [],
+
+        terceiraQuedaSecundarios:
+          baseParaPrompt
+            ?.[2]
+            ?.queda
+            ?.orixasSecundarios ||
+          []
+
+      }
+
+    : null;        }
       );
 
 
@@ -2836,8 +2950,19 @@ ${JSON.stringify(
   null,
   2
 )}
-ORIENTAÇÃO PARA ESTA RESPOSTA
 
+
+RESULTADO DE ORIXÁS RESOLVIDO PELO SISTEMA
+
+${resultadoOrixas
+  ? JSON.stringify(
+      resultadoOrixas,
+      null,
+      2
+    )
+  : 'Não se aplica a esta consulta.'
+}
+ORIENTAÇÃO PARA ESTA RESPOSTA
 Interprete exclusivamente essas quedas.
 
 Não invente uma nova caída.
