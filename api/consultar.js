@@ -2836,6 +2836,605 @@ ${JSON.stringify(
   null,
   2
 )}
+ORIENTAÇÃO PARA ESTA RESPOSTA
+
+Interprete exclusivamente essas quedas.
+
+Não invente uma nova caída.
+
+Não invente outro Odù.
+
+Não invente outro Orixá.
+
+Não altere a ordem das quedas.
+
+Não esconda um resultado desfavorável.
+
+Não exagere um resultado favorável.
+
+Responda diretamente ao que foi perguntado.
+
+
+${protocolo.protocolo === 'ORIXAS_DO_MOMENTO'
+  ? `
+
+ESTA É UMA CONSULTA ESPECIAL DE ORIXÁS COM TRÊS QUEDAS REAIS.
+
+A pessoa assistiu visualmente às três quedas.
+
+Você deve utilizar exatamente os Orixás apresentados em cada queda.
+
+NÃO invente outro Orixá.
+
+NÃO troque a ordem das quedas.
+
+
+==================================================
+1. IDENTIFIQUE O TIPO DE PERGUNTA
+==================================================
+
+Primeiro observe como a pessoa formulou a pergunta.
+
+Se ela perguntou explicitamente sobre:
+
+- Orixá de cabeça
+- Orixás de cabeça
+- pai de cabeça
+- mãe de cabeça
+- pai e mãe de cabeça
+- "de qual Orixá eu sou filho"
+- "de qual Orixá eu sou filha"
+- "quem são meus Orixás"
+- "qual é meu pai e minha mãe"
+- "quais são meus Orixás"
+
+trate como uma pergunta sobre ORIXÁS DE CABEÇA.
+
+Se ela perguntou somente:
+
+- quais Orixás estão presentes
+- quais Orixás estão atuando
+- quais Orixás regem o momento
+- quais forças estão acompanhando seus caminhos
+- quais forças se apresentam no momento atual
+
+trate como uma pergunta sobre FORÇAS DO MOMENTO.
+
+Não transforme automaticamente forças do momento em Orixás de cabeça.
+
+
+==================================================
+2. QUANDO A PERGUNTA FOR SOBRE ORIXÁS DE CABEÇA
+==================================================
+
+Comece a resposta diretamente com:
+
+## 🔮 Sua Tríade de Orixás
+
+**Mãe de Cabeça indicada:** [Orixá efetivamente apresentado na 1ª queda]
+
+**Pai de Cabeça indicado:** [Orixá efetivamente apresentado na 2ª queda]
+
+**Juntó indicado:** [Orixá efetivamente apresentado na 3ª queda]
+
+Logo abaixo escreva:
+
+**✨ Sua combinação nesta leitura:** [Orixá 1] com [Orixá 2], tendo [Orixá 3] como força de sustentação.
+
+Use "indicada", "indicado" e "nesta leitura".
+
+Não diga que essa identificação é definitiva.
+
+Não esconda os nomes apresentados.
+
+Não comece a resposta com ressalvas.
+
+
+==================================================
+3. QUANDO A PERGUNTA FOR SOBRE O MOMENTO ATUAL
+==================================================
+
+Comece a resposta com:
+
+## 🔮 As Forças que se Apresentam no Seu Momento
+
+**Força principal:** [Orixá efetivamente apresentado na 1ª queda]
+
+**Força complementar:** [Orixá efetivamente apresentado na 2ª queda]
+
+**Força de sustentação:** [Orixá efetivamente apresentado na 3ª queda]
+
+Logo abaixo escreva:
+
+**✨ Em resumo:** nesta leitura, [Orixá 1] aparece à frente, [Orixá 2] complementa essa energia e [Orixá 3] atua como sustentação.
+
+Não chame essas três forças de Orixás de cabeça quando a pergunta não tiver solicitado isso.
+
+
+==================================================
+4. ENTENDA O QUE ESSA COMBINAÇÃO DIZ
+==================================================
+
+### 🌿 Sua Essência
+
+Interprete principalmente a combinação das duas primeiras forças.
+
+Não faça apenas duas descrições independentes.
+
+Explique:
+
+- onde essas energias se complementam
+- quais características aparecem com maior força
+- como essa combinação pode aparecer na maneira de agir
+- como pode aparecer nas decisões
+- como pode aparecer nas relações
+- como pode aparecer na espiritualidade ou no contexto real da pergunta
+
+Não trate arquétipos como diagnóstico de personalidade.
+
+
+==================================================
+5. PONTOS FORTES
+==================================================
+
+### ✨ Pontos Fortes
+
+Apresente de 2 a 4 pontos fortes realmente relacionados às duas primeiras forças.
+
+Não utilize características genéricas apenas para preencher espaço.
+
+
+==================================================
+6. PONTOS DE ATENÇÃO
+==================================================
+
+### ⚠️ Pontos de Atenção
+
+Apresente de 2 a 4 aspectos que pedem equilíbrio.
+
+Não assuste.
+
+Não transforme características simbólicas em previsão negativa.
+
+
+==================================================
+7. CAMINHO PRÁTICO
+==================================================
+
+### 🧭 Como essa combinação aparece na sua vida
+
+Explique de forma simples como essa combinação pode aparecer:
+
+- nas escolhas
+- na forma de agir
+- na maneira de reagir às dificuldades
+- nas relações
+- no trabalho
+- na espiritualidade
+- no tema específico da pergunta
+
+
+==================================================
+8. TERCEIRA QUEDA
+==================================================
+
+Crie a seção:
+
+### 🌿 Sua Força de Sustentação — [Orixá da 3ª queda]
+
+Se a pergunta for especificamente sobre Orixás de cabeça, use:
+
+### 🌿 Seu Juntó indicado — [Orixá da 3ª queda]
+
+Explique como essa terceira força sustenta, equilibra e complementa as duas primeiras.
+
+Não afirme fundamentos religiosos específicos que não estejam sustentados pela base cultural.
+
+
+==================================================
+9. FECHAMENTO DA LEITURA
+==================================================
+
+### ✨ O que os búzios mostram nesta consulta
+
+Integre as três quedas em 1 ou 2 parágrafos.
+
+Explique:
+
+- qual é a mensagem conjunta das três forças
+- onde existe equilíbrio
+- onde existe tensão
+- qual força parece ter maior peso
+- como isso conversa com a pergunta feita
+
+
+==================================================
+10. RESSALVA RELIGIOSA
+==================================================
+
+A ressalva deve aparecer somente no final.
+
+Use uma mensagem breve com este sentido:
+
+"Esta é uma leitura digital das forças apresentadas pelas três quedas desta consulta. A confirmação ritual dos Orixás de cabeça pertence aos fundamentos e práticas presenciais de cada tradição e casa de Candomblé."
+
+Não transforme essa ressalva no assunto principal.
+`
+  : `
+
+ESTA É UMA CONSULTA PADRÃO.
+
+Comece compreendendo brevemente a pergunta.
+
+Em seguida, diga claramente o que a caída indica para essa questão.
+
+Se houver obstáculos, diga.
+
+Se houver abertura, diga.
+
+Explique por que o Odù leva a essa conclusão.
+
+Finalize mostrando o que continua sob responsabilidade da pessoa.
+`
+}
+`;
+
+
+    // =====================================================
+    // 31. CHAMAR OPENAI
+    // =====================================================
+
+    const aiResponse =
+      await fetch(
+
+        'https://api.openai.com/v1/chat/completions',
+
+        {
+          method:
+            'POST',
+
+          headers: {
+
+            'Content-Type':
+              'application/json',
+
+            Authorization:
+              `Bearer ${openaiKey}`
+          },
+
+          body:
+            JSON.stringify({
+
+              model:
+                'gpt-4o-mini',
+
+              messages: [
+
+                {
+                  role:
+                    'system',
+
+                  content:
+                    systemPrompt
+                },
+
+                {
+                  role:
+                    'user',
+
+                  content:
+                    userPrompt
+                }
+
+              ],
+
+              temperature:
+                0.55,
+
+              max_tokens:
+                protocolo.protocolo ===
+                  'ORIXAS_DO_MOMENTO'
+                    ? 1800
+                    : 1300
+
+            })
+        }
+      );
+
+
+    const aiData =
+      await aiResponse
+        .json();
+
+
+    if (
+      !aiResponse.ok
+    ) {
+
+      console.error(
+        'Erro OpenAI:',
+        aiData
+      );
+
+
+      throw new Error(
+
+        aiData?.error
+          ?.message ||
+
+        'Erro ao gerar a interpretação.'
+      );
+    }
+
+
+    const texto =
+      aiData
+        ?.choices
+        ?.[0]
+        ?.message
+        ?.content;
+
+
+    if (
+      !texto ||
+      typeof texto !==
+        'string' ||
+      texto.trim().length === 0
+    ) {
+
+      throw new Error(
+        'A IA não retornou uma interpretação válida.'
+      );
+    }
+
+
+    const respostaFinal =
+      texto.trim();
+
+
+    // =====================================================
+    // 32. SALVAR RESPOSTA COMO CONCLUÍDA
+    // =====================================================
+
+    if (
+      perguntaId
+    ) {
+
+      const conclusaoResponse =
+        await fetch(
+
+          `${supabaseUrl}/rest/v1/perguntas_consulta` +
+          `?id=eq.${encodeURIComponent(perguntaId)}`,
+
+          {
+            method:
+              'PATCH',
+
+            headers:
+              supabaseHeaders,
+
+            body:
+              JSON.stringify({
+
+                resposta:
+                  respostaFinal,
+
+                consumiu_credito:
+                  true,
+
+                status:
+                  'CONCLUIDA',
+
+                modelo_ia:
+                  'gpt-4o-mini',
+
+                concluido_em:
+                  new Date()
+                    .toISOString()
+
+              })
+          }
+        );
+
+
+      if (
+        !conclusaoResponse.ok
+      ) {
+
+        const erroConclusao =
+          await conclusaoResponse
+            .json()
+            .catch(
+              () => null
+            );
+
+
+        console.error(
+          'Erro ao finalizar consulta:',
+          erroConclusao
+        );
+
+
+        throw new Error(
+          'Não foi possível finalizar o registro da consulta.'
+        );
+      }
+    }
+
+
+    // =====================================================
+    // 33. RETORNO OFICIAL AO FRONTEND
+    // =====================================================
+
+    return res
+      .status(200)
+      .json({
+
+        sucesso:
+          true,
+
+        bloqueado:
+          false,
+
+        consumirCredito:
+          true,
+
+        contexto,
+
+        intencao,
+
+        sensibilidades,
+
+        protocolo:
+          protocolo.protocolo,
+
+        protocoloCompleto,
+
+        quedasNecessarias:
+          protocolo.quedasNecessarias,
+
+        posicoes:
+          protocolo.posicoes,
+
+        resposta:
+          respostaFinal,
+
+        perguntasRestantes:
+          novoSaldo
+
+      });
+
+
+  } catch (error) {
+
+    console.error(
+      'Erro consultar.js:',
+      error
+    );
+
+
+    // =====================================================
+    // 34. ESTORNO AUTOMÁTICO
+    // =====================================================
+
+    try {
+
+      const pedidoIdErro =
+        req.body?.pedidoId;
+
+
+      if (
+        creditoConsumido &&
+        pedidoIdErro
+      ) {
+
+        const estornoResponse =
+          await fetch(
+
+            `${supabaseUrl}/rest/v1/rpc/estornar_credito`,
+
+            {
+              method:
+                'POST',
+
+              headers:
+                supabaseHeaders,
+
+              body:
+                JSON.stringify({
+
+                  p_pedido_id:
+                    pedidoIdErro
+
+                })
+            }
+          );
+
+
+        if (
+          estornoResponse.ok
+        ) {
+
+          creditoConsumido =
+            false;
+
+        } else {
+
+          const erroEstorno =
+            await estornoResponse
+              .json()
+              .catch(
+                () => null
+              );
+
+
+          console.error(
+            'Falha no estorno:',
+            erroEstorno
+          );
+        }
+      }
+
+
+      if (
+        perguntaId
+      ) {
+
+        await fetch(
+
+          `${supabaseUrl}/rest/v1/perguntas_consulta` +
+          `?id=eq.${encodeURIComponent(perguntaId)}`,
+
+          {
+            method:
+              'PATCH',
+
+            headers:
+              supabaseHeaders,
+
+            body:
+              JSON.stringify({
+
+                status:
+                  'ERRO',
+
+                consumiu_credito:
+                  false,
+
+                erro_tecnico:
+                  'Falha durante o processamento da leitura.'
+
+              })
+          }
+        );
+      }
+
+
+    } catch (
+      erroEstorno
+    ) {
+
+      console.error(
+        'Erro durante tentativa de estorno:',
+        erroEstorno
+      );
+    }
+
+
+    // =====================================================
+    // 36. RETORNO SEGURO EM CASO DE FALHA
+    // =====================================================
+
+    return res
+      .status(500)
+      .json({
+
+        sucesso:
+          false,
+
+        error:
+          'Não foi possível concluir a leitura. Seu crédito foi preservado.'
+
       });
   }
 }
