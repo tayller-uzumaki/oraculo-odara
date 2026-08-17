@@ -164,22 +164,21 @@ export default async function handler(
     // 4. DADOS BASE DA NOVA SESSÃO
     // =====================================================
 
-    let dadosSessaoBase = {
+  let dadosSessaoBase = {
 
-      nome:
-        null,
+  nome:
+    'Usuário de Teste',
 
-      email:
-        null,
+  email:
+    `teste.${randomUUID()}@example.com`,
 
-      data_nascimento:
-        null,
+  data_nascimento:
+    null,
 
-      odu_nascimento_id:
-        null
+  odu_nascimento_id:
+    null
 
-    };
-
+};
 
     // =====================================================
     // 5. SE EXISTIR SESSÃO ANTERIOR,
@@ -290,23 +289,23 @@ export default async function handler(
 
       dadosSessaoBase = {
 
-        nome:
-          sessaoAtual.nome ||
-          null,
+  nome:
+    sessaoAtual.nome ||
+    'Usuário de Teste',
 
-        email:
-          sessaoAtual.email ||
-          null,
+  email:
+    sessaoAtual.email ||
+    `teste.${randomUUID()}@example.com`,
 
-        data_nascimento:
-          sessaoAtual.data_nascimento ||
-          null,
+  data_nascimento:
+    sessaoAtual.data_nascimento ||
+    null,
 
-        odu_nascimento_id:
-          sessaoAtual.odu_nascimento_id ||
-          null
+  odu_nascimento_id:
+    sessaoAtual.odu_nascimento_id ||
+    null
 
-      };
+};
     }
 
 
