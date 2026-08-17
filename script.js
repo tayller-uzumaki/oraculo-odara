@@ -1007,17 +1007,7 @@ async function gerarPix() {
   }
 
 
-  if (!pedidoId) {
-
-    alert(
-      'Não foi possível identificar a sessão atual.'
-    );
-
-    return;
-  }
-
-
-  if (
+   if (
     ![5, 10].includes(
       Number(
         pacoteSelecionado.quantidade
@@ -1056,7 +1046,7 @@ async function gerarPix() {
             JSON.stringify({
 
               pedidoIdAtual:
-                pedidoId,
+                pedidoId || null,
 
               quantidade:
                 Number(
