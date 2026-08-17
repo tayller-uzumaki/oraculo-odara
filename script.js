@@ -688,7 +688,7 @@ document
       }
 
 
-      painelOdu.innerHTML = `
+painelOdu.innerHTML = `
 
         <div class="card-resultado-dark">
 
@@ -730,7 +730,12 @@ document
             flex-wrap: wrap;
           ">
 
-            <span class="badge">
+            <span
+              class="badge"
+              style="
+                background: rgba(212,175,55,0.15);
+              "
+            >
 
               Identificação:
               Odù #${numOdu} —
@@ -739,7 +744,12 @@ document
             </span>
 
 
-            <span class="badge">
+            <span
+              class="badge"
+              style="
+                background: rgba(139,92,246,0.15);
+              "
+            >
 
               Regência:
               ${infoOdu.orixa}
@@ -747,7 +757,12 @@ document
             </span>
 
 
-            <span class="badge">
+            <span
+              class="badge"
+              style="
+                background: rgba(212,175,55,0.15);
+              "
+            >
 
               Elemento:
               ${infoOdu.elemento}
@@ -764,7 +779,7 @@ document
               margin-bottom: 10px;
             ">
 
-              📜 Interpretação dos Seus Caminhos
+              📜 Interpretação Completa dos Seus Caminhos
 
             </h4>
 
@@ -774,14 +789,21 @@ document
             ">
 
               <strong>
-                Características principais:
+                Características Principais:
               </strong>
 
               O Odù ${infoOdu.nome}
-              apresenta a referência de
-              ${infoOdu.orixa}
-              e do elemento
+              traz a regência de
+              ${infoOdu.orixa},
+              conferindo uma conexão
+              especial com o elemento
               ${infoOdu.elemento}.
+
+              Quem nasce sob este Odù
+              possui uma presença
+              marcante e capacidade
+              natural para buscar o
+              discernimento.
 
             </p>
 
@@ -791,23 +813,87 @@ document
             ">
 
               <strong>
-                Caminho simbólico:
+                Potencial Espiritual:
               </strong>
 
+              Sua vibração nativa
+              favorece
               ${infoOdu.caminho}
 
+              Esta influência confere
+              resiliência e amparo em
+              momentos de decisão.
+
             </p>
 
 
-            <p>
+            <p style="
+              margin-bottom: 4px;
+            ">
 
               <strong>
-                Tendência:
+                Desafios e Aprendizados:
               </strong>
 
-              ${infoOdu.tendencia}.
+              O principal desafio deste
+              Odù é manter o equilíbrio
+              emocional e a paciência
+              nas fases de transição,
+              agindo sempre com reflexão
+              antes de tomar atitudes
+              definitivas.
 
             </p>
+
+          </div>
+
+
+          <div class="odu-pontos-grid">
+
+            <div class="box-pontos-fortes">
+
+              <h4>
+                ✨ Pontos Fortes
+              </h4>
+
+              <ul>
+
+                <li>
+                  ✦ Intuição e percepção
+                  espiritual aguçadas
+                </li>
+
+                <li>
+                  ✦ Proteção ancestral
+                  de ${infoOdu.orixa}
+                </li>
+
+              </ul>
+
+            </div>
+
+
+            <div class="box-pontos-atencao">
+
+              <h4>
+                ⚠️ Pontos de Atenção
+              </h4>
+
+              <ul>
+
+                <li>
+                  ✦ Evitar precipitações
+                  e ansiedade
+                </li>
+
+                <li>
+                  ✦ Cuidado com desgastes
+                  na energia pessoal
+                </li>
+
+              </ul>
+
+            </div>
 
           </div>
 
@@ -822,12 +908,21 @@ document
           ">
 
             <p style="
+              font-size: 0.98rem;
               color: var(--gold-light);
+              line-height: 1.6;
               margin-bottom: 16px;
             ">
 
-              ✨ Quer aprofundar seus caminhos atuais?
-              Consulte a Mesa Sagrada dos Búzios.
+              ✨ Quer se aprofundar e
+              entender o que os búzios
+              mostram sobre seus
+              caminhos atuais, amor e
+              carreira?
+
+              Clique abaixo, escolha um
+              dos nossos pacotes e faça
+              sua consulta agora!
 
             </p>
 
@@ -846,8 +941,6 @@ document
 
         </div>
       `;
-
-
       painelOdu.style.display =
         'block';
 
